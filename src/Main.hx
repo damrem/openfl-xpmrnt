@@ -18,12 +18,15 @@ import openfl.display.FPS;
 import openfl.display.Shape;
 import openfl.display.Sprite;
 import openfl.events.Event;
+import openfl.events.MouseEvent;
 import openfl.filters.GlowFilter;
 import openfl.geom.ColorTransform;
 import openfl.geom.Point;
 import openfl.geom.Rectangle;
 import openfl.Lib;
 import openfl.utils.ByteArray;
+
+using hxlpers.display.BitmapDataSF;
 
 /**
  * ...
@@ -33,17 +36,16 @@ class Main extends Sprite
 {
 
 	var pts:Array<Point>;
-	var w:Float = 0.25;
-	var RATIO:Float = 4;
+	static inline var RATIO:Float = 4;
 	var scene:Sprite;
-	var shapes:Array<Shape>;
+	var entities:Array<Sprite>;
 	var buffer:openfl.display.BitmapData;
 	var renderZone:flash.geom.Rectangle;
 	var nbShapes:UInt = 100;
 	var colorShift:Int;
 	
 	var foreScreens:Array<Bitmap>;
-	var nbForeScreens:UInt = 100;
+	static inline var NOISE_POP:UInt = 100;
 	var currentForeScreen:Bitmap;
 	var foreScreenContainer:openfl.display.Sprite;
 	
@@ -56,23 +58,7 @@ class Main extends Sprite
 		//addChild(scene);
 	}
 	
-	function createForeScreen(zone:Rectangle):Bitmap
-	{
-		var w:UInt = cast(zone.width);
-		var h:UInt = cast(zone.height);
-		var bfr:BitmapData = new BitmapData(w, h, false, 0);
-		var pixels:ByteArray = new ByteArray();
-		for (i in 0...w*h)
-		{
-			pixels.writeUnsignedInt(0xff0000+Rnd.int(0xffffff));
-		}
-		pixels.position = 0;
-		bfr.setPixels(zone, pixels);
-		
-		
-		return new Bitmap(bfr);
-		
-	}
+	
 	
 	
 	function createForeScreens(Length:UInt):Array<Bitmap>
@@ -80,13 +66,39 @@ class Main extends Sprite
 		var foreScreens = new Array<Bitmap>();
 		for (i in 0...Length)
 		{
-			var foreScreen = createForeScreen(renderZone);
+			var dt = new BitmapData(cast(renderZone.width), cast(renderZone.height), false, 0xffffffff);
+			dt.simpleNoise();
+			
+			var foreScreen = new Bitmap(dt);
 			foreScreen.alpha = 0.05;
 			foreScreen.width *= RATIO;
 			foreScreen.height *= RATIO;
 			foreScreens.push(foreScreen);
 		}
 		return foreScreens;
+	}
+	
+	function createTiles():Bitmap
+	{
+		var pxFx = Assets.getBitmapData("img/px-fx3.png");
+		var effect = new Sprite();
+		effect.alpha = 0.125;
+		
+		for (_y in 0...buffer.height)
+		{
+			for (_x in 0...buffer.width)
+			{
+				var fx = new Bitmap(pxFx);
+				fx.alpha = 0.25;
+				fx.x = _x*RATIO;
+				fx.y = _y*RATIO;
+				effect.addChild(fx);
+			}
+		}
+		
+		var effectBuffer = new BitmapData(stage.stageWidth, stage.stageHeight, true, 0x00000000);
+		effectBuffer.draw(effect);
+		return new Bitmap(effectBuffer);
 	}
 	
 	private function onStage(e:Event):Void 
@@ -102,53 +114,26 @@ class Main extends Sprite
 		screen.height *= RATIO;
 		addChild(screen);
 		
-		var pxFx = Assets.getBitmapData("img/px-fx3.png");
-		var effect = new Sprite();
-		effect.alpha = 0.125;
-		
-		foreScreens = createForeScreens(nbForeScreens);
+		foreScreens = createForeScreens(NOISE_POP);
 		foreScreenContainer = new Sprite();
 		currentForeScreen = foreScreens[0];
 		addChild(foreScreenContainer);
 		foreScreenContainer.addChild(currentForeScreen);
-		//foreScreenContainer.addChild(foreScreens[1]);
-		//foreScreens[1].x = 170;
 		
 		
 		
-		//var fxZone = new Rectangle(0, 0, 4, 4);
-		//var ct = new ColorTransform();
-		for (_y in 0...buffer.height)
-		{
-			for (_x in 0...buffer.width)
-			{
-				//position.x = _x;
-				//position.y = _y;
-				
-				//var ct = new ColorTransform(0.75 + Math.random() * 0.5, 0.75 + Math.random() * 0.5, 0.75 + Math.random() * 0.5);
-				//var _position = new Rectangle(_x, _y, 4, 4);
-				var fx = new Bitmap(pxFx);
-				fx.alpha = 0.25;
-				//fx.bitmapData.colorTransform(fxZone, ct);
-				fx.x = _x*RATIO;
-				fx.y = _y*RATIO;
-				
-				effect.addChild(fx);
-				//render.draw(pxFx, null, ct, BlendMode.MULTIPLY, _position, false);
-			}
-		}
 		
-		var effectBuffer = new BitmapData(stage.stageWidth, stage.stageHeight, true, 0x00000000);
-		effectBuffer.draw(effect);
-		var effectScreen = new Bitmap(effectBuffer);
-		addChild(effectScreen);
+		
+		addChild(createTiles());
+		
+		
 		
 		
 		
 		scene = new Sprite();
 		
 		
-		shapes = new Array<Shape>();
+		entities = new Array<Sprite>();
 		
 		for (i in 0...nbShapes)
 		{
@@ -157,6 +142,8 @@ class Main extends Sprite
 			var color = RndColor.RRGGBB(0.25, 0.5);
 			//trace(color);
 			var shape:ShortcutShape;
+			var sprite = new Sprite();
+			
 			if (Rnd.chance())
 			{
 				shape = new DiskShape(size, color);
@@ -166,20 +153,36 @@ class Main extends Sprite
 				shape = new BoxShape(size, size, color);
 				shape.rotation = Math.random() * 360;
 			}
+			sprite.addChild(shape);
+			sprite.alpha = Math.random();
+			sprite.x = Math.random() * stage.stageWidth / RATIO;
+			sprite.y = Math.random() * stage.stageHeight / RATIO;
+			sprite.buttonMode = true;
+			sprite.addEventListener(MouseEvent.ROLL_OVER, onRollOver);
 			
-			shape.alpha = Math.random();
-			shape.x = Math.random() * stage.stageWidth / RATIO;
-			shape.y = Math.random() * stage.stageHeight / RATIO;
 			
-			scene.addChild(shape);
-			shapes.push(shape);
+			scene.addChild(sprite);
+			entities.push(sprite);
 		}
+		
+		var logicalScene = new Sprite();
+		logicalScene.addChild(scene);
+		logicalScene.alpha = 0;
+		logicalScene.scaleX = logicalScene.scaleY = RATIO;
+		addChild(logicalScene);
+		
 		
 		//addChild(createForeScreen(renderZone));
 		addEventListener(Event.ENTER_FRAME, update);
 		
 		addChild(new FPS(10, 10, 0xffffff));
 		
+	}
+	
+	private function onRollOver(e:MouseEvent):Void 
+	{
+		
+		cast(e.currentTarget, Sprite).alpha = 1;
 	}
 	
 	
@@ -191,10 +194,11 @@ class Main extends Sprite
 		buffer.draw(scene);
 		
 		
+		/*
 		foreScreenContainer.removeChild(currentForeScreen);
 		currentForeScreen = foreScreens[Std.random(foreScreens.length)];
 		foreScreenContainer.addChild(currentForeScreen);
-		
+		*/
 		//TODO very costly: instead, pre-generate a dozen of noisy full layers and cycle randomly trough them
 		/*for (_y in 0...buffer.height)
 		{
@@ -219,7 +223,7 @@ class Main extends Sprite
 	
 	function resolve()
 	{
-		for (shape in shapes)
+		for (shape in entities)
 		{
 			if (Rnd.chance(0.01))
 			{
@@ -240,55 +244,7 @@ class Main extends Sprite
 	
 		
 		
-	function drawGraph()
-	{
-		
-		
-		var graph = new Sprite();
-		
-		pts = new Array<Point>();
-		
-		//var ax:Float = 0, ay:Float = stage.stageHeight;
-		var x:Float=0, y:Float=stage.stageHeight;
-		
-		// Assets:
-		// openfl.Assets.getBitmapData("img/assetname.jpg");
-		var prevN:UInt = 0;
-		var already:IntMap<Bool> = new IntMap<Bool>();
-		
-		for (i in 1...cast(640/w+1))
-		{
-			var n:UInt=0;
-			for (j in 1...i+1)
-			{
-				if (i % j == 0) n++;
-			}
-			
-			
-			//trace('${i}:${n}');
-			
-			var pt = new Point(x, y);
-			
-			//trace(already);
-			var bar = new BoxShape(w, n * 10, already.exists(n) ? 0xff0000:0xffffff);
-			bar.x = i * w;
-			bar.y = stage.stageHeight - n * 10;	
-			graph.addChild(bar);
-			
-			already.set(n, true);
-		}
-		
-		var graphRender = new BitmapData(640, 480);
-		graphRender.draw(graph);
-		var graphScreen = new Bitmap(graphRender);
-		addChild(graphScreen);
-		
-		
-		
-		var scene = new Sprite();
-		
-		
-	}
+	
 
 }
 

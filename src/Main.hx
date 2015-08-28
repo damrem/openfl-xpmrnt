@@ -3,7 +3,8 @@ package;
 
 
 import haxe.ds.IntMap;
-import hxlpers.RndColor;
+import hxlpers.colors.ColorSF;
+import hxlpers.colors.RndColor;
 import hxlpers.Rnd;
 import hxlpers.shapes.DiskShape;
 import hxlpers.shapes.BoxShape;
@@ -34,9 +35,10 @@ using hxlpers.display.BitmapDataSF;
  */
 class Main extends Sprite 
 {
+	static public inline var NOISE_ALPHA:Float =  0.025;
 
 	var pts:Array<Point>;
-	static inline var RATIO:Float = 4;
+	static inline var RATIO:Float = 3;
 	var scene:Sprite;
 	var entities:Array<Sprite>;
 	var buffer:openfl.display.BitmapData;
@@ -45,17 +47,22 @@ class Main extends Sprite
 	var colorShift:Int;
 	
 	var foreScreens:Array<Bitmap>;
-	static inline var NOISE_POP:UInt = 100;
+	static inline var NOISE_POP:UInt = 10;
 	var currentForeScreen:Bitmap;
 	var foreScreenContainer:openfl.display.Sprite;
+	var noiseCounter:UInt=1;
+	static inline var NOISE_PERIOD:UInt = 4;
+	var idForeScreen:UInt;
+	var prevIdForeScreen:UInt;
 	
 	public function new() 
 	{
 		super();
 		
 		addEventListener(Event.ADDED_TO_STAGE, onStage);
-		foreScreens=new Array<Bitmap>();
-		//addChild(scene);
+		foreScreens = new Array<Bitmap>();
+		
+		
 	}
 	
 	
@@ -70,7 +77,7 @@ class Main extends Sprite
 			dt.simpleNoise();
 			
 			var foreScreen = new Bitmap(dt);
-			foreScreen.alpha = 0.05;
+			foreScreen.alpha = NOISE_ALPHA;
 			foreScreen.width *= RATIO;
 			foreScreen.height *= RATIO;
 			foreScreens.push(foreScreen);
@@ -80,9 +87,9 @@ class Main extends Sprite
 	
 	function createTiles():Bitmap
 	{
-		var pxFx = Assets.getBitmapData("img/px-fx3.png");
+		var pxFx = Assets.getBitmapData("img/px-fx4.png");
 		var effect = new Sprite();
-		effect.alpha = 0.125;
+		effect.alpha = 0.01;
 		
 		for (_y in 0...buffer.height)
 		{
@@ -124,7 +131,7 @@ class Main extends Sprite
 		
 		
 		
-		addChild(createTiles());
+		//addChild(createTiles());
 		
 		
 		
@@ -194,11 +201,21 @@ class Main extends Sprite
 		buffer.draw(scene);
 		
 		
-		/*
-		foreScreenContainer.removeChild(currentForeScreen);
-		currentForeScreen = foreScreens[Std.random(foreScreens.length)];
-		foreScreenContainer.addChild(currentForeScreen);
-		*/
+		noiseCounter++;
+		
+		if (noiseCounter % NOISE_PERIOD == 0)
+		{
+			do
+			{
+				idForeScreen = Std.random(foreScreens.length);
+			}
+			while (idForeScreen == prevIdForeScreen);
+			prevIdForeScreen = idForeScreen;
+			foreScreenContainer.removeChild(currentForeScreen);
+			currentForeScreen = foreScreens[idForeScreen];
+			foreScreenContainer.addChild(currentForeScreen);
+			noiseCounter = 1;
+		}
 		//TODO very costly: instead, pre-generate a dozen of noisy full layers and cycle randomly trough them
 		/*for (_y in 0...buffer.height)
 		{

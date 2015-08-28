@@ -1,4 +1,4 @@
-package hxlpers;
+package hxlpers.colors;
 
 
 
@@ -8,37 +8,31 @@ package hxlpers;
  */
 class RndColor
 {
-	static public inline var FF:UInt = 0xFF;
-	static inline var AABitShit:UInt = 32;
-	static inline var RRBitShit:UInt = 16;
-	static inline var GGBitShit:UInt = 8;
-	static inline var BBBitShit:UInt = 0;
-	
-	static public function XX(bitShift:UInt, min:Float = 0, max:Float = 1):Int
+	static public function XX(min:Float = 0, max:Float = 1, bitShift:UInt=0):Int
 	{
-		var minComp = Std.int(min * FF);
-		var maxComp = Std.int(max * FF);
+		var minComp = Std.int(min * 0xFF);
+		var maxComp = Std.int(max * 0xFF);
 		return Rnd.int(minComp, maxComp) << bitShift;
 	}
 	
 	static public function AA(min:Float=0,max:Float=1):Int
 	{
-		return XX(AABitShit, min, max);
+		return XX(min, max, ColorComponent.AABitShit);
 	}
 	
 	static public function RR(min:Float=0,max:Float=1):Int
 	{
-		return XX(RRBitShit, min, max);
+		return XX(min, max, ColorComponent.RRBitShit);
 	}
 	
 	static public function GG(min:Float=0,max:Float=1):Int
 	{
-		return XX(GGBitShit, min, max);
+		return XX(min, max, ColorComponent.GGBitShit);
 	}
 	
 	static public function BB(min:Float=0,max:Float=1):Int
 	{
-		return XX(BBBitShit, min, max);
+		return XX(min, max, ColorComponent.BBBitShit);
 	}
 	
 	static public function RRGGBB(min:Float=0,max:Float=1):UInt
@@ -49,6 +43,12 @@ class RndColor
 	static public function AARRGGBB(min:Float=0,max:Float=1):UInt
 	{
 		return AA(min, max) + RRGGBB(min, max);
+	}
+	
+	static public function gray(min:Float = 0, max:Float = 1):UInt
+	{
+		var comp = XX(min, max);
+		return (comp << ColorComponent.RRBitShit) + (comp << ColorComponent.GGBitShit) + (comp << ColorComponent.BBBitShit);
 	}
 	
 }

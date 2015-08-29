@@ -15,34 +15,34 @@ class RndColor
 		return Rnd.int(minComp, maxComp) << bitShift;
 	}
 	
-	static public function AA(min:Float=0,max:Float=1):Int
+	static public function alpha(min:Float=0,max:Float=1):Int
 	{
 		return XX(min, max, ColorComponent.ALPHA_BITSHIFT);
 	}
 	
-	static public function RR(min:Float=0,max:Float=1):Int
+	static public function red(min:Float=0,max:Float=1):Int
 	{
 		return XX(min, max, ColorComponent.RED_BITSHIFT);
 	}
 	
-	static public function GG(min:Float=0,max:Float=1):Int
+	static public function green(min:Float=0,max:Float=1):Int
 	{
 		return XX(min, max, ColorComponent.GREEN_BITSHIFT);
 	}
 	
-	static public function BB(min:Float=0,max:Float=1):Int
+	static public function blue(min:Float=0,max:Float=1):Int
 	{
 		return XX(min, max, ColorComponent.BLUE_BITSHIFT);
 	}
 	
-	static public function RRGGBB(min:Float=0,max:Float=1):UInt
+	static public function rgb(min:Float=0,max:Float=1):UInt
 	{
-		return RR(min, max) + GG(min, max) + BB(min, max);
+		return red(min, max) + green(min, max) + blue(min, max);
 	}
 	
-	static public function AARRGGBB(min:Float=0,max:Float=1):UInt
+	static public function argb(min:Float=0,max:Float=1):UInt
 	{
-		return AA(min, max) + RRGGBB(min, max);
+		return alpha(min, max) + rgb(min, max);
 	}
 	
 	static public function gray(min:Float = 0, max:Float = 1):UInt

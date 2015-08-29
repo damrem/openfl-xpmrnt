@@ -19,7 +19,7 @@ class Game extends Sprite
 	var isPlaying:Bool;
 	var ratio:Float;
 	
-	public function new(w:UInt, h:UInt, ratio:Float) 
+	public function new(w:UInt, h:UInt, ratio:UInt) 
 	{
 		super();
 		this.ratio = ratio;

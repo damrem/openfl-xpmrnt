@@ -48,7 +48,7 @@ class BitmapDataSF
 			{
 				if (Rnd.chance(density))
 				{
-					pixels.writeUnsignedInt(RndColor.AA() + RndColor.RRGGBB());
+					pixels.writeUnsignedInt(RndColor.alpha() + RndColor.rgb());
 				}
 				else
 				{
@@ -62,7 +62,7 @@ class BitmapDataSF
 			{
 				if (Rnd.chance(density))
 				{
-					pixels.writeUnsignedInt(RndColor.AA() + RndColor.gray());
+					pixels.writeUnsignedInt(RndColor.alpha() + RndColor.gray());
 				}
 				else
 				{
@@ -76,7 +76,7 @@ class BitmapDataSF
 			{
 				if (Rnd.chance(density))
 				{
-					pixels.writeUnsignedInt(ColorComponent.OPAQUE + RndColor.RRGGBB());
+					pixels.writeUnsignedInt(ColorComponent.OPAQUE + RndColor.rgb());
 				}
 				else
 				{

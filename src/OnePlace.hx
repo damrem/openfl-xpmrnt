@@ -29,7 +29,7 @@ class OnePlace extends Place
 		{
 			var size = Math.random() * 25;
 			//var color = RndColor.RR(0, 0.25)+RndColor.GG(0.5,1)+RndColor.BB(0.25, 0.5);
-			var color = RndColor.RRGGBB(0.25, 0.5);
+			var color = RndColor.rgb(0.25, 0.5);
 			//trace(color);
 			var shape:ShortcutShape;
 			var sprite = new Sprite();

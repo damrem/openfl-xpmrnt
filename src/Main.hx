@@ -31,7 +31,7 @@ using hxlpers.display.BitmapDataSF;
 class Main extends Sprite 
 {
 	static inline var NOISE_ALPHA:Float = 0.05;
-	static inline var RATIO:Float = 3;
+	static inline var RATIO:UInt = 3;
 
 	
 	
@@ -56,7 +56,7 @@ class Main extends Sprite
 		var game = new Game(stage.stageWidth, stage.stageHeight, RATIO);
 		addChild(game);
 		
-		place = new OtherPlace(stage.stageWidth/RATIO, stage.stageHeight/RATIO);
+		place = new OtherPlace(stage.stageWidth/RATIO, stage.stageHeight/RATIO, RATIO);
 		game.addPlace('other', place);
 		
 		place = new OnePlace(stage.stageWidth/RATIO, stage.stageHeight/RATIO);

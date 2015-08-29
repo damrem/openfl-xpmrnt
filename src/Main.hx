@@ -2,7 +2,10 @@ package;
 
 
 
+import hxlpers.colors.ColorComponent;
 import hxlpers.colors.RndColor;
+import hxlpers.effects.ScreenPixelEffect;
+import hxlpers.effects.ScreenWhiteNoiseEffect;
 import hxlpers.Rnd;
 import hxlpers.shapes.BoxShape;
 import hxlpers.shapes.DiskShape;
@@ -18,6 +21,7 @@ import openfl.geom.Point;
 import openfl.geom.Rectangle;
 
 using hxlpers.display.DisplayObjectSF;
+using hxlpers.display.BitmapDataSF;
 /**
  * ...
  * @author damrem
@@ -30,12 +34,12 @@ class Main extends Sprite
 	static inline var RATIO:Float = 3;
 	var scene:Sprite;
 	var entities:Array<Sprite>;
-	var buffer:openfl.display.BitmapData;
-	var renderZone:flash.geom.Rectangle;
+	var buffer:BitmapData;
+	var renderZone:Rectangle;
 	var nbShapes:UInt = 100;
 	var colorShift:Int;
 	
-	var noiseEffect:ScreenWhiteNoiseEffect;
+	var noiseEffect:hxlpers.effects.ScreenWhiteNoiseEffect;
 	
 	
 	public function new() 
@@ -54,20 +58,23 @@ class Main extends Sprite
 	{
 		removeEventListener(Event.ADDED_TO_STAGE, onStage);
 		
-		buffer = new BitmapData(cast(stage.stageWidth / RATIO), cast(stage.stageHeight / RATIO), false, 0);
+		var w = stage.stageWidth / RATIO;
+		var h = stage.stageHeight / RATIO;
 		
-		renderZone = new flash.geom.Rectangle(0, 0, stage.stageWidth / RATIO, stage.stageHeight / RATIO);
+		buffer = new BitmapData(cast(w), cast(h), false, 0);
+		
+		renderZone = new Rectangle(0, 0, w, h);
 		
 		var screen = new Bitmap(buffer);
 		screen.scale(RATIO);
 		addChild(screen);
 		
-		noiseEffect = new ScreenWhiteNoiseEffect(renderZone);
+		noiseEffect = new hxlpers.effects.ScreenWhiteNoiseEffect(renderZone);
 		noiseEffect.scale(RATIO);
 		noiseEffect.alpha = NOISE_ALPHA;
 		addChild(noiseEffect);
 		
-		var pxFx = new ScreenPixelEffect(stage.stageWidth, stage.stageHeight, Assets.getBitmapData("img/px3-2.png"));
+		var pxFx = new hxlpers.effects.ScreenPixelEffect(stage.stageWidth, stage.stageHeight, Assets.getBitmapData("img/px3-2.png"));
 		pxFx.alpha = 0.125;
 		addChild(pxFx);
 		
@@ -133,23 +140,10 @@ class Main extends Sprite
 	
 	public function render()
 	{
-		
-		
-		buffer.fillRect(renderZone, 0);
+		buffer.clear();
 		buffer.draw(scene);
 		
 		noiseEffect.update();
-		
-		
-		
-		
-		
-		//render.draw(effect);
-		
-		
-		
-		
-		
 	}
 	
 	

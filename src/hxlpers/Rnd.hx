@@ -1,5 +1,4 @@
 package hxlpers;
-import flash.Lib;
 
 class Rnd
 {

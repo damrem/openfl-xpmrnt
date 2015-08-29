@@ -60,7 +60,7 @@ class Main extends Sprite
 		game.addPlace('other', place);
 		
 		place = new OnePlace(stage.stageWidth/RATIO, stage.stageHeight/RATIO);
-		game.addPlace('one', place);
+		//game.addPlace('one', place);
 		
 		/*
 		noiseEffect = new ScreenWhiteNoiseEffect(stage.stageWidth, stage.stageHeight);

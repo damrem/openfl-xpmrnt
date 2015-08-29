@@ -4,6 +4,7 @@ package;
 
 import haxe.ds.IntMap;
 import hxlpers.colors.ColorSF;
+import hxlpers.colors.RGBColor;
 import hxlpers.colors.RndColor;
 import hxlpers.Rnd;
 import hxlpers.shapes.DiskShape;
@@ -29,13 +30,14 @@ import openfl.utils.ByteArray;
 
 using hxlpers.display.BitmapDataSF;
 
+
 /**
  * ...
  * @author damrem
  */
 class Main extends Sprite 
 {
-	static public inline var NOISE_ALPHA:Float =  0.025;
+	static public inline var NOISE_ALPHA:Float = 0.1;
 
 	var pts:Array<Point>;
 	static inline var RATIO:Float = 3;
@@ -47,11 +49,11 @@ class Main extends Sprite
 	var colorShift:Int;
 	
 	var foreScreens:Array<Bitmap>;
-	static inline var NOISE_POP:UInt = 10;
+	static inline var NOISE_POP:UInt = 100;
 	var currentForeScreen:Bitmap;
 	var foreScreenContainer:openfl.display.Sprite;
 	var noiseCounter:UInt=1;
-	static inline var NOISE_PERIOD:UInt = 4;
+	static inline var NOISE_PERIOD:UInt = 3;
 	var idForeScreen:UInt;
 	var prevIdForeScreen:UInt;
 	
@@ -62,7 +64,10 @@ class Main extends Sprite
 		addEventListener(Event.ADDED_TO_STAGE, onStage);
 		foreScreens = new Array<Bitmap>();
 		
-		
+		var rgbc = new RGBColor();
+		trace(rgbc);
+		rgbc.green= 255;
+		trace(rgbc);
 	}
 	
 	
@@ -73,8 +78,8 @@ class Main extends Sprite
 		var foreScreens = new Array<Bitmap>();
 		for (i in 0...Length)
 		{
-			var dt = new BitmapData(cast(renderZone.width), cast(renderZone.height), false, 0xffffffff);
-			dt.simpleNoise();
+			var dt = new BitmapData(cast(renderZone.width), cast(renderZone.height), true, 0xffffffff);
+			dt.simpleNoise(0.25);
 			
 			var foreScreen = new Bitmap(dt);
 			foreScreen.alpha = NOISE_ALPHA;

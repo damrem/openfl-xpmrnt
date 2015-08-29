@@ -17,22 +17,22 @@ class RndColor
 	
 	static public function AA(min:Float=0,max:Float=1):Int
 	{
-		return XX(min, max, ColorComponent.AABitShit);
+		return XX(min, max, ColorComponent.ALPHA_BITSHIFT);
 	}
 	
 	static public function RR(min:Float=0,max:Float=1):Int
 	{
-		return XX(min, max, ColorComponent.RRBitShit);
+		return XX(min, max, ColorComponent.RED_BITSHIFT);
 	}
 	
 	static public function GG(min:Float=0,max:Float=1):Int
 	{
-		return XX(min, max, ColorComponent.GGBitShit);
+		return XX(min, max, ColorComponent.GREEN_BITSHIFT);
 	}
 	
 	static public function BB(min:Float=0,max:Float=1):Int
 	{
-		return XX(min, max, ColorComponent.BBBitShit);
+		return XX(min, max, ColorComponent.BLUE_BITSHIFT);
 	}
 	
 	static public function RRGGBB(min:Float=0,max:Float=1):UInt
@@ -48,7 +48,7 @@ class RndColor
 	static public function gray(min:Float = 0, max:Float = 1):UInt
 	{
 		var comp = XX(min, max);
-		return (comp << ColorComponent.RRBitShit) + (comp << ColorComponent.GGBitShit) + (comp << ColorComponent.BBBitShit);
+		return (comp << ColorComponent.RED_BITSHIFT) + (comp << ColorComponent.GREEN_BITSHIFT) + (comp << ColorComponent.BLUE_BITSHIFT);
 	}
 	
 }

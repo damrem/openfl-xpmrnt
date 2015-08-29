@@ -28,9 +28,7 @@ import openfl.geom.Rectangle;
 import openfl.Lib;
 import openfl.utils.ByteArray;
 
-using hxlpers.display.BitmapDataSF;
-
-
+using hxlpers.display.DisplayObjectSF;
 /**
  * ...
  * @author damrem
@@ -48,21 +46,15 @@ class Main extends Sprite
 	var nbShapes:UInt = 100;
 	var colorShift:Int;
 	
-	var foreScreens:Array<Bitmap>;
-	static inline var NOISE_POP:UInt = 100;
-	var currentForeScreen:Bitmap;
-	var foreScreenContainer:openfl.display.Sprite;
-	var noiseCounter:UInt=1;
-	static inline var NOISE_PERIOD:UInt = 3;
-	var idForeScreen:UInt;
-	var prevIdForeScreen:UInt;
+	var noiseEffect:ScreenWhiteNoise;
+	
 	
 	public function new() 
 	{
 		super();
 		
 		addEventListener(Event.ADDED_TO_STAGE, onStage);
-		foreScreens = new Array<Bitmap>();
+		
 		
 		var rgbc = new RGBColor();
 		trace(rgbc);
@@ -73,22 +65,7 @@ class Main extends Sprite
 	
 	
 	
-	function createForeScreens(Length:UInt):Array<Bitmap>
-	{
-		var foreScreens = new Array<Bitmap>();
-		for (i in 0...Length)
-		{
-			var dt = new BitmapData(cast(renderZone.width), cast(renderZone.height), true, 0xffffffff);
-			dt.simpleNoise(0.25);
-			
-			var foreScreen = new Bitmap(dt);
-			foreScreen.alpha = NOISE_ALPHA;
-			foreScreen.width *= RATIO;
-			foreScreen.height *= RATIO;
-			foreScreens.push(foreScreen);
-		}
-		return foreScreens;
-	}
+	
 	
 	function createTiles():Bitmap
 	{
@@ -122,15 +99,15 @@ class Main extends Sprite
 		renderZone = new flash.geom.Rectangle(0, 0, stage.stageWidth / RATIO, stage.stageHeight / RATIO);
 		
 		var screen = new Bitmap(buffer);
-		screen.width *= RATIO;
-		screen.height *= RATIO;
+		screen.scale(RATIO);
 		addChild(screen);
 		
-		foreScreens = createForeScreens(NOISE_POP);
-		foreScreenContainer = new Sprite();
-		currentForeScreen = foreScreens[0];
-		addChild(foreScreenContainer);
-		foreScreenContainer.addChild(currentForeScreen);
+		noiseEffect = new ScreenWhiteNoise(renderZone);
+		noiseEffect.scale(RATIO);
+		noiseEffect.alpha = NOISE_ALPHA;
+		addChild(noiseEffect);
+		
+		
 		
 		
 		
@@ -205,32 +182,10 @@ class Main extends Sprite
 		buffer.fillRect(renderZone, 0);
 		buffer.draw(scene);
 		
+		noiseEffect.update();
 		
-		noiseCounter++;
 		
-		if (noiseCounter % NOISE_PERIOD == 0)
-		{
-			do
-			{
-				idForeScreen = Std.random(foreScreens.length);
-			}
-			while (idForeScreen == prevIdForeScreen);
-			prevIdForeScreen = idForeScreen;
-			foreScreenContainer.removeChild(currentForeScreen);
-			currentForeScreen = foreScreens[idForeScreen];
-			foreScreenContainer.addChild(currentForeScreen);
-			noiseCounter = 1;
-		}
-		//TODO very costly: instead, pre-generate a dozen of noisy full layers and cycle randomly trough them
-		/*for (_y in 0...buffer.height)
-		{
-			for (_x in 0...buffer.width)
-			{
-				colorShift = RndColor.RR(0,0.05) + RndColor.GG(0, 0.05) + RndColor.BB(0, 0.05);
-				buffer.setPixel(_x, _y, buffer.getPixel(_x, _y) + colorShift);
-			}
-		}
-		*/
+		
 		
 		
 		//render.draw(effect);

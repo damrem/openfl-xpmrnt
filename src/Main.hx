@@ -2,31 +2,20 @@ package;
 
 
 
-import haxe.ds.IntMap;
-import hxlpers.colors.ColorSF;
-import hxlpers.colors.RGBColor;
 import hxlpers.colors.RndColor;
 import hxlpers.Rnd;
-import hxlpers.shapes.DiskShape;
 import hxlpers.shapes.BoxShape;
-import hxlpers.shapes.SegmentShape;
+import hxlpers.shapes.DiskShape;
 import hxlpers.shapes.ShortcutShape;
-import msignal.Signal.Signal1;
 import openfl.Assets;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
-import openfl.display.BlendMode;
 import openfl.display.FPS;
-import openfl.display.Shape;
 import openfl.display.Sprite;
 import openfl.events.Event;
 import openfl.events.MouseEvent;
-import openfl.filters.GlowFilter;
-import openfl.geom.ColorTransform;
 import openfl.geom.Point;
 import openfl.geom.Rectangle;
-import openfl.Lib;
-import openfl.utils.ByteArray;
 
 using hxlpers.display.DisplayObjectSF;
 /**
@@ -35,7 +24,7 @@ using hxlpers.display.DisplayObjectSF;
  */
 class Main extends Sprite 
 {
-	static public inline var NOISE_ALPHA:Float = 0.1;
+	static public inline var NOISE_ALPHA:Float = 0.05;
 
 	var pts:Array<Point>;
 	static inline var RATIO:Float = 3;
@@ -46,7 +35,7 @@ class Main extends Sprite
 	var nbShapes:UInt = 100;
 	var colorShift:Int;
 	
-	var noiseEffect:ScreenWhiteNoise;
+	var noiseEffect:ScreenWhiteNoiseEffect;
 	
 	
 	public function new() 
@@ -54,41 +43,12 @@ class Main extends Sprite
 		super();
 		
 		addEventListener(Event.ADDED_TO_STAGE, onStage);
-		
-		
-		var rgbc = new RGBColor();
-		trace(rgbc);
-		rgbc.green= 255;
-		trace(rgbc);
 	}
 	
 	
 	
 	
 	
-	
-	function createTiles():Bitmap
-	{
-		var pxFx = Assets.getBitmapData("img/px-fx4.png");
-		var effect = new Sprite();
-		effect.alpha = 0.01;
-		
-		for (_y in 0...buffer.height)
-		{
-			for (_x in 0...buffer.width)
-			{
-				var fx = new Bitmap(pxFx);
-				fx.alpha = 0.25;
-				fx.x = _x*RATIO;
-				fx.y = _y*RATIO;
-				effect.addChild(fx);
-			}
-		}
-		
-		var effectBuffer = new BitmapData(stage.stageWidth, stage.stageHeight, true, 0x00000000);
-		effectBuffer.draw(effect);
-		return new Bitmap(effectBuffer);
-	}
 	
 	private function onStage(e:Event):Void 
 	{
@@ -102,18 +62,14 @@ class Main extends Sprite
 		screen.scale(RATIO);
 		addChild(screen);
 		
-		noiseEffect = new ScreenWhiteNoise(renderZone);
+		noiseEffect = new ScreenWhiteNoiseEffect(renderZone);
 		noiseEffect.scale(RATIO);
 		noiseEffect.alpha = NOISE_ALPHA;
 		addChild(noiseEffect);
 		
-		
-		
-		
-		
-		
-		
-		//addChild(createTiles());
+		var pxFx = new ScreenPixelEffect(stage.stageWidth, stage.stageHeight, Assets.getBitmapData("img/px3-2.png"));
+		pxFx.alpha = 0.125;
+		addChild(pxFx);
 		
 		
 		

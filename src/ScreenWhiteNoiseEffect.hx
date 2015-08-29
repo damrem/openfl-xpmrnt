@@ -11,7 +11,7 @@ using hxlpers.display.BitmapDataSF;
  * ...
  * @author damrem
  */
-class ScreenWhiteNoise extends Sprite
+class ScreenWhiteNoiseEffect extends Sprite
 {
 	var pool:Array<Bitmap>;
 	var current:Bitmap;

@@ -28,18 +28,14 @@ using hxlpers.display.BitmapDataSF;
  */
 class Main extends Sprite 
 {
-	static public inline var NOISE_ALPHA:Float = 0.05;
-
-	var pts:Array<Point>;
+	static inline var NOISE_ALPHA:Float = 0.05;
 	static inline var RATIO:Float = 3;
-	var scene:Sprite;
-	var entities:Array<Sprite>;
+
 	var buffer:BitmapData;
 	var renderZone:Rectangle;
-	var nbShapes:UInt = 100;
-	var colorShift:Int;
 	
-	var noiseEffect:hxlpers.effects.ScreenWhiteNoiseEffect;
+	var noiseEffect:ScreenWhiteNoiseEffect;
+	var world:MiniWorld;
 	
 	
 	public function new() 
@@ -74,7 +70,7 @@ class Main extends Sprite
 		noiseEffect.alpha = NOISE_ALPHA;
 		addChild(noiseEffect);
 		
-		var pxFx = new hxlpers.effects.ScreenPixelEffect(stage.stageWidth, stage.stageHeight, Assets.getBitmapData("img/px3-2.png"));
+		var pxFx = new ScreenPixelEffect(stage.stageWidth, stage.stageHeight, Assets.getBitmapData("img/px3-2.png"));
 		pxFx.alpha = 0.125;
 		addChild(pxFx);
 		
@@ -82,43 +78,12 @@ class Main extends Sprite
 		
 		
 		
-		scene = new Sprite();
+		world = new MiniWorld(w, h);
 		
 		
-		entities = new Array<Sprite>();
-		
-		for (i in 0...nbShapes)
-		{
-			var size = Math.random() * 10;
-			//var color = RndColor.RR(0, 0.25)+RndColor.GG(0.5,1)+RndColor.BB(0.25, 0.5);
-			var color = RndColor.RRGGBB(0.25, 0.5);
-			//trace(color);
-			var shape:ShortcutShape;
-			var sprite = new Sprite();
-			
-			if (Rnd.chance())
-			{
-				shape = new DiskShape(size, color);
-			}
-			else
-			{
-				shape = new BoxShape(size, size, color);
-				shape.rotation = Math.random() * 360;
-			}
-			sprite.addChild(shape);
-			sprite.alpha = Math.random();
-			sprite.x = Math.random() * stage.stageWidth / RATIO;
-			sprite.y = Math.random() * stage.stageHeight / RATIO;
-			sprite.buttonMode = true;
-			sprite.addEventListener(MouseEvent.ROLL_OVER, onRollOver);
-			
-			
-			scene.addChild(sprite);
-			entities.push(sprite);
-		}
 		
 		var logicalScene = new Sprite();
-		logicalScene.addChild(scene);
+		logicalScene.addChild(world.scene);
 		logicalScene.alpha = 0;
 		logicalScene.scaleX = logicalScene.scaleY = RATIO;
 		addChild(logicalScene);
@@ -131,41 +96,25 @@ class Main extends Sprite
 		
 	}
 	
-	private function onRollOver(e:MouseEvent):Void 
-	{
-		
-		cast(e.currentTarget, Sprite).alpha = 1;
-	}
+	
 	
 	
 	public function render()
 	{
 		buffer.clear();
-		buffer.draw(scene);
+		buffer.draw(world.scene);
 		
 		noiseEffect.update();
 	}
 	
 	
 	
-	function resolve()
-	{
-		for (shape in entities)
-		{
-			if (Rnd.chance(0.01))
-			{
-				shape.x += Rnd.float( -1, 1);
-				shape.y += Rnd.float( -1, 1);
-				shape.alpha += Rnd.float( -0.1, 0.1);
-				shape.rotation += Rnd.float( -5, 5);
-			}
-		}
-	}
+	
 	
 	
 	function update(evt:Event = null)
 	{
-		resolve();
+		world.update();
 		render();
 	}
 	

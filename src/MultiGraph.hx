@@ -15,6 +15,8 @@ import openfl.geom.Point;
 class MultiGraph extends Sprite
 {
 	var w:Float = 0.25;
+	var pts:Array<Point>;
+	
 	
 	public function new() 
 	{

@@ -1,0 +1,82 @@
+package;
+import hxlpers.colors.RndColor;
+import hxlpers.Rnd;
+import hxlpers.shapes.BoxShape;
+import hxlpers.shapes.DiskShape;
+import hxlpers.shapes.ShortcutShape;
+import openfl.display.Sprite;
+import openfl.events.MouseEvent;
+import openfl.geom.Rectangle;
+
+/**
+ * ...
+ * @author damrem
+ */
+class MiniWorld
+{
+	var entities:Array<Sprite>;
+	var nbShapes:UInt = 100;
+	public var scene(get, null):Sprite;
+	var _scene:Sprite;
+	public function new(w:Float, h:Float) 
+	{
+		_scene = new Sprite();
+
+		entities = new Array<Sprite>();
+		
+		for (i in 0...nbShapes)
+		{
+			var size = Math.random() * 10;
+			//var color = RndColor.RR(0, 0.25)+RndColor.GG(0.5,1)+RndColor.BB(0.25, 0.5);
+			var color = RndColor.RRGGBB(0.25, 0.5);
+			//trace(color);
+			var shape:ShortcutShape;
+			var sprite = new Sprite();
+			
+			if (Rnd.chance())
+			{
+				shape = new DiskShape(size, color);
+			}
+			else
+			{
+				shape = new BoxShape(size, size, color);
+				shape.rotation = Math.random() * 360;
+			}
+			sprite.addChild(shape);
+			sprite.alpha = Math.random();
+			sprite.x = Rnd.float(w);
+			sprite.y = Rnd.float(h);
+			sprite.buttonMode = true;
+			sprite.addEventListener(MouseEvent.ROLL_OVER, onRollOver);
+			
+			
+			_scene.addChild(sprite);
+			entities.push(sprite);
+		}
+	}
+	
+	function onRollOver(e:MouseEvent):Void 
+	{
+		cast(e.currentTarget, Sprite).alpha = 1;
+	}
+	
+	public function update()
+	{
+		for (shape in entities)
+		{
+			if (Rnd.chance(0.01))
+			{
+				shape.x += Rnd.float( -1, 1);
+				shape.y += Rnd.float( -1, 1);
+				shape.alpha += Rnd.float( -0.1, 0.1);
+				shape.rotation += Rnd.float( -5, 5);
+			}
+		}
+	}
+	
+	function get_scene():Sprite 
+	{
+		return _scene;
+	}
+	
+}

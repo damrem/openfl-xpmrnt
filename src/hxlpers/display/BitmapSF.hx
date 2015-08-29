@@ -8,9 +8,10 @@ using hxlpers.display.BitmapDataSF;
 class BitmapSF
 {
 
-	static public function simpleNoise(bmp:Bitmap)
+	static public function simpleNoise(bmp:Bitmap):Bitmap
 	{
 		bmp.bitmapData.simpleNoise();
+		return bmp;
 	}
 	
 }

@@ -13,7 +13,7 @@ import openfl.utils.ByteArray;
 class BitmapDataSF
 {
 
-	static public function simpleNoise(dt:BitmapData, density:Float=1, monochromatic:Bool=true, transparent:Bool=true)
+	static public function simpleNoise(dt:BitmapData, density:Float=1, monochromatic:Bool=true, transparent:Bool=true):BitmapData
 	{
 		var w:UInt = cast(dt.width);
 		var h:UInt = cast(dt.height);
@@ -78,7 +78,7 @@ class BitmapDataSF
 		pixels.position = 0;
 		var zone = new Rectangle(0, 0, w, h);
 		dt.setPixels(zone, pixels);
-		
+		return dt;
 	}
 	
 }

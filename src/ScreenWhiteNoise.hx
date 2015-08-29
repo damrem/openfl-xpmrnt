@@ -27,14 +27,7 @@ class ScreenWhiteNoise extends Sprite
 	
 		for (i in 0...population)
 		{
-			var dt = new BitmapData(cast(zone.width), cast(zone.height), true, 0xffffffff);
-			dt.simpleNoise(noiseDensity);
-			
-			var bmp = new Bitmap(dt);
-			//bmp.alpha = NOISE_ALPHA;
-			//bmp.width *= RATIO;
-			//bmp.height *= RATIO;
-			pool.push(bmp);
+			pool.push(new Bitmap(new BitmapData(cast(zone.width), cast(zone.height), true, 0xffffffff).simpleNoise(noiseDensity)));
 		}
 		
 		current = pool[0];

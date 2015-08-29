@@ -6,6 +6,8 @@ import hxlpers.colors.ColorComponent;
 import hxlpers.colors.RndColor;
 import hxlpers.effects.ScreenPixelEffect;
 import hxlpers.effects.ScreenWhiteNoiseEffect;
+import hxlpers.game.Game;
+import hxlpers.game.Place;
 import hxlpers.Rnd;
 import hxlpers.shapes.BoxShape;
 import hxlpers.shapes.DiskShape;
@@ -31,66 +33,46 @@ class Main extends Sprite
 	static inline var NOISE_ALPHA:Float = 0.05;
 	static inline var RATIO:Float = 3;
 
-	var buffer:BitmapData;
-	var renderZone:Rectangle;
+	
 	
 	var noiseEffect:ScreenWhiteNoiseEffect;
-	var world:MiniWorld;
+	var place:Place;
 	
 	
 	public function new() 
 	{
-		super();
-		
+		super();	
 		addEventListener(Event.ADDED_TO_STAGE, onStage);
 	}
-	
-	
-	
-	
 	
 	
 	private function onStage(e:Event):Void 
 	{
 		removeEventListener(Event.ADDED_TO_STAGE, onStage);
 		
-		var w = stage.stageWidth / RATIO;
-		var h = stage.stageHeight / RATIO;
+		//var w = stage.stageWidth / RATIO;
+		//var h = stage.stageHeight / RATIO;
 		
-		buffer = new BitmapData(cast(w), cast(h), false, 0);
+		var game = new Game(stage.stageWidth, stage.stageHeight, RATIO);
+		addChild(game);
 		
-		renderZone = new Rectangle(0, 0, w, h);
+		place = new OtherPlace(stage.stageWidth/RATIO, stage.stageHeight/RATIO);
+		game.addPlace('other', place);
 		
-		var screen = new Bitmap(buffer);
-		screen.scale(RATIO);
-		addChild(screen);
+		place = new OnePlace(stage.stageWidth/RATIO, stage.stageHeight/RATIO);
+		game.addPlace('one', place);
 		
-		noiseEffect = new hxlpers.effects.ScreenWhiteNoiseEffect(renderZone);
+		/*
+		noiseEffect = new ScreenWhiteNoiseEffect(stage.stageWidth, stage.stageHeight);
 		noiseEffect.scale(RATIO);
 		noiseEffect.alpha = NOISE_ALPHA;
+		
 		addChild(noiseEffect);
+		*/
 		
 		var pxFx = new ScreenPixelEffect(stage.stageWidth, stage.stageHeight, Assets.getBitmapData("img/px3-2.png"));
 		pxFx.alpha = 0.125;
 		addChild(pxFx);
-		
-		
-		
-		
-		
-		world = new MiniWorld(w, h);
-		
-		
-		
-		var logicalScene = new Sprite();
-		logicalScene.addChild(world.scene);
-		logicalScene.alpha = 0;
-		logicalScene.scaleX = logicalScene.scaleY = RATIO;
-		addChild(logicalScene);
-		
-		
-		//addChild(createForeScreen(renderZone));
-		addEventListener(Event.ENTER_FRAME, update);
 		
 		addChild(new FPS(10, 10, 0xffffff));
 		
@@ -99,24 +81,13 @@ class Main extends Sprite
 	
 	
 	
-	public function render()
-	{
-		buffer.clear();
-		buffer.draw(world.scene);
-		
-		noiseEffect.update();
-	}
 	
 	
 	
 	
 	
 	
-	function update(evt:Event = null)
-	{
-		world.update();
-		render();
-	}
+	
 	
 		
 		

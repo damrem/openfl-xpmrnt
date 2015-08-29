@@ -1,5 +1,6 @@
 package;
 import hxlpers.colors.RndColor;
+import hxlpers.game.Place;
 import hxlpers.Rnd;
 import hxlpers.shapes.BoxShape;
 import hxlpers.shapes.DiskShape;
@@ -12,21 +13,21 @@ import openfl.geom.Rectangle;
  * ...
  * @author damrem
  */
-class MiniWorld
+class OnePlace extends Place
 {
 	var entities:Array<Sprite>;
 	var nbShapes:UInt = 100;
-	public var scene(get, null):Sprite;
-	var _scene:Sprite;
+	
 	public function new(w:Float, h:Float) 
 	{
-		_scene = new Sprite();
+		trace("new", w, h);
+		super();
 
 		entities = new Array<Sprite>();
 		
 		for (i in 0...nbShapes)
 		{
-			var size = Math.random() * 10;
+			var size = Math.random() * 25;
 			//var color = RndColor.RR(0, 0.25)+RndColor.GG(0.5,1)+RndColor.BB(0.25, 0.5);
 			var color = RndColor.RRGGBB(0.25, 0.5);
 			//trace(color);
@@ -43,24 +44,24 @@ class MiniWorld
 				shape.rotation = Math.random() * 360;
 			}
 			sprite.addChild(shape);
-			sprite.alpha = Math.random();
+			//sprite.alpha = Math.random();
 			sprite.x = Rnd.float(w);
 			sprite.y = Rnd.float(h);
 			sprite.buttonMode = true;
 			sprite.addEventListener(MouseEvent.ROLL_OVER, onRollOver);
 			
 			
-			_scene.addChild(sprite);
+			addChild(sprite);
 			entities.push(sprite);
 		}
 	}
 	
 	function onRollOver(e:MouseEvent):Void 
 	{
-		cast(e.currentTarget, Sprite).alpha = 1;
+		cast(e.currentTarget, Sprite).alpha = 0.5;
 	}
 	
-	public function update()
+	override public function update()
 	{
 		for (shape in entities)
 		{
@@ -68,15 +69,10 @@ class MiniWorld
 			{
 				shape.x += Rnd.float( -1, 1);
 				shape.y += Rnd.float( -1, 1);
-				shape.alpha += Rnd.float( -0.1, 0.1);
+				//shape.alpha += Rnd.float( -0.1, 0.1);
 				shape.rotation += Rnd.float( -5, 5);
 			}
 		}
-	}
-	
-	function get_scene():Sprite 
-	{
-		return _scene;
 	}
 	
 }

@@ -8,13 +8,13 @@ class TileMapDef
 {
 	public var width:UInt;
 	public var height:UInt;
-	public var layers:Array<TileMapLayer>;
+	public var layers:Array<TileMapLayerDef>;
 	public var orientation:TileMapOrientation;
 	public var properties:Dynamic;
 	public var tileHeight:UInt;
 	public var tileWidth:UInt;
 	public var version:UInt;
-	public var tileSets:Array<TileSet>;
+	public var tileSets:Array<TileSetDef>;
 	
 	public function new(json:Dynamic) 
 	{
@@ -26,12 +26,12 @@ class TileMapDef
 		
 		for (layer in cast(json.layers, Array<Dynamic>))
 		{
-			layers.push(new TileMapLayer(layer));
+			layers.push(new TileMapLayerDef(layer));
 		}
 		
 		for (tileSet in cast(json.tilesets, Array<Dynamic>))
 		{
-			tileSets.push(new TileSet(tileSet));
+			tileSets.push(new TileSetDef(tileSet));
 		}
 		
 		var orientationMapping = new Map<String, TileMapOrientation>();

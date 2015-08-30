@@ -4,7 +4,7 @@ package hxlpers.tiled;
  * ...
  * @author damrem
  */
-class TileMapLayer
+class TileMapLayerDef
 {
 	public var name:String;
 	public var width:UInt;

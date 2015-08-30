@@ -4,7 +4,7 @@ package hxlpers.tiled;
  * ...
  * @author damrem
  */
-class TileSet
+class TileSetDef
 {
 	public var firstGId:UInt;
 	public var image:String;

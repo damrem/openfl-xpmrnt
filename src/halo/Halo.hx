@@ -1,5 +1,8 @@
 package halo;
 
+import halo.Halo.HaloDiskDef;
+import haxe.Constraints.Function;
+import hxlpers.colors.Colors;
 import openfl.display.Shape;
 import openfl.display.Sprite;
 using hxlpers.display.ShapeSF;
@@ -11,25 +14,36 @@ using hxlpers.display.ShapeSF;
 class Halo extends Sprite
 {
 
-	public function new(minRadius:Float, maxRadius:Float, intensity:Float=1.0) 
+	var disks:Array<Shape>;
+	
+	public function new(defs:Array<HaloDiskDef>, color:UInt=Colors.WHITE) 
 	{
 		super();
 		
-		var external = new Shape();
-		external.alpha = 0.5;
-		external.disk(maxRadius);
-		addChild(external);
+		var disks = [];
 		
-		var intermediary = new Shape();
-		intermediary.alpha = 0.75;
-		intermediary.disk((minRadius + maxRadius) / 2);
-		addChild(intermediary);
+		for (def in defs)
+		{
+			var disk = new Shape();
+			disk.circle(def.radius, color);
+			disk.alpha = def.intensity;
+			disks.push(disk);
+			addChild(disk);
+		}
 		
-		var internal = new Shape();
-		internal.alpha = 1;
-		internal.disk(minRadius);
-		addChild(internal);
+		
 		
 	}
 	
+	public function update()
+	{
+		
+	}
+	
+}
+
+
+typedef HaloDiskDef = {
+	var intensity:Float;
+	var radius:Float;
 }

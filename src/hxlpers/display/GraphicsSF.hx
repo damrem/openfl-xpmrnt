@@ -9,7 +9,7 @@ import openfl.display.Graphics;
 class GraphicsSF
 {
 
-	static public function box(user:Graphics, w:Float, h:Float, fillColor:UInt=0xffffff, borderThickness:Float=0, borderColor:UInt=0x000000, centered:Bool=false):Graphics 
+	static public function rect(user:Graphics, w:Float, h:Float, fillColor:UInt=0xffffff, borderThickness:Float=0, borderColor:UInt=0x000000, centered:Bool=false):Graphics 
 	{
 		if (borderThickness > 0)
 		{
@@ -21,14 +21,26 @@ class GraphicsSF
 		return user;
 	}
 	
-	static public function disk(user:Graphics, radius:Float, fillColor:UInt=0xffffff, borderThickness:Float=0, borderColor:UInt=0x000000):Graphics 
+	static public function circle(user:Graphics, radius:Float, fillColor:UInt=0xffffff, borderThickness:Float=0, borderColor:UInt=0x000000):Graphics 
 	{
 		if (borderThickness > 0)
 		{
 			user.lineStyle(borderThickness, borderColor);
 		}
 		user.beginFill(fillColor);
-		user.drawCircle(0,0,radius);
+		user.drawCircle(0, 0, radius);
+		user.endFill();
+		return user;
+	}
+	
+	static public function ellipse(user:Graphics, hRadius:Float, vRadius:Float, fillColor:UInt=0xffffff, borderThickness:Float=0, borderColor:UInt=0x000000):Graphics 
+	{
+		if (borderThickness > 0)
+		{
+			user.lineStyle(borderThickness, borderColor);
+		}
+		user.beginFill(fillColor);
+		user.drawEllipse(0, 0, hRadius, vRadius);
 		user.endFill();
 		return user;
 	}

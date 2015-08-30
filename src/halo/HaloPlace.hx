@@ -41,14 +41,14 @@ class HaloPlace extends Place
 		
 		
 		haloLayer = new Sprite();
-		halo = new Halo(20, 50);
+		halo = new Halo([{intensity:1, radius:25}, {intensity:0.5, radius:30}]);
 		//halo.disk(50, 0xffffff);
 		//halo.alpha = 0.5;
 		//masked.mask = halo;
 		haloLayer.addChild(halo);
 		
 		var bg = new Sprite();
-		bg.box(w, h, RndColor.rgb());
+		bg.rect(w, h, RndColor.rgb());
 		
 		masked.addChild(bg);
 		
@@ -93,7 +93,7 @@ class HaloPlace extends Place
 		}
 		
 		var fg = new Sprite();
-		fg.box(w, h);
+		fg.rect(w, h);
 		fg.alpha = 0;
 		fg.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
 		addChild(fg);

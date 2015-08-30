@@ -8,15 +8,21 @@ using hxlpers.display.GraphicsSF;
 class ShapeSF
 {
 
-	static public function box(user:Shape, w:Float, h:Float, fillColor:UInt=0xffffff, borderThickness:Float=0, borderColor:UInt=0x000000, centered:Bool=false):Shape
+	static public function rect(user:Shape, w:Float, h:Float, fillColor:UInt=0xffffff, borderThickness:Float=0, borderColor:UInt=0x000000, centered:Bool=false):Shape
 	{
-		user.graphics.box(w, h, fillColor, borderThickness, borderColor, centered);
+		user.graphics.rect(w, h, fillColor, borderThickness, borderColor, centered);
 		return user;
 	}
 	
-	static public function disk(user:Shape, radius:Float, fillColor:UInt=0xffffff, borderThickness:Float=0, borderColor:UInt=0x000000):Shape
+	static public function circle(user:Shape, radius:Float, fillColor:UInt=0xffffff, borderThickness:Float=0, borderColor:UInt=0x000000):Shape
 	{
-		user.graphics.disk(radius, fillColor, borderThickness, borderColor);
+		user.graphics.circle(radius, fillColor, borderThickness, borderColor);
+		return user;
+	}
+	
+	static public function ellipse(user:Shape, hRadius:Float, vRadius:Float, fillColor:UInt=0xffffff, borderThickness:Float=0, borderColor:UInt=0x000000):Shape
+	{
+		user.graphics.ellipse(hRadius, vRadius, fillColor, borderThickness, borderColor);
 		return user;
 	}
 	

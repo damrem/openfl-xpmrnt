@@ -28,9 +28,9 @@ class Game extends Sprite
 		buffer = new BitmapData(Math.ceil(w / ratio), Math.ceil(h / ratio), false, 0xff0000);
 		
 		var renderLayer = new Bitmap(buffer);
-		trace(renderLayer.width);
+		//trace(renderLayer.width);
 		renderLayer.scale(ratio);
-		trace(renderLayer.width);
+		//trace(renderLayer.width);
 		addChild(renderLayer);
 		
 		interactiveLayer = new Sprite();

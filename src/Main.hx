@@ -56,23 +56,26 @@ class Main extends Sprite
 		var game = new Game(stage.stageWidth, stage.stageHeight, RATIO);
 		addChild(game);
 		
-		place = new OtherPlace(stage.stageWidth/RATIO, stage.stageHeight/RATIO, RATIO);
-		game.addPlace('other', place);
 		
-		place = new OnePlace(stage.stageWidth/RATIO, stage.stageHeight/RATIO);
-		//game.addPlace('one', place);
+		//game.addPlace("other", new OtherPlace(stage.stageWidth, stage.stageHeight, RATIO));
+		//game.addPlace("one", new OnePlace(stage.stageWidth, stage.stageHeight, RATIO));
+		game.addPlace("walking", new WalkingPlace(stage.stageWidth, stage.stageHeight, RATIO));
 		
-		/*
-		noiseEffect = new ScreenWhiteNoiseEffect(stage.stageWidth, stage.stageHeight);
+		
+		noiseEffect = new ScreenWhiteNoiseEffect(stage.stageWidth, stage.stageHeight, 1);
 		noiseEffect.scale(RATIO);
 		noiseEffect.alpha = NOISE_ALPHA;
 		
+		
+		
 		addChild(noiseEffect);
-		*/
+		
 		
 		var pxFx = new ScreenPixelEffect(stage.stageWidth, stage.stageHeight, Assets.getBitmapData("img/px3-2.png"));
 		pxFx.alpha = 0.125;
 		addChild(pxFx);
+		
+		
 		
 		addChild(new FPS(10, 10, 0xffffff));
 		

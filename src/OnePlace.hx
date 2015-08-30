@@ -18,10 +18,11 @@ class OnePlace extends Place
 	var entities:Array<Sprite>;
 	var nbShapes:UInt = 100;
 	
-	public function new(w:Float, h:Float) 
+	public function new(fullWidth:Float, fullHeight:Float, ratio:UInt) 
 	{
-		trace("new", w, h);
-		super();
+		trace("new", fullWidth, fullHeight, ratio);
+		super(fullWidth, fullHeight, ratio);
+		trace(w, h);
 
 		entities = new Array<Sprite>();
 		

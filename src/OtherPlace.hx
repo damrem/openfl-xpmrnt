@@ -24,16 +24,11 @@ class OtherPlace extends Place
 	var hero:Shape;
 	var bg:Sprite;
 	var ppc:Point;
-	var w:Float;
-	var h:Float;
-	var ratio:Float;
 	
-	public function new(w:Float, h:Float, ratio:Float) 
+	public function new(fullWidth:Float, fullHeight:Float, ratio:UInt) 
 	{
-		super();
-		this.ratio = ratio;
-		this.h = h;
-		this.w = w;
+		super(fullWidth, fullHeight, ratio);
+		
 		bg = new Sprite();
 		bg.box(w, h, RndColor.rgb());
 		//bg.graphics.beginBitmapFill(Assets.getBitmapData("img/px3.png"));
@@ -47,7 +42,7 @@ class OtherPlace extends Place
 		addEventListener(MouseEvent.CLICK, onClick);
 		
 		addChild(bg);
-		trace(width, height);
+		//trace(width, height);
 		addChild(hero);
 		
 		addEventListener(Event.ADDED_TO_STAGE, onStage);

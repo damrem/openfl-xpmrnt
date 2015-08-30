@@ -16,7 +16,7 @@ class ScreenWhiteNoiseEffect extends Sprite
 {
 	var pool:Array<Bitmap>;
 	var current:Bitmap;
-	var counter:UInt = 1;
+	var counter:UInt = 0;
 	var currentId:UInt;
 	var prevId:UInt;
 	var period:UInt;
@@ -33,12 +33,18 @@ class ScreenWhiteNoiseEffect extends Sprite
 			pool.push(new Bitmap(new BitmapData(w, h, true, 0xffffffff).simpleNoise(density)));
 		}
 		
-		current = pool[0];
-		addChild(current);
+		if (population > 0)
+		{
+			current = pool[0];
+			addChild(current);
+		}
 		
 		mouseEnabled = false;
 
-		addEventListener(Event.ENTER_FRAME, update);
+		if (population > 1)
+		{
+			addEventListener(Event.ENTER_FRAME, update);
+		}
 		
 	}
 	
@@ -46,7 +52,7 @@ class ScreenWhiteNoiseEffect extends Sprite
 	{
 		counter++;
 		
-		if (counter % period == 0)
+		if (counter % period == period - 1)
 		{
 			do
 			{
@@ -57,7 +63,7 @@ class ScreenWhiteNoiseEffect extends Sprite
 			removeChild(current);
 			current = pool[currentId];
 			addChild(current);
-			counter = 1;
+			counter = 0;
 		}
 	}
 	

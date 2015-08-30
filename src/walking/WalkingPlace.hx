@@ -1,4 +1,4 @@
-package;
+package walking;
 
 import hxlpers.colors.Colors;
 import hxlpers.colors.RndColor;
@@ -22,9 +22,9 @@ class WalkingPlace extends Place
 {
 	var bg:Sprite;
 	var isWalking:Bool;
-	var ts:Tilesheet;
-	var hero:Shape;
-	var nbSteps:UInt=0;
+	
+	var hero:Hero;
+	var sky:hxlpers.effects.ScreenWhiteNoiseEffect;
 
 	public function new(fullWidth:Float, fullHeight:Float, ratio:UInt) 
 	{
@@ -32,28 +32,20 @@ class WalkingPlace extends Place
 		
 		bg = new Sprite();
 		trace(w, h);
-		bg.box(w, h, RndColor.rgb());
+		bg.rect(w, h, RndColor.rgb());
 		addChild(bg);
 		
-		var sky = new ScreenWhiteNoiseEffect(cast(w), cast(h), 1, 0.1);
+		sky = new ScreenWhiteNoiseEffect(cast(w), cast(h), 3, 0.1);
 		sky.color(Colors.WHITE);
 		sky.alpha = 0.25;
 		addChild(sky);
 		
 		var ground = new Shape();
-		addChild(ground.box(w, h / 3, Colors.WHITE));
+		addChild(ground.rect(w, h / 3, Colors.WHITE));
 		ground.y = this.h - ground.height;
 		
+		hero = new Hero();
 		
-		var tileRect0:Rectangle = new Rectangle(0, 0, 6, 6);
-		var tileRect1:Rectangle = new Rectangle(6, 0, 6, 6);
-		ts = new Tilesheet(Assets.getBitmapData("img/tiny-alien.png"));
-		ts.addTileRect(tileRect0);
-		ts.addTileRect(tileRect1);
-		
-		hero = new Shape();
-		ts.drawTiles(hero.graphics, [0, 0, 0]);
-		hero.color(Colors.WHITE);
 		hero.x = 10;
 		hero.y = ground.y - hero.height;
 		addChild(hero);
@@ -80,34 +72,29 @@ class WalkingPlace extends Place
 	private function onKeyDown(e:KeyboardEvent):Void 
 	{
 		trace("onKeyDown", e);
-		isWalking = true;
+		hero.isWalking = true;
 	}
 	
 	private function onKeyUp(e:KeyboardEvent):Void
 	{
 		trace("onKeyUp", e);
-		isWalking = false;
+		hero.isWalking = false;
 	}
 	
 	override public function update()
 	{
-		if (isWalking)
+		if (hero.isWalking)
 		{
-			trace("walk");
 			hero.x += 2;
-			hero.graphics.clear();
-			ts.drawTiles(hero.graphics, [0, 0, nbSteps % 2]);
-			nbSteps++;
 		}
-		else
-		{
-			hero.graphics.clear();
-			ts.drawTiles(hero.graphics, [0, 0, 0]);
-		}
+		hero.update();
+		
+		
 		if (hero.x > w)
 		{
 			bg.color(RndColor.rgb());
 			hero.x = -hero.width;
+			sky.next();
 		}
 	}
 	

@@ -40,31 +40,33 @@ class ScreenWhiteNoiseEffect extends Sprite
 		}
 		
 		mouseEnabled = false;
-
-		if (population > 1)
-		{
-			addEventListener(Event.ENTER_FRAME, update);
-		}
 		
 	}
 	
 	public function update(evt:Event=null)
 	{
+		if (pool.length < 2) return;
+		
 		counter++;
 		
 		if (counter % period == period - 1)
 		{
-			do
-			{
-				currentId = Std.random(pool.length);
-			}
-			while (currentId == prevId);
-			prevId = currentId;
-			removeChild(current);
-			current = pool[currentId];
-			addChild(current);
+			next();
 			counter = 0;
 		}
+	}
+	
+	public function next()
+	{
+		do
+		{
+			currentId = Std.random(pool.length);
+		}
+		while (currentId == prevId);
+		prevId = currentId;
+		removeChild(current);
+		current = pool[currentId];
+		addChild(current);
 	}
 	
 }

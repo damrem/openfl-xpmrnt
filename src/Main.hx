@@ -22,6 +22,7 @@ import openfl.events.Event;
 import openfl.events.MouseEvent;
 import openfl.geom.Point;
 import openfl.geom.Rectangle;
+import walking.WalkingPlace;
 
 using hxlpers.display.DisplayObjectSF;
 using hxlpers.display.BitmapDataSF;
@@ -61,7 +62,7 @@ class Main extends Sprite
 		
 		//game.addPlace("other", new OtherPlace(stage.stageWidth, stage.stageHeight, RATIO));
 		//game.addPlace("one", new OnePlace(stage.stageWidth, stage.stageHeight, RATIO));
-		//game.addPlace("walking", new WalkingPlace(stage.stageWidth, stage.stageHeight, RATIO));
+		//game.addPlace("walking", new walking.WalkingPlace(stage.stageWidth, stage.stageHeight, RATIO));
 		//game.addPlace("tilesheet", new TileSheetPlace(stage.stageWidth, stage.stageHeight, 3));
 		game.addPlace("masked", new halo.HaloPlace(stage.stageWidth, stage.stageHeight, 3));
 		

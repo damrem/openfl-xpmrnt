@@ -14,6 +14,12 @@ class ShapeSF
 		return user;
 	}
 	
+	static public function disk(user:Shape, radius:Float, fillColor:UInt=0xffffff, borderThickness:Float=0, borderColor:UInt=0x000000):Shape
+	{
+		user.graphics.disk(radius, fillColor, borderThickness, borderColor);
+		return user;
+	}
+	
 	
 	
 }

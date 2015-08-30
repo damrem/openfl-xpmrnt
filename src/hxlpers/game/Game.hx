@@ -16,7 +16,7 @@ using hxlpers.effects.BitmapDataPixelEffectSF;
 class Game extends Sprite
 {
 	var places:Map<String, Place>;
-	var rendering:BitmapData;
+	//var rendering:BitmapData;
 	var currentPlace:Place;
 	var interactiveLayer:Sprite;
 	var isPlaying:Bool;
@@ -26,6 +26,7 @@ class Game extends Sprite
 	var fullWidth:UInt;
 	var fullHeight:UInt;
 	var pixelEffect:ScreenPixelEffect;
+	var renderingLayer:openfl.display.Bitmap;
 	
 	public function new(fullWidth:UInt, fullHeight:UInt, ratio:UInt) 
 	{
@@ -37,10 +38,10 @@ class Game extends Sprite
 		
 		
 		places = new Map<String, Place>();
-		rendering = new BitmapData(Math.ceil(fullWidth / ratio), Math.ceil(fullHeight / ratio), false, 0xff000000);
+		//rendering = new BitmapData(Math.ceil(fullWidth / ratio), Math.ceil(fullHeight / ratio), false, 0xff000000);
 		
 		
-		var renderingLayer = new Bitmap(rendering);
+		renderingLayer = new Bitmap();
 		//trace(renderLayer.width);
 		renderingLayer.scale(ratio);
 		//trace(renderLayer.width);
@@ -98,8 +99,9 @@ class Game extends Sprite
 	
 	public function render()
 	{
-		rendering.clear();
-		rendering.draw(currentPlace);
+		
+		currentPlace.render();
+		//rendering.draw(currentPlace);
 		postRendering.draw(renderingContainer);
 		//postRendering.draw(pixelEffect, null, null, BlendMode.LIGHTEN);
 		//postRendering.pixelEffect(3);
@@ -131,7 +133,9 @@ class Game extends Sprite
 			play();
 		}
 		
+		
 		interactiveLayer.addChild(currentPlace);
+		renderingLayer.bitmapData = currentPlace.rendering;
 		trace(interactiveLayer.width);
 		trace(interactiveLayer.scaleX);
 	}

@@ -2,6 +2,7 @@ package;
 
 
 
+import halo.HaloPlace;
 import hxlpers.colors.ColorComponent;
 import hxlpers.colors.RndColor;
 import hxlpers.effects.ScreenPixelEffect;
@@ -61,8 +62,8 @@ class Main extends Sprite
 		//game.addPlace("other", new OtherPlace(stage.stageWidth, stage.stageHeight, RATIO));
 		//game.addPlace("one", new OnePlace(stage.stageWidth, stage.stageHeight, RATIO));
 		//game.addPlace("walking", new WalkingPlace(stage.stageWidth, stage.stageHeight, RATIO));
-		game.addPlace("tilesheet", new TileSheetPlace(stage.stageWidth, stage.stageHeight, 3));
-		
+		//game.addPlace("tilesheet", new TileSheetPlace(stage.stageWidth, stage.stageHeight, 3));
+		game.addPlace("masked", new halo.HaloPlace(stage.stageWidth, stage.stageHeight, 3));
 		
 		noiseEffect = new ScreenWhiteNoiseEffect(stage.stageWidth, stage.stageHeight, 1);
 		noiseEffect.scale(RATIO);

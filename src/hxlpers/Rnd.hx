@@ -2,7 +2,7 @@ package hxlpers;
 
 class Rnd
 {
-	static public function int(min:Int, ?max:Int):Int
+	static public function int(min:Int, max:Int=0):Int
 	{
 		if (min == max)	return min;
 		
@@ -16,7 +16,7 @@ class Rnd
 		return min + Std.random(max);
 	}
 	
-	static public function float(min:Float=1, ?max:Float) 
+	static public function float(min:Float=1, max:Float=0) 
 	{
 		if (min == max)	return min;
 		

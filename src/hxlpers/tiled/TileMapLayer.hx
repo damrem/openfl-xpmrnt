@@ -1,0 +1,39 @@
+package hxlpers.tiled;
+
+/**
+ * ...
+ * @author damrem
+ */
+class TileMapLayer
+{
+	public var name:String;
+	public var width:UInt;
+	public var height:UInt;
+	public var x:UInt;
+	public var y:UInt;
+	public var opacity:Float;
+	public var visible:Bool;
+	
+	public var type:TileMapLayerType;
+	
+	public var data:Array<UInt>;
+	
+	public function new(json:Dynamic) 
+	{
+		name = json.name;
+		width = json.width;
+		height = json.height;
+		x = json.x;
+		y = json.y;
+		opacity = json.opacity;
+		visible = json.visible;
+		
+		data = json.data;
+		
+		var typeMapping = new Map<String,TileMapLayerType>();
+		typeMapping.set("tilelayer", TileMapLayerType.TileLayer);
+		typeMapping.set("objectgroup", TileMapLayerType.ObjectGroup);
+		typeMapping.set("imagelayer", TileMapLayerType.ImageLayer);
+	}
+	
+}

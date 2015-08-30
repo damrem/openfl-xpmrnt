@@ -1,0 +1,65 @@
+{ "height":12,
+ "layers":[
+        {
+         "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16, 17, 23, 23, 18, 19, 0, 0, 0, 0, 0, 5, 49, 27, 96, 95, 26, 46, 6, 0, 0, 0, 37, 49, 13, 0, 0, 0, 0, 12, 46, 88, 0, 0, 43, 48, 0, 0, 0, 0, 0, 0, 55, 89, 0, 0, 99, 15, 0, 0, 0, 0, 0, 0, 14, 100, 0, 0, 99, 38, 0, 0, 0, 0, 0, 0, 37, 100, 0, 0, 74, 89, 0, 0, 0, 0, 0, 0, 43, 48, 0, 0, 14, 49, 6, 0, 0, 0, 0, 5, 49, 50, 0, 0, 0, 12, 49, 18, 19, 16, 17, 49, 13, 0, 0, 0, 0, 0, 95, 26, 83, 83, 27, 96, 0, 0, 0],
+         "height":12,
+         "name":"Calque de Tile 1",
+         "opacity":1,
+         "properties":
+            {
+             "propName":"propValue"
+            },
+         "type":"tilelayer",
+         "visible":true,
+         "width":12,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "height":12,
+         "name":"Calque d'objets 1",
+         "objects":[],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":12,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "height":12,
+         "image":"",
+         "name":"Calque d'image 1",
+         "opacity":1,
+         "type":"imagelayer",
+         "visible":true,
+         "width":12,
+         "x":0,
+         "y":0
+        }],
+ "orientation":"orthogonal",
+ "properties":
+    {
+
+    },
+ "tileheight":16,
+ "tilesets":[
+        {
+         "firstgid":1,
+         "image":"..\/img\/bugtilesbrown.png",
+         "imageheight":169,
+         "imagewidth":169,
+         "margin":0,
+         "name":"bugtilesbrown",
+         "properties":
+            {
+
+            },
+         "spacing":1,
+         "tileheight":16,
+         "tilewidth":16
+        }],
+ "tilewidth":16,
+ "version":1,
+ "width":12
+}

@@ -4,7 +4,7 @@ package hxlpers.tiled;
  * ...
  * @author damrem
  */
-class TileMapData
+class TileMapDef
 {
 	public var width:UInt;
 	public var height:UInt;
@@ -36,6 +36,8 @@ class TileMapData
 		
 		var orientationMapping = new Map<String, TileMapOrientation>();
 		orientationMapping.set("orthogonal", TileMapOrientation.Orthogonal);
+		orientationMapping.set("isometric", TileMapOrientation.Isometric);
+		orientationMapping.set("staggered", TileMapOrientation.Staggered);
 		orientation = orientationMapping.get(json.orientation);
 		
 		properties = json.properties;

@@ -13,7 +13,8 @@ class TileMapLayer
 	public var y:UInt;
 	public var opacity:Float;
 	public var visible:Bool;
-	
+	public var properties:Dynamic;
+	public var objects:Array<Dynamic>;
 	public var type:TileMapLayerType;
 	
 	public var data:Array<UInt>;
@@ -27,13 +28,15 @@ class TileMapLayer
 		y = json.y;
 		opacity = json.opacity;
 		visible = json.visible;
-		
+		properties = json.properties;
+		objects = json.objects;
 		data = json.data;
 		
 		var typeMapping = new Map<String,TileMapLayerType>();
 		typeMapping.set("tilelayer", TileMapLayerType.TileLayer);
 		typeMapping.set("objectgroup", TileMapLayerType.ObjectGroup);
 		typeMapping.set("imagelayer", TileMapLayerType.ImageLayer);
+		type = typeMapping.get(json.type);
 	}
 	
 }

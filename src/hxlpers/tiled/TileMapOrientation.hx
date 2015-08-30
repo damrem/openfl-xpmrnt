@@ -7,4 +7,6 @@ package hxlpers.tiled;
 enum TileMapOrientation 
 {
 	Orthogonal;
+	Isometric;
+	Staggered;
 }

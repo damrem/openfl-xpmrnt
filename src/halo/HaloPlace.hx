@@ -1,4 +1,5 @@
 package halo;
+import halo.Halo;
 import hxlpers.colors.RndColor;
 import hxlpers.game.Place;
 import hxlpers.Rnd;
@@ -12,6 +13,7 @@ import openfl.display.Shape;
 import openfl.display.Sprite;
 import openfl.events.Event;
 import openfl.events.MouseEvent;
+import openfl.geom.Matrix;
 import openfl.geom.Rectangle;
 using hxlpers.display.ShapeSF;
 using hxlpers.display.SpriteSF;
@@ -29,6 +31,7 @@ class HaloPlace extends Place
 	var haloRendering:BitmapData;
 	var haloLayer:Sprite;
 	var masked:openfl.display.Sprite;
+	var halo2:Halo;
 	
 	public function new(fullWidth:Float, fullHeight:Float, ratio:UInt) 
 	{
@@ -41,11 +44,15 @@ class HaloPlace extends Place
 		
 		
 		haloLayer = new Sprite();
-		halo = new Halo([{intensity:1, radius:25}, {intensity:0.5, radius:30}]);
+		halo = new Halo();
+		halo2 = new Halo();
+		halo2.x = w / 2;
+		halo2.y = h / 2;
 		//halo.disk(50, 0xffffff);
 		//halo.alpha = 0.5;
 		//masked.mask = halo;
 		haloLayer.addChild(halo);
+		haloLayer.addChild(halo2);
 		
 		var bg = new Sprite();
 		bg.rect(w, h, RndColor.rgb());
@@ -124,7 +131,8 @@ class HaloPlace extends Place
 			}
 		}
 		
-		
+		//halo2.x += Rnd.float( -1, 1);
+		//halo2.y += Rnd.float( -1, 1);
 	}
 	
 	override public function render()
@@ -132,7 +140,12 @@ class HaloPlace extends Place
 		super.render();
 		
 		haloRendering.clear(0xff000000);
-		haloRendering.draw(haloLayer);
+		
+		for (i in 0...haloLayer.numChildren)
+		{
+			var halo = haloLayer.getChildAt(i);
+			haloRendering.draw(halo, new Matrix(1, 0, 0, 1, halo.x, halo.y));
+		}
 		
 		haloRendering.draw(masked, null, null, BlendMode.MULTIPLY);
 		//++

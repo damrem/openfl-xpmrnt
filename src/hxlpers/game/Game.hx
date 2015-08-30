@@ -1,11 +1,14 @@
 package hxlpers.game;
+import hxlpers.effects.ScreenPixelEffect;
+import openfl.Assets;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
+import openfl.display.BlendMode;
 import openfl.display.Sprite;
 import openfl.events.Event;
 using hxlpers.display.DisplayObjectSF;
 using hxlpers.display.BitmapDataSF;
-
+using hxlpers.effects.BitmapDataPixelEffectSF;
 /**
  * ...
  * @author damrem
@@ -13,29 +16,47 @@ using hxlpers.display.BitmapDataSF;
 class Game extends Sprite
 {
 	var places:Map<String, Place>;
-	var buffer:BitmapData;
+	var rendering:BitmapData;
 	var currentPlace:Place;
 	var interactiveLayer:Sprite;
 	var isPlaying:Bool;
 	var ratio:Float;
+	var postRendering:openfl.display.BitmapData;
+	var renderingContainer:openfl.display.Sprite;
+	var fullWidth:UInt;
+	var fullHeight:UInt;
+	var pixelEffect:ScreenPixelEffect;
 	
-	public function new(w:UInt, h:UInt, ratio:UInt) 
+	public function new(fullWidth:UInt, fullHeight:UInt, ratio:UInt) 
 	{
 		super();
+		this.fullHeight = fullHeight;
+		this.fullWidth = fullWidth;
 		this.ratio = ratio;
 		
-		places = new Map<String, Place>();
-		buffer = new BitmapData(Math.ceil(w / ratio), Math.ceil(h / ratio), false, 0xff0000);
 		
-		var renderLayer = new Bitmap(buffer);
+		
+		places = new Map<String, Place>();
+		rendering = new BitmapData(Math.ceil(fullWidth / ratio), Math.ceil(fullHeight / ratio), false, 0xff000000);
+		
+		
+		var renderingLayer = new Bitmap(rendering);
 		//trace(renderLayer.width);
-		renderLayer.scale(ratio);
+		renderingLayer.scale(ratio);
 		//trace(renderLayer.width);
-		addChild(renderLayer);
+		
+		renderingContainer = new Sprite();
+		renderingContainer.addChild(renderingLayer);
+		
+		postRendering = new BitmapData(fullWidth, fullHeight, false, 0xff000000);
+		var postRenderingLayer=new Bitmap(postRendering);
+		addChild(postRenderingLayer);
 		
 		interactiveLayer = new Sprite();
 		interactiveLayer.alpha = 0;
 		interactiveLayer.scale(ratio);
+		
+		pixelEffect = new ScreenPixelEffect(fullWidth, fullHeight, Assets.getBitmapData("img/px3.png"));
 		
 		addEventListener(Event.ADDED_TO_STAGE, onStage);
 		
@@ -77,8 +98,11 @@ class Game extends Sprite
 	
 	public function render()
 	{
-		buffer.clear();
-		buffer.draw(currentPlace);
+		rendering.clear();
+		rendering.draw(currentPlace);
+		postRendering.draw(renderingContainer);
+		//postRendering.draw(pixelEffect, null, null, BlendMode.LIGHTEN);
+		//postRendering.pixelEffect(3);
 	}
 	
 	public function addPlace(id:String, place:Place) 

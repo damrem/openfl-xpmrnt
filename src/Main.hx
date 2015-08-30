@@ -24,6 +24,7 @@ import openfl.geom.Rectangle;
 
 using hxlpers.display.DisplayObjectSF;
 using hxlpers.display.BitmapDataSF;
+using hxlpers.effects.BitmapDataPixelEffectSF;
 /**
  * ...
  * @author damrem
@@ -72,7 +73,7 @@ class Main extends Sprite
 		addChild(noiseEffect);
 		
 		
-		var pxFx = new ScreenPixelEffect(stage.stageWidth, stage.stageHeight, Assets.getBitmapData("img/px3-2.png"));
+		var pxFx = new ScreenPixelEffect(stage.stageWidth, stage.stageHeight, Assets.getBitmapData("img/px3-3.png"));
 		pxFx.alpha = 0.125;
 		addChild(pxFx);
 		

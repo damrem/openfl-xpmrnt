@@ -21,5 +21,9 @@ abstract RGBColor(UInt) from UInt to UInt
 	public function get_blue():UInt	return this & ColorComponent.BLUE_MASK;
 	inline public function set_blue(value:UInt):UInt	return this = (this & ColorComponent.BLUE_NEGATIVE) + (value << ColorComponent.BLUE_BITSHIFT);
 	
+	public var alpha(get, set):UInt;
+	public function get_alpha():UInt	return this & ColorComponent.ALPHA_MASK;
+	inline public function set_alpha(value:UInt):UInt	return this = (this & ColorComponent.ALPHA_NEGATIVE) + (value << ColorComponent.ALPHA_BITSHIFT);
+	
 	
 }

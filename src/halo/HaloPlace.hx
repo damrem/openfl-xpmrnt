@@ -1,5 +1,7 @@
 package halo;
 import halo.Halo;
+import hxlpers.colors.ColorComponent;
+import hxlpers.colors.RGBColor;
 import hxlpers.colors.RndColor;
 import hxlpers.game.Place;
 import hxlpers.Rnd;
@@ -14,7 +16,9 @@ import openfl.display.Sprite;
 import openfl.events.Event;
 import openfl.events.MouseEvent;
 import openfl.geom.Matrix;
+import openfl.geom.Point;
 import openfl.geom.Rectangle;
+import openfl.utils.ByteArray;
 using hxlpers.display.ShapeSF;
 using hxlpers.display.SpriteSF;
 using hxlpers.display.BitmapDataSF;
@@ -32,12 +36,25 @@ class HaloPlace extends Place
 	var haloLayer:Sprite;
 	var masked:openfl.display.Sprite;
 	var halo2:Halo;
+	var bufferFrom:ByteArray;
+	var bufferTo:ByteArray;
+	var preRendering:BitmapData;
+	var prepreRendering:BitmapData;
+	
 	
 	public function new(fullWidth:Float, fullHeight:Float, ratio:UInt) 
 	{
 		trace("new", fullWidth, fullHeight, ratio);
 		super(fullWidth, fullHeight, ratio);
 		trace(w, h);
+		
+		
+		bufferTo = new ByteArray();
+		
+		preRendering = new BitmapData(cast(w), cast(h), true, 0);
+		prepreRendering = new BitmapData(cast(w), cast(h), true, 0);
+
+		addChild(new Bitmap(preRendering));
 		
 		masked = new Sprite();
 		//addChild(masked);
@@ -58,9 +75,10 @@ class HaloPlace extends Place
 		bg.rect(w, h, RndColor.rgb());
 		
 		masked.addChild(bg);
+		addChild(masked);
 		
 		haloRendering = new BitmapData(Math.ceil(w), Math.ceil(h), true, 0);
-		addChild(new Bitmap(haloRendering));
+		//addChild(new Bitmap(haloRendering));
 
 		entities = new Array<Sprite>();
 		
@@ -134,20 +152,58 @@ class HaloPlace extends Place
 		//halo2.x += Rnd.float( -1, 1);
 		//halo2.y += Rnd.float( -1, 1);
 	}
-	
+	var pointZero:Point = new Point();
+	var haloBuffer:ByteArray;
 	override public function render()
 	{
+		haloRendering.clear(0);
+		haloRendering.draw(haloLayer);
+//		rendering.draw(haloRendering);
+		//prepreRendering.clear(0);
+		//prepreRendering.draw(masked);
+		
+		//preRendering.copyPixels(prepreRendering, rendering.rect, pointZero, haloRendering, pointZero, false);
+		
 		super.render();
 		
-		haloRendering.clear(0xff000000);
 		
+		
+		//haloBuffer = haloRendering.getPixels();
+		
+		bufferFrom = rendering.getAllPixels();
+		bufferFrom.position = 0;
+		
+		haloBuffer = haloRendering.getAllPixels();
+		haloBuffer.position = 0;
+		
+		bufferTo.position = 0;
+		
+		while (bufferFrom.position < bufferFrom.length)
+		{
+			var argb = bufferFrom.readUnsignedInt();
+			var rgb = argb & ColorComponent.ALPHA_NEGATIVE;
+			var a = haloBuffer.readUnsignedInt() & ColorComponent.ALPHA_MASK;
+			bufferTo.writeUnsignedInt(a+rgb);
+		}
+		trace(bufferFrom.length, bufferTo.length);
+		
+		trace(rendering.width * rendering.height * 4);
+		bufferTo.position = 0;
+		rendering.setPixels(rendering.rect, bufferTo);
+		
+		//haloRendering.clear(0xff000000);
+		
+		/*
 		for (i in 0...haloLayer.numChildren)
 		{
 			var halo = haloLayer.getChildAt(i);
 			haloRendering.draw(halo, new Matrix(1, 0, 0, 1, halo.x, halo.y));
 		}
+		*/
 		
-		haloRendering.draw(masked, null, null, BlendMode.MULTIPLY);
+		//haloRendering
+		
+		//haloRendering.draw(masked, null, null, BlendMode.MULTIPLY);
 		//++
 	}
 	

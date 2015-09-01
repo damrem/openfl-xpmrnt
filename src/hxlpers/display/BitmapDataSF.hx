@@ -17,6 +17,11 @@ using hxlpers.display.BitmapDataSF;
 class BitmapDataSF
 {
 
+	static public function getAllPixels(user:BitmapData):ByteArray
+	{
+		return user.getPixels(user.rect);
+	}
+	
 	static public function clear(user:BitmapData, color:RGBColor=0):BitmapData
 	{
 		user.fillRect(new Rectangle(0, 0, cast(user.width), cast(user.height)), color);

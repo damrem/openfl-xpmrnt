@@ -10,6 +10,8 @@ class ColorComponent
 	static public inline var OPAQUE:UInt = 0xFF000000;
 	
 	static public inline var ALPHA_BITSHIFT:UInt = 24;
+	static public inline var ALPHA_MASK:UInt = 0xFF000000;
+	static public inline var ALPHA_NEGATIVE:UInt= 0x00FFFFFF;
 	
 	static public inline var RED_BITSHIFT:UInt = 16;
 	static public inline var RED_MASK:UInt = 0xFF0000;

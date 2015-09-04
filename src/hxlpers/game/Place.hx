@@ -38,7 +38,7 @@ class Place extends Sprite
 	
 	public function render()
 	{
-		rendering.clear();
+		rendering.clear(0xff000000);
 		rendering.draw(this);
 	}
 	

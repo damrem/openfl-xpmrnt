@@ -31,15 +31,18 @@ class HaloPlace extends Place
 {
 	var entities:Array<Sprite>;
 	var nbShapes:UInt = 100;
+
 	var halo:Halo;
-	var haloRendering:BitmapData;
-	var haloLayer:Sprite;
-	var masked:openfl.display.Sprite;
 	var halo2:Halo;
-	var bufferFrom:ByteArray;
-	var bufferTo:ByteArray;
-	var preRendering:BitmapData;
-	var prepreRendering:BitmapData;
+	
+	var maskLayer:Sprite;
+	var maskRendering:BitmapData;
+	
+	var maskedLayer:Sprite;
+	var maskedRendering:BitmapData;
+	var maskedBuffer:ByteArray;
+	
+	var finalBuffer:ByteArray;
 	
 	
 	public function new(fullWidth:Float, fullHeight:Float, ratio:UInt) 
@@ -49,45 +52,58 @@ class HaloPlace extends Place
 		trace(w, h);
 		
 		
-		bufferTo = new ByteArray();
+		finalBuffer = new ByteArray();
 		
-		preRendering = new BitmapData(cast(w), cast(h), true, 0);
-		prepreRendering = new BitmapData(cast(w), cast(h), true, 0);
+		//	the scene
+		maskLayer = createMaskLayer();
+		maskedRendering = new BitmapData(Math.ceil(w), Math.ceil(h), true, 0xFFFFFFFF);
+		
+		//	the halos
+		maskedLayer = createMaskedLayer();
+		maskRendering = new BitmapData(Math.ceil(w), Math.ceil(h), true, 0xFFFFFFFF);
 
-		addChild(new Bitmap(preRendering));
-		
-		masked = new Sprite();
-		//addChild(masked);
+		//addChild(new Bitmap(maskedRendering));
 		
 		
-		haloLayer = new Sprite();
+		
+		
+		
+		var fg = new Sprite();
+		fg.rect(w, h);
+		fg.alpha = 0;
+		fg.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
+		addChild(fg);
+	}
+	
+	function createMaskLayer():Sprite
+	{
+		maskLayer = new Sprite();
+
 		halo = new Halo();
+		
 		halo2 = new Halo();
 		halo2.x = w / 2;
 		halo2.y = h / 2;
-		//halo.disk(50, 0xffffff);
-		//halo.alpha = 0.5;
-		//masked.mask = halo;
-		haloLayer.addChild(halo);
-		haloLayer.addChild(halo2);
+		
+		maskLayer.addChild(halo);
+		maskLayer.addChild(halo2);
+		
+		return maskLayer;
+	}
+	
+	function createMaskedLayer():Sprite
+	{
+		var maskedLayer = new Sprite();
 		
 		var bg = new Sprite();
 		bg.rect(w, h, RndColor.rgb());
+		maskedLayer.addChild(bg);
 		
-		masked.addChild(bg);
-		addChild(masked);
-		
-		haloRendering = new BitmapData(Math.ceil(w), Math.ceil(h), true, 0);
-		//addChild(new Bitmap(haloRendering));
-
 		entities = new Array<Sprite>();
-		
 		for (i in 0...nbShapes)
 		{
 			var size = Math.random() * 25;
-			//var color = RndColor.RR(0, 0.25)+RndColor.GG(0.5,1)+RndColor.BB(0.25, 0.5);
 			var color = RndColor.rgb(0.25, 0.5);
-			//trace(color);
 			var shape:ShortcutShape;
 			var sprite = new Sprite();
 			
@@ -101,27 +117,15 @@ class HaloPlace extends Place
 				shape.rotation = Math.random() * 360;
 			}
 			sprite.addChild(shape);
-			//sprite.alpha = Math.random();
 			sprite.x = Rnd.float(w);
 			sprite.y = Rnd.float(h);
 			sprite.buttonMode = true;
-			
-			
 			sprite.addEventListener(MouseEvent.ROLL_OVER, onRollOver);
-			
-			
-		
-			
-			
-			masked.addChild(sprite);
+			maskedLayer.addChild(sprite);
 			entities.push(sprite);
 		}
 		
-		var fg = new Sprite();
-		fg.rect(w, h);
-		fg.alpha = 0;
-		fg.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
-		addChild(fg);
+		return maskedLayer;
 	}
 	
 	
@@ -153,58 +157,36 @@ class HaloPlace extends Place
 		//halo2.y += Rnd.float( -1, 1);
 	}
 	var pointZero:Point = new Point();
-	var haloBuffer:ByteArray;
+	var maskBuffer:ByteArray;
 	override public function render()
 	{
-		haloRendering.clear(0);
-		haloRendering.draw(haloLayer);
-//		rendering.draw(haloRendering);
-		//prepreRendering.clear(0);
-		//prepreRendering.draw(masked);
 		
-		//preRendering.copyPixels(prepreRendering, rendering.rect, pointZero, haloRendering, pointZero, false);
+		maskedRendering.fillRect(maskedRendering.rect, 0xFFFFFFFF);
+		maskedRendering.draw(maskedLayer);
+		maskedBuffer = maskedRendering.getPixels(maskedRendering.rect);
+		maskedBuffer.position = 0;
 		
-		super.render();
+		//rendering.draw(this);
+		maskRendering.fillRect(maskRendering.rect, 0x00FFFFFF);// .clear(0);
+		maskRendering.draw(maskLayer);
+		maskBuffer = maskRendering.getPixels(maskRendering.rect);
+		maskBuffer.position = 0;
 		
+		finalBuffer.position = 0;
 		
-		
-		//haloBuffer = haloRendering.getPixels();
-		
-		bufferFrom = rendering.getAllPixels();
-		bufferFrom.position = 0;
-		
-		haloBuffer = haloRendering.getAllPixels();
-		haloBuffer.position = 0;
-		
-		bufferTo.position = 0;
-		
-		while (bufferFrom.position < bufferFrom.length)
+		while (finalBuffer.position < maskedBuffer.length)
 		{
-			var argb = bufferFrom.readUnsignedInt();
-			var rgb = argb & ColorComponent.ALPHA_NEGATIVE;
-			var a = haloBuffer.readUnsignedInt() & ColorComponent.ALPHA_MASK;
-			bufferTo.writeUnsignedInt(a+rgb);
+			//var argb = ;
+			var a = maskBuffer.readUnsignedInt() & ColorComponent.ALPHA_MASK;
+			var rgb = maskedBuffer.readUnsignedInt() & ColorComponent.ALPHA_NEGATIVE;
+			finalBuffer.writeUnsignedInt(a | rgb);
 		}
-		trace(bufferFrom.length, bufferTo.length);
 		
-		trace(rendering.width * rendering.height * 4);
-		bufferTo.position = 0;
-		rendering.setPixels(rendering.rect, bufferTo);
+		finalBuffer.position = 0;
 		
-		//haloRendering.clear(0xff000000);
-		
-		/*
-		for (i in 0...haloLayer.numChildren)
-		{
-			var halo = haloLayer.getChildAt(i);
-			haloRendering.draw(halo, new Matrix(1, 0, 0, 1, halo.x, halo.y));
-		}
-		*/
-		
-		//haloRendering
-		
-		//haloRendering.draw(masked, null, null, BlendMode.MULTIPLY);
-		//++
+		rendering.fillRect(rendering.rect, 0xFFFFFFFF);
+		rendering.setPixels(rendering.rect, finalBuffer);
+
 	}
 	
 }

@@ -37,12 +37,14 @@ class HaloPlace extends Place
 	
 	var maskLayer:Sprite;
 	var maskRendering:BitmapData;
+	var maskBuffer:ByteArray;
 	
 	var maskedLayer:Sprite;
 	var maskedRendering:BitmapData;
 	var maskedBuffer:ByteArray;
 	
 	var finalBuffer:ByteArray;
+	var finalRendering:BitmapData;
 	
 	
 	public function new(fullWidth:Float, fullHeight:Float, ratio:UInt) 
@@ -52,20 +54,22 @@ class HaloPlace extends Place
 		trace(w, h);
 		
 		
-		finalBuffer = new ByteArray();
 		
 		//	the scene
-		maskLayer = createMaskLayer();
+		maskedLayer = createMaskedLayer();
 		maskedRendering = new BitmapData(Math.ceil(w), Math.ceil(h), true, 0xFFFFFFFF);
 		
 		//	the halos
-		maskedLayer = createMaskedLayer();
+		maskLayer = createMaskLayer();
 		maskRendering = new BitmapData(Math.ceil(w), Math.ceil(h), true, 0xFFFFFFFF);
+		//addChild(maskLayer);
 
-		//addChild(new Bitmap(maskedRendering));
+		addChild(new Bitmap(maskRendering));
 		
+		finalBuffer = new ByteArray();
+		finalRendering = new BitmapData(Math.ceil(w), Math.ceil(h), true, 0x00FFFFFF);
 		
-		
+		addChild(new Bitmap(finalRendering));
 		
 		
 		var fg = new Sprite();
@@ -73,6 +77,7 @@ class HaloPlace extends Place
 		fg.alpha = 0;
 		fg.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
 		addChild(fg);
+		
 	}
 	
 	function createMaskLayer():Sprite
@@ -156,8 +161,8 @@ class HaloPlace extends Place
 		//halo2.x += Rnd.float( -1, 1);
 		//halo2.y += Rnd.float( -1, 1);
 	}
-	var pointZero:Point = new Point();
-	var maskBuffer:ByteArray;
+	
+	
 	override public function render()
 	{
 		
@@ -166,17 +171,15 @@ class HaloPlace extends Place
 		maskedBuffer = maskedRendering.getPixels(maskedRendering.rect);
 		maskedBuffer.position = 0;
 		
-		//rendering.draw(this);
 		maskRendering.fillRect(maskRendering.rect, 0x00FFFFFF);// .clear(0);
 		maskRendering.draw(maskLayer);
 		maskBuffer = maskRendering.getPixels(maskRendering.rect);
 		maskBuffer.position = 0;
 		
-		finalBuffer.position = 0;
+		finalBuffer.clear();
 		
-		while (finalBuffer.position < maskedBuffer.length)
+		while (finalBuffer.position < maskBuffer.length)
 		{
-			//var argb = ;
 			var a = maskBuffer.readUnsignedInt() & ColorComponent.ALPHA_MASK;
 			var rgb = maskedBuffer.readUnsignedInt() & ColorComponent.ALPHA_NEGATIVE;
 			finalBuffer.writeUnsignedInt(a | rgb);
@@ -184,8 +187,8 @@ class HaloPlace extends Place
 		
 		finalBuffer.position = 0;
 		
-		rendering.fillRect(rendering.rect, 0xFFFFFFFF);
-		rendering.setPixels(rendering.rect, finalBuffer);
+		finalRendering.setPixels(finalRendering.rect, finalBuffer);
+		super.render();
 
 	}
 	

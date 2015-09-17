@@ -1,6 +1,7 @@
 package entities;
 
 import ash.core.Node;
+import entities.rendering.Visual;
 import openfl.display.Sprite;
 
 /**

@@ -3,6 +3,8 @@ package entities;
 import ash.core.Engine;
 import ash.core.Entity;
 import ash.tick.FrameTickProvider;
+import entities.rendering.RenderSystem;
+import entities.rendering.Visual;
 import hxlpers.colors.RndColor;
 import hxlpers.game.Place;
 import hxlpers.Rnd;
@@ -30,6 +32,7 @@ class EntityPlace extends Place
 		engine = new Engine();
 		
 		engine.addSystem(new RandomMoveSystem(), 9);
+		engine.addSystem(new SelectSystem(), 10);
 		engine.addSystem(new RenderSystem(this), 10);
 		
 		addEntities();

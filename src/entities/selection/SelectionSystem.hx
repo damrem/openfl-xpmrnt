@@ -5,6 +5,7 @@ import ash.core.NodeList;
 import ash.core.System;
 import ash.tools.ListIteratingSystem;
 import entities.randommove.RandomMove;
+import entities.rendering.EntitySprite;
 import entities.selection.SelectableNode;
 import openfl.display.Sprite;
 import openfl.events.MouseEvent;
@@ -27,18 +28,18 @@ class SelectionSystem extends ListIteratingSystem<SelectableNode>
 	
 	function added(node:SelectableNode)
 	{
-		node.visual.sprite.addEventListener(MouseEvent.ROLL_OVER, onRollOver);
-		node.visual.sprite.addEventListener(MouseEvent.ROLL_OUT, onRollOut);
-		node.visual.sprite.addEventListener(MouseEvent.CLICK, onClick);
-		node.visual.sprite.buttonMode = true;
+		node.spriteComponent.entitySprite.addEventListener(MouseEvent.ROLL_OVER, onRollOver);
+		node.spriteComponent.entitySprite.addEventListener(MouseEvent.ROLL_OUT, onRollOut);
+		node.spriteComponent.entitySprite.addEventListener(MouseEvent.CLICK, onClick);
+		node.spriteComponent.entitySprite.buttonMode = true;
 	}
 	
 	function removed(node:SelectableNode)
 	{
-		node.visual.sprite.removeEventListener(MouseEvent.ROLL_OVER, onRollOver);
-		node.visual.sprite.removeEventListener(MouseEvent.ROLL_OUT, onRollOut);
-		node.visual.sprite.removeEventListener(MouseEvent.CLICK, onClick);
-		node.visual.sprite.buttonMode = false;
+		node.spriteComponent.entitySprite.removeEventListener(MouseEvent.ROLL_OVER, onRollOver);
+		node.spriteComponent.entitySprite.removeEventListener(MouseEvent.ROLL_OUT, onRollOut);
+		node.spriteComponent.entitySprite.removeEventListener(MouseEvent.CLICK, onClick);
+		node.spriteComponent.entitySprite.buttonMode = false;
 	}
 	
 	private function onClick(e:MouseEvent):Void 
@@ -52,6 +53,7 @@ class SelectionSystem extends ListIteratingSystem<SelectableNode>
 		if (entity.get(RandomMove) != null)
 		{
 			trace("remove");
+			sprite.parent.addChild(sprite);
 			entity.remove(RandomMove);
 			trace(entity.components);
 		}
@@ -77,11 +79,11 @@ class SelectionSystem extends ListIteratingSystem<SelectableNode>
 	{
 		if (node.selectable.isSelected)
 		{
-			node.visual.sprite.filters = [glow];
+			node.spriteComponent.entitySprite.filters = [glow];
 		}
 		else
 		{
-			node.visual.sprite.filters = null;
+			node.spriteComponent.entitySprite.filters = null;
 		}
 	}
 	

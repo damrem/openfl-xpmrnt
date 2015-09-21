@@ -5,8 +5,9 @@ import ash.core.Entity;
 import ash.tick.FrameTickProvider;
 import entities.randommove.RandomMove;
 import entities.randommove.RandomMoveSystem;
+import entities.rendering.EntitySprite;
 import entities.rendering.RenderSystem;
-import entities.rendering.Visual;
+import entities.rendering.SpriteComponent;
 import entities.selection.Selectable;
 import entities.selection.SelectionSystem;
 import hxlpers.colors.RndColor;
@@ -35,9 +36,9 @@ class EntityPlace extends Place
 		
 		engine = new Engine();
 		
-		engine.addSystem(new RandomMoveSystem(), 9);
+		engine.addSystem(new RandomMoveSystem(), 5);
 		engine.addSystem(new SelectionSystem(), 10);
-		engine.addSystem(new RenderSystem(this), 10);
+		engine.addSystem(new RenderSystem(this), 15);
 		
 		addEntities();
 		
@@ -81,7 +82,7 @@ class EntityPlace extends Place
 			//entities.push(sprite);
 			
 			entity.add(new RandomMove());
-			entity.add(new Visual(sprite));
+			entity.add(new SpriteComponent(sprite));
 			entity.add(new Selectable());
 			engine.addEntity(entity);
 		}

@@ -19,8 +19,8 @@ class RandomMoveSystem extends ListIteratingSystem<RandomMoveNode>
 	
 	function updateNode(node:RandomMoveNode, time:Float)
 	{
-		node.visual.sprite.x += Rnd.float( -node.randomMove.range, node.randomMove.range);
-		node.visual.sprite.y += Rnd.float( -node.randomMove.range, node.randomMove.range);
+		node.visual.entitySprite.x += Rnd.float( -node.randomMove.range, node.randomMove.range);
+		node.visual.entitySprite.y += Rnd.float( -node.randomMove.range, node.randomMove.range);
 	}
 	
 	function nodeAdded(node:RandomMoveNode)

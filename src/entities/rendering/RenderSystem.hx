@@ -21,12 +21,12 @@ class RenderSystem extends ListIteratingSystem<RenderNode>
 	
 	function nodeAdded(node:RenderNode) 
 	{
-		layer.addChild(node.visual.sprite);
+		layer.addChild(node.spriteComponent.entitySprite);
 	}
 	
 	function nodeRemoved(node:RenderNode) 
 	{
-		layer.removeChild(node.visual.sprite);
+		layer.removeChild(node.spriteComponent.entitySprite);
 	}
 	
 	function updateNode(node:RenderNode, time:Float)

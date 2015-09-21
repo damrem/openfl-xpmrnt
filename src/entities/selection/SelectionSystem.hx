@@ -3,73 +3,87 @@ package entities.selection;
 import ash.core.Engine;
 import ash.core.NodeList;
 import ash.core.System;
+import ash.tools.ListIteratingSystem;
+import entities.randommove.RandomMove;
 import entities.selection.SelectableNode;
 import openfl.display.Sprite;
 import openfl.events.MouseEvent;
+import openfl.filters.GlowFilter;
 
 /**
  * ...
  * @author damrem
  */
-class SelectionSystem extends System
+class SelectionSystem extends ListIteratingSystem<SelectableNode>
 {
 
-	var selectableNodes:NodeList<SelectableNode>;
-	var selectedNodes:NodeList<SelectedNode>;
+	var glow:GlowFilter;
 	
 	public function new() 
 	{
-		super();
+		super(SelectableNode, updateNode, added, removed);
+		glow = new GlowFilter(0xffffff);
+	}
+	
+	function added(node:SelectableNode)
+	{
+		node.visual.sprite.addEventListener(MouseEvent.ROLL_OVER, onRollOver);
+		node.visual.sprite.addEventListener(MouseEvent.ROLL_OUT, onRollOut);
+		node.visual.sprite.addEventListener(MouseEvent.CLICK, onClick);
+		node.visual.sprite.buttonMode = true;
+	}
+	
+	function removed(node:SelectableNode)
+	{
+		node.visual.sprite.removeEventListener(MouseEvent.ROLL_OVER, onRollOver);
+		node.visual.sprite.removeEventListener(MouseEvent.ROLL_OUT, onRollOut);
+		node.visual.sprite.removeEventListener(MouseEvent.CLICK, onClick);
+		node.visual.sprite.buttonMode = false;
+	}
+	
+	private function onClick(e:MouseEvent):Void 
+	{
+		var sprite = cast(e.currentTarget, EntitySprite);
+		var entity = sprite.entity;
 		
-		selectableNodes.nodeAdded(onSelectableNodeAdded);
-		selectedNodes.nodeRemoved(onSelectableNodeRemoved);
+		var selectable = cast(entity.get(Selectable), Selectable);
+		selectable.isSelected = !selectable.isSelected;
 		
-		selectedNodes.nodeAdded(onSelectedNodeAdded);
-		selectedNodes.nodeRemoved(onSelectedNodeRemoved);
+		if (entity.get(RandomMove) != null)
+		{
+			trace("remove");
+			entity.remove(RandomMove);
+			trace(entity.components);
+		}
+		else
+		{
+			trace("add");
+			entity.add(new RandomMove());
+			trace(entity.components);
+		}
 	}
 	
-	function onSelectableNodeAdded(selectableNode:SelectableNode)
+	function onRollOver(e:MouseEvent):Void 
 	{
-		selectableNode.visual.display.addEventListener(MouseEvent.ROLL_OVER, onRollOver);
-		selectableNode.visual.display.addEventListener(MouseEvent.ROLL_OUT, onRollOut);
+		cast(e.currentTarget, EntitySprite).alpha = 0.25;
 	}
 	
-	private function onRollOver(e:MouseEvent):Void 
+	function onRollOut(e:MouseEvent):Void 
 	{
-		cast(e.currentTarget, Sprite).alpha = 0.25;
+		cast(e.currentTarget, EntitySprite).alpha = 1;
 	}
 	
-	private function onRollOver(e:MouseEvent):Void 
+	function updateNode(node:SelectableNode, time:Float)
 	{
-		cast(e.currentTarget, Sprite).alpha = 1;
+		if (node.selectable.isSelected)
+		{
+			node.visual.sprite.filters = [glow];
+		}
+		else
+		{
+			node.visual.sprite.filters = null;
+		}
 	}
 	
-	function onSelectableNodeRemoved(selectableNode:SelectableNode)
-	{
-		selectableNode.visual.display.removeEventListener(MouseEvent.ROLL_OVER, onRollOver);
-		selectableNode.visual.display.removeEventListener(MouseEvent.ROLL_OUT, onRollOut);
-	}
-	
-	function onSelectedNodeAdded(selectedNode:SelectedNode)
-	{
-		
-	}
-	
-	function onSelectedNodeRemoved(selectedNode:SelectedNode)
-	{
-		
-	}
-	
-	override public function addToEngine(engine:Engine)
-	{
-		selectableNodes = engine.getNodeList(SelectableNode);
-		selectedNodes = engine.getNodeList(SelectedNode);
-	}
-	
-	override public function removeFromEngine(engine:Engine)
-	{
-		selectableNodes = null;
-		selectedNodes = null;
-	}
 	
 }

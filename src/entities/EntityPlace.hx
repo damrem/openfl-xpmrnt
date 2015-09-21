@@ -3,8 +3,12 @@ package entities;
 import ash.core.Engine;
 import ash.core.Entity;
 import ash.tick.FrameTickProvider;
+import entities.randommove.RandomMove;
+import entities.randommove.RandomMoveSystem;
 import entities.rendering.RenderSystem;
 import entities.rendering.Visual;
+import entities.selection.Selectable;
+import entities.selection.SelectionSystem;
 import hxlpers.colors.RndColor;
 import hxlpers.game.Place;
 import hxlpers.Rnd;
@@ -32,7 +36,7 @@ class EntityPlace extends Place
 		engine = new Engine();
 		
 		engine.addSystem(new RandomMoveSystem(), 9);
-		engine.addSystem(new SelectSystem(), 10);
+		engine.addSystem(new SelectionSystem(), 10);
 		engine.addSystem(new RenderSystem(this), 10);
 		
 		addEntities();
@@ -57,7 +61,7 @@ class EntityPlace extends Place
 			var size = Math.random() * 25;
 			var color = RndColor.rgb(0.25, 0.5);
 			var shape:ShortcutShape;
-			var sprite = new Sprite();
+			var sprite = new EntitySprite(entity);
 			
 			if (Rnd.chance())
 			{
@@ -78,6 +82,7 @@ class EntityPlace extends Place
 			
 			entity.add(new RandomMove());
 			entity.add(new Visual(sprite));
+			entity.add(new Selectable());
 			engine.addEntity(entity);
 		}
 		

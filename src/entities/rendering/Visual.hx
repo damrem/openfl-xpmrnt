@@ -9,10 +9,10 @@ import openfl.display.Sprite;
 class Visual
 {
 
-	public var display:DisplayObject;
-	public function new(display:DisplayObject) 
+	public var sprite:EntitySprite;
+	public function new(sprite:EntitySprite) 
 	{
-		this.display = display ;
+		this.sprite = sprite ;
 	}
 	
 }

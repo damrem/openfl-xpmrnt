@@ -2,7 +2,7 @@ package entities.selection;
 
 import ash.core.Node;
 import entities.rendering.Visual;
-import entities.selection.IsSelectable;
+import entities.selection.Selectable;
 
 /**
  * ...
@@ -11,5 +11,5 @@ import entities.selection.IsSelectable;
 class SelectableNode extends Node<SelectableNode>
 {
 	public var visual:Visual;
-	public var isSelectable:IsSelectable;
+	public var selectable:Selectable;
 }

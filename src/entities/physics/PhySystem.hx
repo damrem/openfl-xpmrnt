@@ -17,7 +17,7 @@ class PhySystem extends ListIteratingSystem<PhyNode>
 
 	var world:B2World;
 	
-	public function new(world, debugSprite:Sprite=null) 
+	public function new(world, debugSprite:Sprite=null, debugDrawScale:Float=1) 
 	{
 		super(PhyNode, updateNode, nodeAdded, nodeRemoved);
 		
@@ -26,8 +26,16 @@ class PhySystem extends ListIteratingSystem<PhyNode>
 		if (debugSprite != null)
 		{
 			var debugDraw = new B2DebugDraw();
+			debugDraw.setDrawScale(debugDrawScale);
 			debugDraw.setSprite(debugSprite);
-			debugDraw.setFlags(B2DebugDraw.e_aabbBit | B2DebugDraw.e_centerOfMassBit | B2DebugDraw.e_controllerBit | B2DebugDraw.e_jointBit | B2DebugDraw.e_pairBit | B2DebugDraw.e_shapeBit);
+			debugDraw.setFlags(
+				//B2DebugDraw.e_aabbBit | 
+				//B2DebugDraw.e_centerOfMassBit | 
+				//B2DebugDraw.e_controllerBit | 
+				//B2DebugDraw.e_jointBit | 
+				//B2DebugDraw.e_pairBit | 
+				B2DebugDraw.e_shapeBit
+			);
 			world.setDebugDraw(debugDraw);
 		}
 	}

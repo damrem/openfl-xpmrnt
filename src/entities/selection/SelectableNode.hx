@@ -1,7 +1,7 @@
 package entities.selection;
 
 import ash.core.Node;
-import entities.rendering.SpriteComponent;
+import entities.rendering.Gfx;
 import entities.selection.Selectable;
 
 /**
@@ -10,6 +10,6 @@ import entities.selection.Selectable;
  */
 class SelectableNode extends Node<SelectableNode>
 {
-	public var spriteComponent:SpriteComponent;
+	public var spriteComponent:Gfx;
 	public var selectable:Selectable;
 }

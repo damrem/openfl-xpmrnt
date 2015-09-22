@@ -6,7 +6,7 @@ import openfl.display.Sprite;
  * ...
  * @author damrem
  */
-class SpriteComponent
+class Gfx
 {
 
 	public var entitySprite:EntitySprite;

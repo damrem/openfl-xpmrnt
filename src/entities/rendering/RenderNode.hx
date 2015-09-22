@@ -9,6 +9,6 @@ import ash.core.Node;
 class RenderNode extends Node<RenderNode>
 {
 
-	public var spriteComponent:SpriteComponent;
+	public var gfx:Gfx;
 	
 }

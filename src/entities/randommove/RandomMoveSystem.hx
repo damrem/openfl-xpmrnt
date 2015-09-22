@@ -22,11 +22,11 @@ class RandomMoveSystem extends ListIteratingSystem<RandomMoveNode>
 	{
 		//node.visual.entitySprite.x += Rnd.float( -node.randomMove.range, node.randomMove.range);
 		//node.visual.entitySprite.y += Rnd.float( -node.randomMove.range, node.randomMove.range);
-		var currentPos = node.phy.body.getPosition();
+		var currentVel = node.phy.body.getLinearVelocity();
 		
-		var x = currentPos.x + Rnd.float( -node.randomMove.range, node.randomMove.range);
-		var y = currentPos.y + Rnd.float( -node.randomMove.range, node.randomMove.range);
-		node.phy.body.setPosition(new B2Vec2(x, y));
+		var x = currentVel.x + Rnd.float( -node.randomMove.range, node.randomMove.range);
+		var y = currentVel.y + Rnd.float( -node.randomMove.range, node.randomMove.range);
+		node.phy.body.setLinearVelocity(new B2Vec2(x, y));
 	}
 	
 	function nodeAdded(node:RandomMoveNode)

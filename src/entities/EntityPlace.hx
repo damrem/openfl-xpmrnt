@@ -51,7 +51,25 @@ class EntityPlace extends Place
 		//phyDebugSprite.rect(100, 100);
 		addChild(phyDebugSprite);
 		
+		
 		world = new B2World(PhySystem.GRAVITY, true);
+
+		
+		var bodyDef = new B2BodyDef();
+		bodyDef.type = B2BodyType.DYNAMIC_BODY;
+		bodyDef.position.set(5, 5);
+		
+		var phyShape = new B2CircleShape(5);
+		
+		var fixtureDef = new B2FixtureDef();
+		fixtureDef.shape = phyShape;
+		fixtureDef.density = 1;
+		
+		var body = world.createBody(bodyDef);
+		body.createFixture(fixtureDef);
+		
+		trace(world.getBodyCount());
+		
 		
 		phySystem = new PhySystem(world, phyDebugSprite);
 		engine.addSystem(phySystem, 1);

@@ -19,7 +19,7 @@ class PhySystem extends ListIteratingSystem<PhyNode>
 	
 	public function new(world, debugSprite:Sprite=null) 
 	{
-		super(PhyNode, nodeUpdate, nodeAdded, nodeRemoved);
+		super(PhyNode, updateNode, nodeAdded, nodeRemoved);
 		
 		this.world = world;
 		
@@ -27,6 +27,7 @@ class PhySystem extends ListIteratingSystem<PhyNode>
 		{
 			var debugDraw = new B2DebugDraw();
 			debugDraw.setSprite(debugSprite);
+			debugDraw.setFlags(B2DebugDraw.e_aabbBit | B2DebugDraw.e_centerOfMassBit | B2DebugDraw.e_controllerBit | B2DebugDraw.e_jointBit | B2DebugDraw.e_pairBit | B2DebugDraw.e_shapeBit);
 			world.setDebugDraw(debugDraw);
 		}
 	}
@@ -36,10 +37,12 @@ class PhySystem extends ListIteratingSystem<PhyNode>
 		//trace("update");
 		super.update(time);
 		world.step(PERIOD, 8, 3);
+		world.drawDebugData();
+		
 	}
 	
 	
-	function nodeUpdate(node:PhyNode, time:Float)
+	function updateNode(node:PhyNode, time:Float)
 	{
 		//node.phy.body.advance(PERIOD);
 		//world.step(PERIOD, 8, 3);

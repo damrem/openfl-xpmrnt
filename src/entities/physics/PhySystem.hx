@@ -17,27 +17,13 @@ class PhySystem extends ListIteratingSystem<PhyNode>
 
 	var world:B2World;
 	
-	public function new(world, debugSprite:Sprite=null, debugDrawScale:Float=1) 
+	public function new(world) 
 	{
 		super(PhyNode, updateNode, nodeAdded, nodeRemoved);
 		
 		this.world = world;
 		
-		if (debugSprite != null)
-		{
-			var debugDraw = new B2DebugDraw();
-			debugDraw.setDrawScale(debugDrawScale);
-			debugDraw.setSprite(debugSprite);
-			debugDraw.setFlags(
-				//B2DebugDraw.e_aabbBit | 
-				//B2DebugDraw.e_centerOfMassBit | 
-				//B2DebugDraw.e_controllerBit | 
-				//B2DebugDraw.e_jointBit | 
-				//B2DebugDraw.e_pairBit | 
-				B2DebugDraw.e_shapeBit
-			);
-			world.setDebugDraw(debugDraw);
-		}
+		
 	}
 	
 	override public function update(time:Float)

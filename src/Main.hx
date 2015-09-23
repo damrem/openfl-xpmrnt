@@ -65,7 +65,7 @@ class Main extends Sprite
 		
 		addChild(noiseEffect);
 		
-		//addChild(entityPlace.phyDebugSprite);
+		addChild(entityPlace.phyDebugSprite);
 		
 		
 		var pxFx = new ScreenPixelEffect(stage.stageWidth, stage.stageHeight, Assets.getBitmapData("img/px3-3.png"));

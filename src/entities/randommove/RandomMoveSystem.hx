@@ -3,6 +3,7 @@ package entities.randommove;
 import ash.core.System;
 import ash.tools.ListIteratingSystem;
 import box2D.common.math.B2Vec2;
+import box2D.dynamics.B2BodyType;
 import entities.randommove.RandomMoveNode;
 import hxlpers.Rnd;
 
@@ -15,7 +16,17 @@ class RandomMoveSystem extends ListIteratingSystem<RandomMoveNode>
 
 	public function new() 
 	{
-		super(RandomMoveNode, updateNode);
+		super(RandomMoveNode, updateNode, nodeAdded, nodeRemoved);
+	}
+	
+	function nodeAdded(node:RandomMoveNode) 
+	{
+		node.phy.body.setType(B2BodyType.DYNAMIC_BODY);
+	}
+	
+	function nodeRemoved(node:RandomMoveNode) 
+	{
+		node.phy.body.setType(B2BodyType.STATIC_BODY);
 	}
 	
 	function updateNode(node:RandomMoveNode, time:Float)

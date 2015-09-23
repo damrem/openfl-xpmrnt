@@ -15,28 +15,16 @@ class RandomMoveSystem extends ListIteratingSystem<RandomMoveNode>
 
 	public function new() 
 	{
-		super(RandomMoveNode, updateNode, nodeAdded, nodeRemoved);
+		super(RandomMoveNode, updateNode);
 	}
 	
 	function updateNode(node:RandomMoveNode, time:Float)
 	{
-		//node.visual.entitySprite.x += Rnd.float( -node.randomMove.range, node.randomMove.range);
-		//node.visual.entitySprite.y += Rnd.float( -node.randomMove.range, node.randomMove.range);
-		var currentVel = node.phy.body.getLinearVelocity();
-		
-		var x = currentVel.x + Rnd.float( -node.randomMove.range, node.randomMove.range);
-		var y = currentVel.y + Rnd.float( -node.randomMove.range, node.randomMove.range);
-		node.phy.body.setLinearVelocity(new B2Vec2(x, y));
-	}
-	
-	function nodeAdded(node:RandomMoveNode)
-	{
-		//trace("nodeAdded(" + node);
-	}
-	
-	function nodeRemoved(node:RandomMoveNode)
-	{
-		//trace("nodeRemoved(" + node);
+		var body = node.phy.body;
+		var mass = body.getMass();
+		var xImpulse = mass * Rnd.float( -node.randomMove.range, node.randomMove.range);
+		var yImpulse = mass * Rnd.float( -node.randomMove.range, node.randomMove.range);
+		body.applyImpulse(new B2Vec2(xImpulse, yImpulse), body.getWorldCenter());
 	}
 	
 }

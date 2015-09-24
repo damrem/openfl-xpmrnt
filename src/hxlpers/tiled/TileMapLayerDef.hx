@@ -17,7 +17,7 @@ class TileMapLayerDef
 	public var objects:Array<Dynamic>;
 	public var type:TileMapLayerType;
 	
-	public var data:Array<UInt>;
+	public var data:Array<Int>;
 	
 	public function new(json:Dynamic) 
 	{
@@ -31,6 +31,7 @@ class TileMapLayerDef
 		properties = json.properties;
 		objects = json.objects;
 		data = json.data;
+		trace(data);
 		
 		var typeMapping = new Map<String,TileMapLayerType>();
 		typeMapping.set("tilelayer", TileMapLayerType.TileLayer);

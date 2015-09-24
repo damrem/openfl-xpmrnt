@@ -98,7 +98,6 @@ class EntityCreator
 	function createFixtureDef(density:Float = 1):B2FixtureDef
 	{
 		var fixtureDef = new B2FixtureDef();
-		var fixtureDef = new B2FixtureDef();
 		fixtureDef.density = density;
 		return fixtureDef;
 	}

@@ -14,6 +14,10 @@ class PhyTileMap
 		
 		var layer = level.layers[0];
 		
+		var shapeMap = new Map<UInt, UInt>();
+		shapeMap.set(0, 0);
+		
+		
 		var i:UInt = 0;	//	the index in data
 		for (_y in 0...level.height)
 		{
@@ -21,22 +25,16 @@ class PhyTileMap
 			{
 				var j:Int = layer.data[i] - tileset.firstGId;	// the index in the sprite sheet (-1 because tiled indexes tiles from 1 instead of from 0)
 				
-				trace("j=" + j);
-				/*
-				srcRect.x = tileset.margin + (j % cast(nbCols)) * tileWidthPlusSpacing;
-				srcRect.y = tileset.margin + Std.int(j / nbCols) * tileHeightPlusSpacing;
-					*/
-				
 				if (j >= 0)
 				{
-					var x = _x * level.tileWidth;
-					var y = _y * level.tileHeight;
-				
-					bodyCreator.createBoxBody(x, y, tileset.tileWidth, tileset.tileHeight);
+					if (tileset.tileProperties[j] != null && tileset.tileProperties[j].phyBits != null)
+					{
+					
+						var x = (_x + 0.5) * level.tileWidth;
+						var y = (_y + 0.5) * level.tileHeight;
+						bodyCreator.createBlockBody(x, y, tileset.tileProperties[j].phyBits, tileset.tileHeight);
+					}
 				}
-				/*
-				copyPixels(tileSetBitmapData, srcRect, destPoint);
-				*/
 				i++;
 			}
 		}

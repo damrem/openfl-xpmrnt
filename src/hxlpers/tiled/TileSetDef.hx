@@ -16,6 +16,7 @@ class TileSetDef
 	public var spacing:UInt;
 	public var tileHeight:UInt;
 	public var tileWidth:UInt;
+	public var tileProperties:Dynamic;
 	
 	public function new(json:Dynamic) 
 	{
@@ -29,6 +30,7 @@ class TileSetDef
 		spacing = json.spacing;
 		tileHeight = json.tileheight;
 		tileWidth = json.tilewidth;
+		tileProperties = json.tileproperties;
 	}
 	
 }

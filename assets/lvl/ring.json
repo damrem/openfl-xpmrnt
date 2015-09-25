@@ -16,6 +16,7 @@
          "y":0
         }, 
         {
+         "draworder":"topdown",
          "height":12,
          "name":"Calque d'objets 1",
          "objects":[],
@@ -37,11 +38,13 @@
          "x":0,
          "y":0
         }],
+ "nextobjectid":1,
  "orientation":"orthogonal",
  "properties":
     {
 
     },
+ "renderorder":"right-down",
  "tileheight":16,
  "tilesets":[
         {
@@ -56,7 +59,15 @@
 
             },
          "spacing":1,
+         "tilecount":100,
          "tileheight":16,
+         "tileproperties":
+            {
+             "4":
+                {
+                 "phyBits":"42"
+                }
+            },
          "tilewidth":16
         }],
  "tilewidth":16,

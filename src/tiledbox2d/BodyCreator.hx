@@ -58,6 +58,7 @@ class BodyCreator
 	
 	public function createBlockBody(x:Float, y:Float, directionBits:UInt, size:Float)
 	{
+		trace("createBlockBody", x, y, directionBits, size);
 		var bodyDef = createBodyDef(x, y, B2BodyType.STATIC_BODY);
 		
 		var fixtureDef = createFixtureDef();
@@ -73,16 +74,21 @@ class BodyCreator
 	
 	function createBlockShape(directionBits:UInt, size:Float):B2PolygonShape
 	{
+		trace("createBlockShape", directionBits, size);
 		var halfSize = size / 2;
 		var vertices:Array<B2Vec2> = [];
 		
 		var directions:Array<UInt> = [];
 		
-		for (key in directionMap.keys())
+		//trace(directionMap.keys());
+		
+		for (direction in directionMap.keys())
 		{
-			if (directionBits & directionMap.get(key) > 0)
+			trace(direction, directionMap.get(direction));
+			trace(directionBits & directionMap.get(direction));
+			if (directionBits & directionMap.get(direction) > 0)
 			{
-				var vertex = directionVector(key, halfSize);
+				var vertex = directionVector(direction, halfSize);
 				trace(vertex.x, vertex.y);
 				vertices.push(vertex);
 			}

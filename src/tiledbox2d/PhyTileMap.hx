@@ -32,6 +32,7 @@ class PhyTileMap
 					
 						var x = (_x + 0.5) * level.tileWidth;
 						var y = (_y + 0.5) * level.tileHeight;
+						trace(tileset.tileProperties[j]);
 						bodyCreator.createBlockBody(x, y, tileset.tileProperties[j].phyBits, tileset.tileHeight);
 					}
 				}

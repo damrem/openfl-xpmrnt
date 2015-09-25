@@ -77,7 +77,7 @@ class Main extends Sprite
 		
 		//addChild(entityPlace.phyDebugSprite);
 		addChild(tiledBox2dRoom.worldDebug);
-		tiledBox2dRoom.worldDebug.rect(10, 10);
+		tiledBox2dRoom.worldDebug.alpha = 0.25;
 		
 		var pxFx = new ScreenPixelEffect(stage.stageWidth, stage.stageHeight, Assets.getBitmapData("img/px3-3.png"));
 		pxFx.alpha = 0.125;

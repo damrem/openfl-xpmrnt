@@ -1,4 +1,6 @@
 package hxlpers.tiled;
+import haxe.Json;
+import openfl.Assets;
 
 /**
  * ...
@@ -16,7 +18,7 @@ class TileMapDef
 	public var version:UInt;
 	public var tileSets:Array<TileSetDef>;
 	
-	public function new(json:Dynamic) 
+	public function new(json:Dynamic, assetPath:String="") 
 	{
 		width = json.width;
 		height = json.height;
@@ -31,7 +33,17 @@ class TileMapDef
 		
 		for (tileSet in cast(json.tilesets, Array<Dynamic>))
 		{
-			tileSets.push(new TileSetDef(tileSet));
+			if (tileSet.source == null)
+			{
+				tileSets.push(new TileSetDef(tileSet));
+			}
+			else
+			{
+				
+				var tileSetData = Json.parse(Assets.getText(assetPath + tileSet.source));
+				tileSetData.firstgid = tileSet.firstgid;
+				tileSets.push(new TileSetDef(tileSetData));
+			}
 		}
 		
 		var orientationMapping = new Map<String, TileMapOrientation>();

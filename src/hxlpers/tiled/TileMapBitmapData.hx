@@ -10,43 +10,43 @@ import openfl.geom.Rectangle;
 class TileMapBitmapData extends BitmapData
 {
 
-	public function new(level:TileMapDef, tileSetBitmapData:BitmapData) 
+	public function new(tileMapDef:TileMapDef, tileSetBitmapData:BitmapData) 
 	{
-		super(level.width * level.tileWidth, level.height * level.tileHeight, true, 0);
+		super(tileMapDef.width * tileMapDef.tileWidth, tileMapDef.height * tileMapDef.tileHeight, true, 0);
 		
-		var srcRect = new Rectangle(0, 0, level.tileWidth, level.tileHeight);
+		var srcRect = new Rectangle(0, 0, tileMapDef.tileWidth, tileMapDef.tileHeight);
 		var destPoint = new Point(0, 0);
 		
-		var tileset = level.tileSets[0];
+		var tileSetDef = tileMapDef.tileSets[0];
 		
-		var w:UInt = tileset.imageWidth - tileset.margin * 2;
-		var tileWidthPlusSpacing:UInt = tileset.tileWidth + tileset.spacing;
-		var tileHeightPlusSpacing:UInt = tileset.tileHeight + tileset.spacing;
-		var nbCols:UInt = Std.int((w + tileset.spacing) / tileWidthPlusSpacing);
+		var w:UInt = tileSetDef.imageWidth - tileSetDef.margin * 2;
+		var tileWidthPlusSpacing:UInt = tileSetDef.tileWidth + tileSetDef.spacing;
+		var tileHeightPlusSpacing:UInt = tileSetDef.tileHeight + tileSetDef.spacing;
+		var nbCols:UInt = Std.int((w + tileSetDef.spacing) / tileWidthPlusSpacing);
 		var nbSpacing:UInt = nbCols - 1;
 		trace("nbCols="+nbCols);
 		trace(nbSpacing);
 		
 		
 		
-		var layer = level.layers[0];
+		var layer = tileMapDef.layers[0];
 		
 		
 		
 		
 		//	TODO	we loop through x,y: compare perf with running through data: for (i in 0...layer.data.length)...
 		var i:UInt = 0;	//	the index in data
-		for (_y in 0...level.height)
+		for (_y in 0...tileMapDef.height)
 		{
-			for (_x in 0...level.width)
+			for (_x in 0...tileMapDef.width)
 			{
-				var j = layer.data[i] - tileset.firstGId;	// the index in the sprite sheet (-1 because tiled indexes tiles from 1 instead of from 0)
+				var j = layer.data[i] - tileSetDef.firstGId;	// the index in the sprite sheet (-1 because tiled indexes tiles from 1 instead of from 0)
 				
-				srcRect.x = tileset.margin + (j % cast(nbCols)) * tileWidthPlusSpacing;
-				srcRect.y = tileset.margin + Std.int(j / nbCols) * tileHeightPlusSpacing;
+				srcRect.x = tileSetDef.margin + (j % cast(nbCols)) * tileWidthPlusSpacing;
+				srcRect.y = tileSetDef.margin + Std.int(j / nbCols) * tileHeightPlusSpacing;
 				
-				destPoint.x = _x * level.tileWidth;
-				destPoint.y = _y * level.tileHeight;
+				destPoint.x = _x * tileMapDef.tileWidth;
+				destPoint.y = _y * tileMapDef.tileHeight;
 				
 				copyPixels(tileSetBitmapData, srcRect, destPoint);
 				i++;

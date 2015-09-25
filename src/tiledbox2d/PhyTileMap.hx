@@ -1,6 +1,7 @@
 package tiledbox2d;
 import box2D.dynamics.B2World;
 import hxlpers.tiled.TileMapDef;
+import hxlpers.tiled.TileSetDef;
 
 /**
  * ...
@@ -8,32 +9,28 @@ import hxlpers.tiled.TileMapDef;
  */
 class PhyTileMap
 {
-	public function new(level:TileMapDef, bodyCreator:BodyCreator) 
+	public function new(tileMapDef:TileMapDef, bodyCreator:BodyCreator) 
 	{
-		var tileset = level.tileSets[0];
+		var tileSet = tileMapDef.tileSets[0];
 		
-		var layer = level.layers[0];
-		
-		var shapeMap = new Map<UInt, UInt>();
-		shapeMap.set(0, 0);
-		
+		var layer = tileMapDef.layers[0];
 		
 		var i:UInt = 0;	//	the index in data
-		for (_y in 0...level.height)
+		for (_y in 0...tileMapDef.height)
 		{
-			for (_x in 0...level.width)
+			for (_x in 0...tileMapDef.width)
 			{
-				var j:Int = layer.data[i] - tileset.firstGId;	// the index in the sprite sheet (-1 because tiled indexes tiles from 1 instead of from 0)
+				var j:Int = layer.data[i] - tileSet.firstGId;	// the index in the sprite sheet (-1 because tiled indexes tiles from 1 instead of from 0)
 				
 				if (j >= 0)
 				{
-					if (tileset.tileProperties[j] != null && tileset.tileProperties[j].phyBits != null)
+					if (tileSet.tileProperties[j] != null && tileSet.tileProperties[j].phyBits != null)
 					{
 					
-						var x = (_x + 0.5) * level.tileWidth;
-						var y = (_y + 0.5) * level.tileHeight;
-						trace(tileset.tileProperties[j]);
-						bodyCreator.createBlockBody(x, y, tileset.tileProperties[j].phyBits, tileset.tileHeight);
+						var x = (_x + 0.5) * tileMapDef.tileWidth;
+						var y = (_y + 0.5) * tileMapDef.tileHeight;
+						trace(tileSet.tileProperties[j]);
+						bodyCreator.createBlockBody(x, y, tileSet.tileProperties[j].phyBits, tileSet.tileHeight);
 					}
 				}
 				i++;

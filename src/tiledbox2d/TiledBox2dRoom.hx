@@ -8,6 +8,7 @@ import haxe.Json;
 import hxlpers.game.Place;
 import hxlpers.tiled.TileMapBitmapData;
 import hxlpers.tiled.TileMapDef;
+import hxlpers.tiled.TileSetDef;
 import openfl.Assets;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
@@ -30,15 +31,16 @@ class TiledBox2dRoom extends Place
 	{
 		super(fullWidth, fullHeight, ratio);
 		
+		var tileMapDef = new TileMapDef(Json.parse(Assets.getText("lvl/ring.json")), "lvl/");
+		//var tileSetDef = new TileSetDef (Json.parse(Assets.getText("lvl/bugtilesbrown.json")));
 		var tileSetBitmapData = Assets.getBitmapData("img/bugtilesbrown.png");
-		var dt:TileMapDef = new TileMapDef(Json.parse(Assets.getText("lvl/ring.json")));
-		var tileMap = new TileMapBitmapData(dt, tileSetBitmapData);
+		var tileMap = new TileMapBitmapData(tileMapDef, tileSetBitmapData);
 		
 		addChild(new Bitmap(tileMap));
 		
 		var world = new B2World(new B2Vec2(), true);
 		var bodyCreator = new BodyCreator(world);
-		var phyTileMap = new PhyTileMap(dt, bodyCreator);
+		var phyTileMap = new PhyTileMap(tileMapDef, bodyCreator);
 		
 		worldDebug = new Sprite();
 		var debugDraw = new B2DebugDraw();

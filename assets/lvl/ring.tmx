@@ -1,23 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="12" height="12" tilewidth="16" tileheight="16" nextobjectid="1">
- <tileset firstgid="1" name="bugtilesbrown" tilewidth="16" tileheight="16" spacing="1" tilecount="100">
-  <image source="../img/bugtilesbrown.png" width="169" height="169"/>
-  <tile id="4">
-   <properties>
-    <property name="phyBits" value="42"/>
-   </properties>
-  </tile>
-  <tile id="5">
-   <properties>
-    <property name="phyBits" value="168"/>
-   </properties>
-  </tile>
-  <tile id="70">
-   <properties>
-    <property name="phyBits" value=""/>
-   </properties>
-  </tile>
- </tileset>
+ <tileset firstgid="1" source="bugtilesbrown.json"/>
  <layer name="Calque de Tile 1" width="12" height="12">
   <properties>
    <property name="propName" value="propValue"/>

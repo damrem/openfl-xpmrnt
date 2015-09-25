@@ -11,7 +11,7 @@ import box2D.dynamics.B2World;
  * ...
  * @author damrem
  */
-class BodyCreator
+class PhyTileCreator
 {
 	var world:B2World;
 	var directionMap:Map<Direction, UInt>;
@@ -40,29 +40,13 @@ class BodyCreator
 		//createBlockBody(10, 10, [Top, Left, Bottom, Right], 16);
 	}
 	
-	public function createBoxBody(x:Float, y:Float, w:Float, h:Float):B2Body
-	{
-		trace("createBody",x,y,w,h);
-		var bodyDef = createBodyDef(x, y, B2BodyType.STATIC_BODY);
-		
-		var fixtureDef = createFixtureDef();
-		fixtureDef.shape = createBoxShape(w, h);
-		
-		var body = world.createBody(bodyDef);
-		body.createFixture(fixtureDef);
-		
-		body.setPosition(new B2Vec2(x, y));
-		
-		return body;
-	}
-	
-	public function createBlockBody(x:Float, y:Float, directionBits:UInt, size:Float)
+	public function createBody(x:Float, y:Float, directionBits:UInt, size:Float)
 	{
 		trace("createBlockBody", x, y, directionBits, size);
 		var bodyDef = createBodyDef(x, y, B2BodyType.STATIC_BODY);
 		
 		var fixtureDef = createFixtureDef();
-		fixtureDef.shape = createBlockShape(directionBits, size);
+		fixtureDef.shape = createShape(directionBits, size);
 		
 		var body = world.createBody(bodyDef);
 		body.createFixture(fixtureDef);
@@ -72,7 +56,7 @@ class BodyCreator
 		return body;
 	}
 	
-	function createBlockShape(directionBits:UInt, size:Float):B2PolygonShape
+	function createShape(directionBits:UInt, size:Float):B2PolygonShape
 	{
 		trace("createBlockShape", directionBits, size);
 		var halfSize = size / 2;
@@ -88,7 +72,7 @@ class BodyCreator
 			trace(directionBits & directionMap.get(direction));
 			if (directionBits & directionMap.get(direction) > 0)
 			{
-				var vertex = directionVector(direction, halfSize);
+				var vertex = getDirectionVec2(direction, halfSize);
 				trace(vertex.x, vertex.y);
 				vertices.push(vertex);
 			}
@@ -101,7 +85,7 @@ class BodyCreator
 		return shape;
 	}
 	
-	function directionVector(direction:Direction, multiplier:Float = 1):B2Vec2
+	function getDirectionVec2(direction:Direction, multiplier:Float = 1):B2Vec2
 	{
 		var t = -multiplier;
 		var r = multiplier;
@@ -119,13 +103,6 @@ class BodyCreator
 			case Left: 			return new B2Vec2(l, 0);
 			case TopLeft: 		return new B2Vec2(l, t);
 		}
-	}
-	
-	function createBoxShape(w:Float, h:Float):B2PolygonShape 
-	{
-		var shape = new B2PolygonShape();
-		shape.setAsBox(w, h);
-		return shape;
 	}
 	
 	function createFixtureDef(density:Float = 1):B2FixtureDef

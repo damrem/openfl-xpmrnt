@@ -9,7 +9,7 @@ import hxlpers.tiled.TileSetDef;
  */
 class PhyTileMap
 {
-	public function new(tileMapDef:TileMapDef, bodyCreator:BodyCreator) 
+	public function new(tileMapDef:TileMapDef, phyTileCreator:PhyTileCreator) 
 	{
 		var tileSet = tileMapDef.tileSets[0];
 		
@@ -30,7 +30,7 @@ class PhyTileMap
 						var x = (_x + 0.5) * tileMapDef.tileWidth;
 						var y = (_y + 0.5) * tileMapDef.tileHeight;
 						trace(tileSet.tileProperties[j]);
-						bodyCreator.createBlockBody(x, y, tileSet.tileProperties[j].phyBits, tileSet.tileHeight);
+						phyTileCreator.createBody(x, y, tileSet.tileProperties[j].phyBits, tileSet.tileHeight);
 					}
 				}
 				i++;

@@ -39,7 +39,7 @@ class TiledBox2dRoom extends Place
 		addChild(new Bitmap(tileMap));
 		
 		var world = new B2World(new B2Vec2(), true);
-		var bodyCreator = new BodyCreator(world);
+		var bodyCreator = new PhyTileCreator(world);
 		var phyTileMap = new PhyTileMap(tileMapDef, bodyCreator);
 		
 		worldDebug = new Sprite();

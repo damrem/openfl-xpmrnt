@@ -61,3 +61,9 @@ class TileMapDef
 	
 }
 
+enum TileMapOrientation 
+{
+	Orthogonal;
+	Isometric;
+	Staggered;
+}

@@ -3,7 +3,7 @@ import halo.Halo;
 import hxlpers.colors.ColorComponent;
 import hxlpers.colors.RGBColor;
 import hxlpers.colors.RndColor;
-import hxlpers.game.Place;
+import hxlpers.game.Room;
 import hxlpers.Rnd;
 import hxlpers.shapes.BoxShape;
 import hxlpers.shapes.DiskShape;
@@ -27,7 +27,7 @@ using hxlpers.display.BitmapDataSF;
  * ...
  * @author damrem
  */
-class HaloPlace extends Place
+class HaloPlace extends Room
 {
 	var entities:Array<Sprite>;
 	var nbShapes:UInt = 100;

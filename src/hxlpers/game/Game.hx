@@ -15,9 +15,9 @@ using hxlpers.effects.BitmapDataPixelEffectSF;
  */
 class Game extends Sprite
 {
-	var places:Map<String, Place>;
+	var rooms:Map<String, Room>;
 	//var rendering:BitmapData;
-	var currentPlace:Place;
+	var currentRoom:Room;
 	var interactiveLayer:Sprite;
 	var isPlaying:Bool;
 	var ratio:Float;
@@ -37,7 +37,7 @@ class Game extends Sprite
 		
 		
 		
-		places = new Map<String, Place>();
+		rooms = new Map<String, Room>();
 		//rendering = new BitmapData(Math.ceil(fullWidth / ratio), Math.ceil(fullHeight / ratio), false, 0xff000000);
 		
 		
@@ -76,22 +76,22 @@ class Game extends Sprite
 		isPlaying = true;
 		addChild(interactiveLayer);
 		addEventListener(Event.ENTER_FRAME, update);
-		currentPlace.play();
+		currentRoom.play();
 	}
 	
 	public function pause()
 	{
 		trace("pause");
 		isPlaying = false;
-		currentPlace.pause();
+		currentRoom.pause();
 		removeChild(interactiveLayer);
 		removeEventListener(Event.ENTER_FRAME, update);
 	}
 	
 	public function update(evt:Event=null)
 	{
-		//trace("update");
-		currentPlace.update();
+		trace("update");
+		currentRoom.update();
 		render();
 	}
 	
@@ -100,42 +100,42 @@ class Game extends Sprite
 	public function render()
 	{
 		
-		currentPlace.render();
-		//rendering.draw(currentPlace);
+		currentRoom.render();
+		//rendering.draw(currentRoom);
 		postRendering.draw(renderingContainer);
 		//postRendering.draw(pixelEffect, null, null, BlendMode.LIGHTEN);
 		//postRendering.pixelEffect(3);
 	}
 	
-	public function addPlace(id:String, place:Place) 
+	public function addRoom(id:String, room:Room) 
 	{
-		trace("addPlace", id, place);
-		//place.scale(1 / ratio);
-		places.set(id, place);
-		setCurrentPlace(id);
+		trace("addRoom", id, room);
+		//room.scale(1 / ratio);
+		rooms.set(id, room);
+		setCurrentRoom(id);
 	}
 	
-	public function setCurrentPlace(id:String)
+	public function setCurrentRoom(id:String)
 	{
-		trace("setCurrentPlace", id);
-		var firstPlace:Bool = true;
-		if (currentPlace != null)
+		trace("setCurrentRoom", id);
+		var firstRoom:Bool = true;
+		if (currentRoom != null)
 		{
-			firstPlace = false;
-			currentPlace.pause();
+			firstRoom = false;
+			currentRoom.pause();
 		}
 		
-		currentPlace = places.get(id);
+		currentRoom = rooms.get(id);
 		interactiveLayer.removeChildren();
 		
-		if (isPlaying || firstPlace)
+		if (isPlaying || firstRoom)
 		{
 			play();
 		}
 		
 		
-		interactiveLayer.addChild(currentPlace);
-		renderingLayer.bitmapData = currentPlace.rendering;
+		interactiveLayer.addChild(currentRoom);
+		renderingLayer.bitmapData = currentRoom.rendering;
 		trace(interactiveLayer.width);
 		trace(interactiveLayer.scaleX);
 	}

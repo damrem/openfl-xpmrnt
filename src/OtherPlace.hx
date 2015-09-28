@@ -1,7 +1,7 @@
 package;
 
 import hxlpers.colors.RndColor;
-import hxlpers.game.Place;
+import hxlpers.game.Room;
 import hxlpers.Rnd;
 import hxlpers.shapes.BoxShape;
 import openfl.Assets;
@@ -18,7 +18,7 @@ using hxlpers.display.ShapeSF;
  * ...
  * @author damrem
  */
-class OtherPlace extends Place
+class OtherPlace extends Room
 {
 	
 	var hero:Shape;

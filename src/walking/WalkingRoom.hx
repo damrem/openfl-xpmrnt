@@ -3,7 +3,7 @@ package walking;
 import hxlpers.colors.Colors;
 import hxlpers.colors.RndColor;
 import hxlpers.effects.ScreenWhiteNoiseEffect;
-import hxlpers.game.Place;
+import hxlpers.game.Room;
 import openfl.Assets;
 import openfl.display.Shape;
 import openfl.display.Sprite;
@@ -18,13 +18,13 @@ using hxlpers.display.DisplayObjectSF;
  * ...
  * @author damrem
  */
-class WalkingPlace extends Place
+class WalkingRoom extends Room
 {
 	var bg:Sprite;
 	var isWalking:Bool;
 	
 	var hero:Hero;
-	var sky:hxlpers.effects.ScreenWhiteNoiseEffect;
+	var sky:ScreenWhiteNoiseEffect;
 
 	public function new(fullWidth:Float, fullHeight:Float, ratio:UInt) 
 	{
@@ -32,7 +32,7 @@ class WalkingPlace extends Place
 		
 		bg = new Sprite();
 		trace(w, h);
-		bg.rect(w, h, RndColor.rgb());
+		bg.rect(w*2, h, RndColor.rgb());
 		addChild(bg);
 		
 		sky = new ScreenWhiteNoiseEffect(cast(w), cast(h), 3, 0.1);
@@ -50,7 +50,7 @@ class WalkingPlace extends Place
 		hero.y = ground.y - hero.height;
 		addChild(hero);
 		
-		
+		_camera.follow(hero);
 		
 	}
 	
@@ -89,6 +89,11 @@ class WalkingPlace extends Place
 		}
 		hero.update();
 		
+		if (hero.x > w / 2)
+		{
+			
+		}
+		
 		
 		if (hero.x > w)
 		{
@@ -96,6 +101,8 @@ class WalkingPlace extends Place
 			hero.x = -hero.width;
 			sky.next();
 		}
+		
+		super.update();
 	}
 	
 }

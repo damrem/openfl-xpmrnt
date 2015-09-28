@@ -37,7 +37,7 @@ class Hero extends Shape
 		
 		if (isWalking)
 		{
-			trace("walk");
+			//trace("walk");
 			
 			graphics.clear();
 			ts.drawTiles(graphics, [0, 0, nbSteps % 2]);

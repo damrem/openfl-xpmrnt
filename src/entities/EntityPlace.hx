@@ -13,7 +13,7 @@ import entities.selection.SelectionSystem;
 import entities.sync.PhyToGfxSyncSystem;
 import hxlpers.colors.Colors;
 import hxlpers.colors.RndColor;
-import hxlpers.game.Place;
+import hxlpers.game.Room;
 import hxlpers.Rnd;
 import openfl.display.Sprite;
 
@@ -23,7 +23,7 @@ using hxlpers.display.SpriteSF;
  * ...
  * @author damrem
  */
-class EntityPlace extends Place
+class EntityPlace extends Room
 {
 	var tickProvider:FrameTickProvider;
 	var engine:Engine;

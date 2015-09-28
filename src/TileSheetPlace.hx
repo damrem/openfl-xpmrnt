@@ -1,7 +1,7 @@
 package;
 
 import haxe.Json;
-import hxlpers.game.Place;
+import hxlpers.game.Room;
 import hxlpers.tiled.TileMapBitmapData;
 import hxlpers.tiled.TileMapDef;
 import openfl.Assets;
@@ -15,7 +15,7 @@ import openfl.geom.Rectangle;
  * ...
  * @author damrem
  */
-class TileSheetPlace extends Place
+class TileSheetPlace extends Room
 {
 
 	public function new(fullWidth:Float, fullHeight:Float, ratio:UInt) 

@@ -6,7 +6,7 @@ import entities.EntityPlace;
 import hxlpers.effects.ScreenPixelEffect;
 import hxlpers.effects.ScreenWhiteNoiseEffect;
 import hxlpers.game.Game;
-import hxlpers.game.Place;
+import hxlpers.game.Room;
 import hxlpers.shapes.ShortcutShape;
 import openfl.Assets;
 import openfl.display.FPS;
@@ -34,7 +34,7 @@ class Main extends Sprite
 	
 	
 	var noiseEffect:ScreenWhiteNoiseEffect;
-	var place:Place;
+	var place:Room;
 	
 	
 	public function new() 
@@ -57,15 +57,17 @@ class Main extends Sprite
 		
 		//game.addPlace("other", new OtherPlace(stage.stageWidth, stage.stageHeight, RATIO));
 		//game.addPlace("one", new OnePlace(stage.stageWidth, stage.stageHeight, RATIO));
-		//game.addPlace("walking", new walking.WalkingPlace(stage.stageWidth, stage.stageHeight, RATIO));
+		game.addRoom("walking", new walking.WalkingRoom(stage.stageWidth, stage.stageHeight, RATIO));
 		//game.addPlace("tilesheet", new TileSheetPlace(stage.stageWidth, stage.stageHeight, 3));
 		//game.addPlace("masked", new halo.HaloPlace(stage.stageWidth, stage.stageHeight, 3));
 		
 		//var entityPlace = new EntityPlace(stage.stageWidth, stage.stageHeight, 3);
 		//game.addPlace("entities", entityPlace);
 		
+		/*
 		var tiledBox2dRoom = new TiledBox2dRoom(stage.stageWidth, stage.stageHeight, RATIO);
 		game.addPlace("tiledbox2d", tiledBox2dRoom);
+		*/
 		
 		noiseEffect = new ScreenWhiteNoiseEffect(stage.stageWidth, stage.stageHeight, 1);
 		noiseEffect.scale(RATIO);
@@ -75,14 +77,14 @@ class Main extends Sprite
 		
 		addChild(noiseEffect);
 		
-		//addChild(entityPlace.phyDebugSprite);
-		addChild(tiledBox2dRoom.worldDebug);
-		tiledBox2dRoom.worldDebug.alpha = 0.25;
 		
 		var pxFx = new ScreenPixelEffect(stage.stageWidth, stage.stageHeight, Assets.getBitmapData("img/px3-3.png"));
 		pxFx.alpha = 0.125;
 		addChild(pxFx);
 		
+		//addChild(entityPlace.phyDebugSprite);
+		//addChild(tiledBox2dRoom.worldDebug);
+		//tiledBox2dRoom.worldDebug.alpha = 0.25;
 		
 		
 		addChild(new FPS(10, 10, 0xffffff));

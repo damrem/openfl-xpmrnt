@@ -1,6 +1,6 @@
 package;
 import hxlpers.colors.RndColor;
-import hxlpers.game.Place;
+import hxlpers.game.Room;
 import hxlpers.Rnd;
 import hxlpers.shapes.BoxShape;
 import hxlpers.shapes.DiskShape;
@@ -13,7 +13,7 @@ import openfl.geom.Rectangle;
  * ...
  * @author damrem
  */
-class OnePlace extends Place
+class OnePlace extends Room
 {
 	var entities:Array<Sprite>;
 	var nbShapes:UInt = 100;

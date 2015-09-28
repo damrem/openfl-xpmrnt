@@ -5,7 +5,7 @@ import box2D.dynamics.B2BodyDef;
 import box2D.dynamics.B2DebugDraw;
 import box2D.dynamics.B2World;
 import haxe.Json;
-import hxlpers.game.Place;
+import hxlpers.game.Room;
 import hxlpers.tiled.TileMapBitmapData;
 import hxlpers.tiled.TileMapDef;
 import hxlpers.tiled.TileSetDef;
@@ -23,7 +23,7 @@ using hxlpers.display.SpriteSF;
  * ...
  * @author damrem
  */
-class TiledBox2dRoom extends Place
+class TiledBox2dRoom extends Room
 {
 	public var worldDebug:Sprite;
 

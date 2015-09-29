@@ -2,6 +2,7 @@ package hxlpers.game;
 import openfl.display.BitmapData;
 import openfl.display.Sprite;
 import openfl.geom.Matrix;
+import openfl.geom.Rectangle;
 using hxlpers.display.BitmapDataSF;
 /**
  * ...
@@ -35,12 +36,12 @@ class Room extends Sprite
 		h = fullHeight / ratio;
 		this.ratio = ratio;
 		_rendering = new BitmapData(Math.ceil(w), Math.ceil(h));
-		_camera = new Camera();
+		_camera = new Camera(new Rectangle(0,0,w,h));
 	}
 	
 	public function update()
 	{
-		trace("update");
+		//trace("update");
 		_camera.update();
 	}
 	
@@ -57,7 +58,7 @@ class Room extends Sprite
 	public function render()
 	{
 		_rendering.clear(0xff000000);
-		_rendering.draw(this, new Matrix(1, 0, 0, 1, -_camera.focusCenter.x, -_camera.focusCenter.y));
+		_rendering.draw(this, new Matrix(1, 0, 0, 1, -_camera.zone.x, -_camera.zone.y));
 	}
 	
 	function get_rendering():BitmapData 

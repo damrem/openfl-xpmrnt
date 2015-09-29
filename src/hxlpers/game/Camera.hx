@@ -2,6 +2,7 @@ package hxlpers.game;
 import hxlpers.game.Room;
 import openfl.display.BitmapData;
 import openfl.geom.Point;
+import openfl.geom.Rectangle;
 
 /**
  * ...
@@ -12,14 +13,14 @@ class Camera
 
 	var room:Room;
 	var zoomLevel:Float;
-	public var focusCenter:Point;
+	public var zone:Rectangle;
 	var screen:BitmapData;
 	var followed:Dynamic;
 	public var focusObject:Dynamic;
 	
-	public function new() 
+	public function new(zone:Rectangle) 
 	{
-		focusCenter = new Point();
+		this.zone = zone;
 		//screen=new BitmapData
 	}
 	
@@ -35,9 +36,13 @@ class Camera
 	
 	public function update()
 	{
-		focusCenter.x = followed.x;
-		focusCenter.y = followed.y;
+		if (followed != null)
+		{
+			zone.x = followed.x;
+			zone.y = followed.y;
+		}
 	}
+	
 	
 }
 

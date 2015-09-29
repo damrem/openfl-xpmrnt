@@ -19,6 +19,7 @@
 	<haxelib name="msignal" />
 	<haxelib name="ash" />
 	<haxelib name="box2d" />
+	<haxelib name="svg" />
 	
 	<!-- assets -->
 	<icon path="assets/openfl.svg" />

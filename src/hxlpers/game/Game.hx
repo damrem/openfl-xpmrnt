@@ -90,7 +90,7 @@ class Game extends Sprite
 	
 	public function update(evt:Event=null)
 	{
-		trace("update");
+		//trace("update");
 		currentRoom.update();
 		render();
 	}

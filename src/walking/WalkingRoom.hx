@@ -14,6 +14,7 @@ import openfl.Lib;
 using hxlpers.display.SpriteSF;
 using hxlpers.display.ShapeSF;
 using hxlpers.display.DisplayObjectSF;
+using hxlpers.IntSF;
 /**
  * ...
  * @author damrem
@@ -35,13 +36,13 @@ class WalkingRoom extends Room
 		bg.rect(w*2, h, RndColor.rgb());
 		addChild(bg);
 		
-		sky = new ScreenWhiteNoiseEffect(cast(w), cast(h), 3, 0.1);
+		sky = new ScreenWhiteNoiseEffect(cast(w*2), cast(h), 3, 0.1);
 		sky.color(Colors.WHITE);
 		sky.alpha = 0.25;
 		addChild(sky);
 		
 		var ground = new Shape();
-		addChild(ground.rect(w, h / 3, Colors.WHITE));
+		addChild(ground.rect(w*2, h / 3, Colors.WHITE));
 		ground.y = this.h - ground.height;
 		
 		hero = new Hero();
@@ -51,6 +52,10 @@ class WalkingRoom extends Room
 		addChild(hero);
 		
 		_camera.follow(hero);
+		
+		
+		var i:UInt = 123456;
+		trace(i.toFixedLengthString(5));
 		
 	}
 	

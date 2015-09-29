@@ -12,6 +12,7 @@ import openfl.Assets;
 import openfl.display.FPS;
 import openfl.display.Sprite;
 import openfl.events.Event;
+import svganimation.SvgAnimationRoom;
 import tiledbox2d.TiledBox2dRoom;
 import tiledbox2d.TiledBox2dRoom;
 import tiledbox2d.TiledBox2dRoom;
@@ -41,6 +42,9 @@ class Main extends Sprite
 	{
 		super();	
 		addEventListener(Event.ADDED_TO_STAGE, onStage);
+		
+		
+		
 	}
 	
 	
@@ -55,19 +59,21 @@ class Main extends Sprite
 		addChild(game);
 		
 		
-		//game.addPlace("other", new OtherPlace(stage.stageWidth, stage.stageHeight, RATIO));
-		//game.addPlace("one", new OnePlace(stage.stageWidth, stage.stageHeight, RATIO));
-		game.addRoom("walking", new walking.WalkingRoom(stage.stageWidth, stage.stageHeight, RATIO));
-		//game.addPlace("tilesheet", new TileSheetPlace(stage.stageWidth, stage.stageHeight, 3));
-		//game.addPlace("masked", new halo.HaloPlace(stage.stageWidth, stage.stageHeight, 3));
+		//game.addRoom("other", new OtherPlace(stage.stageWidth, stage.stageHeight, RATIO));
+		//game.addRoom("one", new OnePlace(stage.stageWidth, stage.stageHeight, RATIO));
+		//game.addRoom("walking", new walking.WalkingRoom(stage.stageWidth, stage.stageHeight, RATIO));
+		//game.addRoom("tilesheet", new TileSheetPlace(stage.stageWidth, stage.stageHeight, 3));
+		//game.addRoom("masked", new halo.HaloPlace(stage.stageWidth, stage.stageHeight, 3));
 		
 		//var entityPlace = new EntityPlace(stage.stageWidth, stage.stageHeight, 3);
-		//game.addPlace("entities", entityPlace);
+		//game.addRoom("entities", entityPlace);
 		
 		/*
 		var tiledBox2dRoom = new TiledBox2dRoom(stage.stageWidth, stage.stageHeight, RATIO);
-		game.addPlace("tiledbox2d", tiledBox2dRoom);
+		game.addRoom("tiledbox2d", tiledBox2dRoom);
 		*/
+		
+		game.addRoom("svgAnimation", new SvgAnimationRoom(stage.stageWidth, stage.stageHeight, RATIO));
 		
 		noiseEffect = new ScreenWhiteNoiseEffect(stage.stageWidth, stage.stageHeight, 1);
 		noiseEffect.scale(RATIO);

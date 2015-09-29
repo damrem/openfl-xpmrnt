@@ -12,28 +12,23 @@ class SVGFrameAnimation extends Sprite
 	var frames:Array<SVG>;
 	var isPlaying:Bool;
 	var currentFrameId:Int=0;
-	var playMode:AnimationPlayMode;
+	public var playMode:AnimationPlayMode;
 	
 	var _iterationEnded:Signal0;
 	var nbLoops:UInt;
+	var currentLoop:UInt;
 	var iterationEnded(get, null):Signal0;
 	
 	/**
 	 * 
 	 * @param	initialFramId
-	 * @param	nbLoops	0 for infinite.
+	 * 
 	 */
-	public function new(nbLoops:UInt=0, playMode:AnimationPlayMode = null) 
+	public function new() 
 	{
 		super();
 		
-		this.nbLoops = nbLoops;
-		
-		if (playMode == null)
-		{
-			playMode = Normal;
-		}
-		this.playMode = playMode;
+		playMode = Normal;
 		
 		frames = new Array<SVG>();
 		
@@ -51,8 +46,12 @@ class SVGFrameAnimation extends Sprite
 		this.frames.concat(frames);
 	}
 	
-	public function play()
+	/**
+	 * @param	nbLoops	0 for infinite.
+	 */
+	public function play(nbLoops:UInt=0)
 	{
+		this.nbLoops = nbLoops;
 		isPlaying = true;
 	}
 	

@@ -9,6 +9,7 @@ import openfl.geom.Point;
 import openfl.geom.Rectangle;
 
 using hxlpers.display.BitmapDataSF;
+using hxlpers.display.DisplayObjectSF;
 
 /**
  * ...
@@ -19,20 +20,22 @@ class Camera
 
 	public var screen:BitmapData;
 	public var rect(get, null):Rectangle;
-	public var focusObject:Dynamic;
-
-	var pos:Pos;
+	public var pos:Pos;
 	var dim:Dim;
 	
 	var room:Room;
-	var zoomLevel:Float;	
+	public var zoomLevel:Float=1;	
+	public var initialPos(get, null):Pos;
+	private var _initialPos:Pos;
+	function get_initialPos():Pos { return _initialPos; }
 	var followed:Dynamic;
 	
-	public function new(pos:Pos, dim:Dim) 
+	public function new(room:Room, pos:Pos, dim:Dim) 
 	{
+		this.room = room;
 		trace(dim);
 		this.dim = dim;
-		this.pos = pos;
+		this.pos = _initialPos = pos;
 		
 		screen = new BitmapData(Math.ceil(dim.w), Math.ceil(dim.h));
 	}
@@ -54,17 +57,23 @@ class Camera
 			pos.x = followed.x;
 			pos.y = followed.y;
 		}
+		
+		for (var layer in room.layerList.getLayers())
+		{
+			layer.scale
+		}
 	}
 	
 	public function render(room:Room) 
 	{
 		screen.clear(0xff000000);
-		screen.draw(room, new Matrix(1, 0, 0, 1, -rect.x, 0));//FIXME the last 0 should be -rect.y, but it shifts incoherently
+		screen.draw(room/*, new Matrix(zoomLevel, 0, 0, zoomLevel, screen.width/2-pos.x, 0)*/);//FIXME the last 0 should be -rect.y, but it shifts incoherently
 	}
 	
 	function get_rect():Rectangle 
 	{
-		return new Rectangle(pos.x - dim.w / 2, pos.y - dim.h / 2, dim.w, dim.h);
+		var focusedDim:Dim = { w:dim.w / zoomLevel, h:dim.h / zoomLevel };
+		return new Rectangle(pos.x - focusedDim.w / 2, pos.y - focusedDim.h / 2, focusedDim.w, focusedDim.h);
 	}
 	
 	

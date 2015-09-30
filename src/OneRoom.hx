@@ -5,6 +5,7 @@ import hxlpers.Rnd;
 import hxlpers.shapes.BoxShape;
 import hxlpers.shapes.DiskShape;
 import hxlpers.shapes.ShortcutShape;
+import motion.Actuate;
 import openfl.display.Sprite;
 import openfl.events.MouseEvent;
 import openfl.geom.Rectangle;
@@ -13,7 +14,7 @@ import openfl.geom.Rectangle;
  * ...
  * @author damrem
  */
-class OnePlace extends Room
+class OneRoom extends Room
 {
 	var entities:Array<Sprite>;
 	var nbShapes:UInt = 100;
@@ -50,6 +51,7 @@ class OnePlace extends Room
 			sprite.y = Rnd.float(h);
 			sprite.buttonMode = true;
 			sprite.addEventListener(MouseEvent.ROLL_OVER, onRollOver);
+			sprite.addEventListener(MouseEvent.ROLL_OUT, onRollOut);
 			
 			
 			addChild(sprite);
@@ -59,7 +61,18 @@ class OnePlace extends Room
 	
 	function onRollOver(e:MouseEvent):Void 
 	{
-		cast(e.currentTarget, Sprite).alpha = 0.5;
+		var sprite = cast(e.currentTarget, Sprite);
+		sprite.alpha = 0.5;
+		Actuate.tween(camera, 1, { zoomLevel:2 } );
+		Actuate.tween(camera.pos, 1, { x:sprite.x, y:sprite.y });
+	}
+	
+	function onRollOut(e:MouseEvent):Void 
+	{
+		
+		cast(e.currentTarget, Sprite).alpha = 1;
+		Actuate.tween(camera, 1, { zoomLevel:1 } );
+		Actuate.tween(camera.pos, 1, { x:camera.initialPos.x, y:camera.initialPos.y });
 	}
 	
 	override public function update()

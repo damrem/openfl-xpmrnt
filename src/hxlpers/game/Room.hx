@@ -14,7 +14,7 @@ class Room extends Sprite
 	var h:Float;
 	var ratio:UInt;
 	
-	var layerList:LayerList;
+	public var layerList:LayerList;
 	
 	public var camera:Camera;
 	

@@ -27,7 +27,7 @@ using hxlpers.display.BitmapDataSF;
  * ...
  * @author damrem
  */
-class HaloPlace extends Room
+class HaloRoom extends Room
 {
 	var entities:Array<Sprite>;
 	var nbShapes:UInt = 100;

@@ -30,14 +30,14 @@ class OtherPlace extends Room
 		super(fullWidth, fullHeight, ratio);
 		
 		bg = new Sprite();
-		bg.box(w, h, RndColor.rgb());
+		bg.rect(w, h, RndColor.rgb());
 		//bg.graphics.beginBitmapFill(Assets.getBitmapData("img/px3.png"));
 		//bg.graphics.beginFill(RndColor.rgb());
 		//bg.graphics.drawRect(0, 0, w, h);
 		//bg.graphics.endFill();
 		
 		hero = new Shape();
-		hero.box(10, 10, RndColor.gray(), 0, 0, true);
+		hero.rect(10, 10, RndColor.gray(), 0, 0, true);
 		//hero = new BoxShape(10, 10, 0xff0000, 0, 0, true);
 		addEventListener(MouseEvent.CLICK, onClick);
 		

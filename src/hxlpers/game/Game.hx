@@ -28,6 +28,10 @@ class Game extends Sprite
 	var pixelEffect:ScreenPixelEffect;
 	var renderingLayer:openfl.display.Bitmap;
 	
+	var cameraList:CameraList;
+	
+	
+	
 	public function new(fullWidth:UInt, fullHeight:UInt, ratio:UInt) 
 	{
 		super();
@@ -35,7 +39,7 @@ class Game extends Sprite
 		this.fullWidth = fullWidth;
 		this.ratio = ratio;
 		
-		
+		cameraList = new CameraList();
 		
 		rooms = new Map<String, Room>();
 		//rendering = new BitmapData(Math.ceil(fullWidth / ratio), Math.ceil(fullHeight / ratio), false, 0xff000000);
@@ -135,7 +139,8 @@ class Game extends Sprite
 		
 		
 		interactiveLayer.addChild(currentRoom);
-		renderingLayer.bitmapData = currentRoom.rendering;
+		//renderingLayer.bitmapData = currentRoom.rendering;
+		renderingLayer.bitmapData = currentRoom.camera.screen;
 		trace(interactiveLayer.width);
 		trace(interactiveLayer.scaleX);
 	}

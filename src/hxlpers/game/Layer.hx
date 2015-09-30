@@ -1,6 +1,8 @@
 package hxlpers.game;
+import openfl.display.BitmapData;
 import openfl.display.Sprite;
 import openfl.geom.Point;
+import openfl.utils.ByteArray;
 
 /**
  * ...
@@ -13,12 +15,18 @@ class Layer extends Sprite
 	
 	public function new() 
 	{
+		super();
 		scrollRatio = {x:1, y:1};
+	}
+	
+	public function update()
+	{
+		//TODO update layer position according to the camera position and the scroll ratio
 	}
 	
 }
 
 typedef ScrollRatio = {
-	var x:Float = 1;
-	var y:Float = 1;
+	var x:Float;
+	var y:Float;
 }

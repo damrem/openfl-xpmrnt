@@ -3,6 +3,7 @@ package;
 
 
 import entities.EntityPlace;
+import halo.HaloRoom;
 import hxlpers.effects.ScreenPixelEffect;
 import hxlpers.effects.ScreenWhiteNoiseEffect;
 import hxlpers.game.Game;
@@ -60,10 +61,10 @@ class Main extends Sprite
 		
 		
 		//game.addRoom("other", new OtherPlace(stage.stageWidth, stage.stageHeight, RATIO));
-		//game.addRoom("one", new OnePlace(stage.stageWidth, stage.stageHeight, RATIO));
+		game.addRoom("one", new OnePlace(stage.stageWidth, stage.stageHeight, RATIO));
 		//game.addRoom("walking", new walking.WalkingRoom(stage.stageWidth, stage.stageHeight, RATIO));
 		//game.addRoom("tilesheet", new TileSheetPlace(stage.stageWidth, stage.stageHeight, 3));
-		//game.addRoom("masked", new halo.HaloPlace(stage.stageWidth, stage.stageHeight, 3));
+		//game.addRoom("masked", new HaloRoom(stage.stageWidth, stage.stageHeight, 3));
 		
 		//var entityPlace = new EntityPlace(stage.stageWidth, stage.stageHeight, 3);
 		//game.addRoom("entities", entityPlace);
@@ -73,7 +74,7 @@ class Main extends Sprite
 		game.addRoom("tiledbox2d", tiledBox2dRoom);
 		*/
 		
-		game.addRoom("svgAnimation", new SvgAnimationRoom(stage.stageWidth, stage.stageHeight, RATIO));
+		//game.addRoom("svgAnimation", new SvgAnimationRoom(stage.stageWidth, stage.stageHeight, RATIO));
 		
 		noiseEffect = new ScreenWhiteNoiseEffect(stage.stageWidth, stage.stageHeight, 1);
 		noiseEffect.scale(RATIO);

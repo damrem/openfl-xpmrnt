@@ -14,20 +14,10 @@ class Room extends Sprite
 	var h:Float;
 	var ratio:UInt;
 	
-	public var rendering(get, null):BitmapData;
+	var layerList:LayerList;
 	
-	function get_camera():Camera 
-	{
-		return _camera;
-	}
+	public var camera:Camera;
 	
-	function set_camera(value:Camera):Camera 
-	{
-		return _camera = value;
-	}
-	var _rendering:BitmapData;
-	var camera(get, set):Camera;
-	var _camera:Camera;
 	
 	public function new(fullWidth:Float, fullHeight:Float, ratio:UInt)
 	{
@@ -35,14 +25,16 @@ class Room extends Sprite
 		w = fullWidth / ratio;
 		h = fullHeight / ratio;
 		this.ratio = ratio;
-		_rendering = new BitmapData(Math.ceil(w), Math.ceil(h));
-		_camera = new Camera(new Rectangle(0,0,w,h));
+		
+		layerList = new LayerList();
+		camera = new Camera( { x:w / 2, y:w / 2 }, { w:w, h:h } );
 	}
 	
 	public function update()
 	{
 		//trace("update");
-		_camera.update();
+		camera.update();
+		layerList.update();
 	}
 	
 	public function play()
@@ -57,13 +49,7 @@ class Room extends Sprite
 	
 	public function render()
 	{
-		_rendering.clear(0xff000000);
-		_rendering.draw(this, new Matrix(1, 0, 0, 1, -_camera.zone.x, -_camera.zone.y));
-	}
-	
-	function get_rendering():BitmapData 
-	{
-		return _rendering;
+		camera.render(this);
 	}
 	
 }

@@ -36,25 +36,27 @@ class SvgAnimationRoom extends Room
 		animated.addAnimation("anim08", createAnimation("img/tileset", 3, 351, 352, "", "", "svg"));
 		
 		animated.addAnimation("anim09", createAnimation("img/tileset", 3, 401, 401, "", "", "svg"));
+		/*
 		animated.addAnimation("anim10", createAnimation("img/tileset", 3, 451, 458, "", "", "svg"));
 		animated.addAnimation("anim11", createAnimation("img/tileset", 3, 460, 463, "", "", "svg"));
 		animated.addAnimation("anim12", createAnimation("img/tileset", 3, 468, 482, "", "", "svg"));
-		animated.addAnimation("anim13", createAnimation("img/tileset", 3, 481, 482, "", "", "svg"));
 		animated.addAnimation("anim14", createAnimation("img/tileset", 3, 491, 494, "", "", "svg"));
+		*/
+		animated.addAnimation("anim13", createAnimation("img/tileset", 3, 451, 494, "", "", "svg"));
 		
 		animated.addAnimation("anim15", createAnimation("img/tileset", 3, 551, 559, "", "", "svg"));
 		animated.addAnimation("anim16", createAnimation("img/tileset", 3, 401, 401, "", "", "svg"));
 		animated.addAnimation("anim17", createAnimation("img/tileset", 3, 650, 660, "", "", "svg"));
 	
 		addChild(animated);
-		animated.playAnimation("anim05");
+		animated.playAnimation("anim13");
 	}
 	
 	function createAnimation(assetPath:String, iLength:Int, iStart:Int, iEnd:Int, prefix:String = "", suffix:String = "", extension:String = "svg")
 	{
 		//var iLength = Std.string(iEnd).length;
 		var fixedILength = iLength > 0;
-		trace(fixedILength);
+		//trace(fixedILength);
 		var animation = new SVGFrameAnimation();
 		for (i in iStart...iEnd + 1)
 		{
@@ -68,11 +70,13 @@ class SvgAnimationRoom extends Room
 				iString = Std.string(i);
 			}
 			var filePath = assetPath + "/" + prefix + iString + suffix + "." + extension;
-			trace(filePath);
+			//trace(filePath);
 			
-			
-			var svg = new SVG(Assets.getText(filePath));
-			animation.addFrame(svg);
+			if (Assets.exists(filePath))
+			{
+				var svg = new SVG(Assets.getText(filePath));
+				animation.addFrame(svg);
+			}
 			
 			
 			

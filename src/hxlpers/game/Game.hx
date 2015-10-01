@@ -18,17 +18,18 @@ class Game extends Sprite
 	var rooms:Map<String, Room>;
 	//var rendering:BitmapData;
 	var currentRoom:Room;
-	var interactiveLayer:Sprite;
+	
 	var isPlaying:Bool;
 	var ratio:Float;
-	var postRendering:openfl.display.BitmapData;
-	var renderingContainer:openfl.display.Sprite;
+	var postRendering:BitmapData;
+	var renderingContainer:Sprite;
 	var fullWidth:UInt;
 	var fullHeight:UInt;
 	var pixelEffect:ScreenPixelEffect;
-	var renderingLayer:openfl.display.Bitmap;
+	var renderingLayer:Bitmap;
 	
 	var cameraList:CameraList;
+	var roomHolder:Sprite;
 	
 	
 	
@@ -57,15 +58,16 @@ class Game extends Sprite
 		var postRenderingLayer=new Bitmap(postRendering);
 		addChild(postRenderingLayer);
 		
-		interactiveLayer = new Sprite();
-		interactiveLayer.alpha = 0;
-		interactiveLayer.scale(ratio);
+		
 		
 		pixelEffect = new ScreenPixelEffect(fullWidth, fullHeight, Assets.getBitmapData("img/px3.png"));
 		
 		addEventListener(Event.ADDED_TO_STAGE, onStage);
 		
 		trace(mouseChildren);
+		
+		roomHolder = new Sprite();
+		addChild(roomHolder);
 	}
 	
 	private function onStage(e:Event):Void 
@@ -78,7 +80,7 @@ class Game extends Sprite
 	{
 		trace("play");
 		isPlaying = true;
-		addChild(interactiveLayer);
+		
 		addEventListener(Event.ENTER_FRAME, update);
 		currentRoom.play();
 	}
@@ -88,7 +90,7 @@ class Game extends Sprite
 		trace("pause");
 		isPlaying = false;
 		currentRoom.pause();
-		removeChild(interactiveLayer);
+		
 		removeEventListener(Event.ENTER_FRAME, update);
 	}
 	
@@ -130,7 +132,6 @@ class Game extends Sprite
 		}
 		
 		currentRoom = rooms.get(id);
-		interactiveLayer.removeChildren();
 		
 		if (isPlaying || firstRoom)
 		{
@@ -138,11 +139,10 @@ class Game extends Sprite
 		}
 		
 		
-		interactiveLayer.addChild(currentRoom);
+		
 		//renderingLayer.bitmapData = currentRoom.rendering;
 		renderingLayer.bitmapData = currentRoom.camera.screen;
-		trace(interactiveLayer.width);
-		trace(interactiveLayer.scaleX);
+		roomHolder.addChild(currentRoom);
 	}
 	
 }

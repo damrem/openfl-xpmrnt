@@ -60,7 +60,7 @@ class Main extends Sprite
 		addChild(game);
 		
 		
-		//game.addRoom("other", new OtherPlace(stage.stageWidth, stage.stageHeight, RATIO));
+		//game.addRoom("other", new OtherRoom(stage.stageWidth, stage.stageHeight, RATIO));
 		game.addRoom("one", new OneRoom(stage.stageWidth, stage.stageHeight, RATIO));
 		//game.addRoom("walking", new walking.WalkingRoom(stage.stageWidth, stage.stageHeight, RATIO));
 		//game.addRoom("tilesheet", new TileSheetPlace(stage.stageWidth, stage.stageHeight, 3));

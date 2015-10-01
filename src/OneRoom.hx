@@ -1,5 +1,6 @@
 package;
 import hxlpers.colors.RndColor;
+import hxlpers.game.Layer;
 import hxlpers.game.Room;
 import hxlpers.Rnd;
 import hxlpers.shapes.BoxShape;
@@ -26,6 +27,8 @@ class OneRoom extends Room
 		trace(w, h);
 
 		entities = new Array<Sprite>();
+		
+		var layer = new Layer();
 		
 		for (i in 0...nbShapes)
 		{
@@ -54,9 +57,11 @@ class OneRoom extends Room
 			sprite.addEventListener(MouseEvent.ROLL_OUT, onRollOut);
 			
 			
-			addChild(sprite);
+			layer.addChild(sprite);
 			entities.push(sprite);
 		}
+		
+		addLayer(layer, true);
 	}
 	
 	function onRollOver(e:MouseEvent):Void 

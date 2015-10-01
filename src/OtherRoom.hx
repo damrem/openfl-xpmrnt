@@ -18,7 +18,7 @@ using hxlpers.display.ShapeSF;
  * ...
  * @author damrem
  */
-class OtherPlace extends Room
+class OtherRoom extends Room
 {
 	
 	var hero:Shape;

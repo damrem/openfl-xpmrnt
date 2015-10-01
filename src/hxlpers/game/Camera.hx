@@ -58,16 +58,16 @@ class Camera
 			pos.y = followed.y;
 		}
 		
-		for (var layer in room.layerList.getLayers())
-		{
-			layer.scale
-		}
+		
 	}
 	
-	public function render(room:Room) 
+	public function render(layerList:LayerList) 
 	{
 		screen.clear(0xff000000);
-		screen.draw(room/*, new Matrix(zoomLevel, 0, 0, zoomLevel, screen.width/2-pos.x, 0)*/);//FIXME the last 0 should be -rect.y, but it shifts incoherently
+		for (layer in layerList.getLayers())
+		{
+			screen.draw(layer/*, new Matrix(zoomLevel, 0, 0, zoomLevel, screen.width/2-pos.x, 0)*/);//FIXME the last 0 should be -rect.y, but it shifts incoherently
+		}
 	}
 	
 	function get_rect():Rectangle 

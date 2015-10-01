@@ -1,6 +1,7 @@
 package;
 
 import hxlpers.colors.RndColor;
+import hxlpers.game.Layer;
 import hxlpers.game.Room;
 import hxlpers.Rnd;
 import hxlpers.shapes.BoxShape;
@@ -22,28 +23,35 @@ class OtherRoom extends Room
 {
 	
 	var hero:Shape;
-	var bg:Sprite;
 	var ppc:Point;
+	var fg:Layer;
 	
 	public function new(fullWidth:Float, fullHeight:Float, ratio:UInt) 
 	{
 		super(fullWidth, fullHeight, ratio);
 		
-		bg = new Sprite();
+		var bg = new Layer();
 		bg.rect(w, h, RndColor.rgb());
 		//bg.graphics.beginBitmapFill(Assets.getBitmapData("img/px3.png"));
 		//bg.graphics.beginFill(RndColor.rgb());
 		//bg.graphics.drawRect(0, 0, w, h);
 		//bg.graphics.endFill();
 		
+		var heroLayer = new Layer();
+		
 		hero = new Shape();
 		hero.rect(10, 10, RndColor.gray(), 0, 0, true);
 		//hero = new BoxShape(10, 10, 0xff0000, 0, 0, true);
 		addEventListener(MouseEvent.CLICK, onClick);
 		
-		addChild(bg);
+		addLayer(bg);
 		//trace(width, height);
-		addChild(hero);
+		heroLayer.addChild(hero);
+		addLayer(heroLayer);
+		
+		fg = new Layer(true);
+		fg.rect(w, h);
+		addLayer(fg);
 		
 		addEventListener(Event.ADDED_TO_STAGE, onStage);
 	}
@@ -67,19 +75,19 @@ class OtherRoom extends Room
 		super.play();
 		trace("play");
 		trace(parent);
-		bg.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
+		fg.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
 	}
 	
 	override public function pause()
 	{
 		super.pause();
 		trace("pause");
-		bg.removeEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
+		fg.removeEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
 	}
 	
 	private function onMouseMove(e:MouseEvent):Void 
 	{
-		trace(e.localX, e.localY, e.stageX, e.stageY);
+		//trace(e.localX, e.localY, e.stageX, e.stageY);
 		hero.x = Math.round(e.stageX/ratio);
 		hero.y = Math.round(e.stageY/ratio);
 		

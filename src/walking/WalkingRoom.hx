@@ -3,6 +3,7 @@ package walking;
 import hxlpers.colors.Colors;
 import hxlpers.colors.RndColor;
 import hxlpers.effects.ScreenWhiteNoiseEffect;
+import hxlpers.game.Layer;
 import hxlpers.game.Room;
 import openfl.Assets;
 import openfl.display.Shape;
@@ -21,7 +22,7 @@ using hxlpers.IntSF;
  */
 class WalkingRoom extends Room
 {
-	var bg:Sprite;
+	var bgLayer:Layer;
 	var isWalking:Bool;
 	
 	var hero:Hero;
@@ -31,27 +32,35 @@ class WalkingRoom extends Room
 	{
 		super(fullWidth, fullHeight, ratio);
 		
-		bg = new Sprite();
+		bgLayer = new Layer();
 		trace(w, h);
-		bg.rect(w*2, h, RndColor.rgb());
-		addChild(bg);
+		bgLayer.rect(w*2, h, RndColor.rgb());
+		addLayer(bgLayer);
 		
+		var skyLayer = new Layer();
 		sky = new ScreenWhiteNoiseEffect(cast(w*2), cast(h), 3, 0.1);
 		sky.color(Colors.WHITE);
 		sky.alpha = 0.25;
-		addChild(sky);
+		skyLayer.addChild(sky);
+		addLayer(skyLayer);
 		
+		
+		var groundLayer = new Layer();
 		var ground = new Shape();
-		addChild(ground.rect(w*2, h / 3, Colors.WHITE));
+		ground.rect(w * 2, h / 3, Colors.WHITE);
 		ground.y = this.h - ground.height;
+		groundLayer.addChild(ground);
+		addLayer(groundLayer);
 		
+		var heroLayer = new Layer();
 		hero = new Hero();
 		
 		hero.x = 10;
 		hero.y = ground.y - hero.height;
-		addChild(hero);
+		heroLayer.addChild(hero);
+		addLayer(heroLayer);
 		
-		_camera.follow(hero);
+		camera.follow(hero);
 		
 		
 		var i:UInt = 123456;
@@ -76,13 +85,13 @@ class WalkingRoom extends Room
 	
 	private function onKeyDown(e:KeyboardEvent):Void 
 	{
-		trace("onKeyDown", e);
+		//trace("onKeyDown", e);
 		hero.isWalking = true;
 	}
 	
 	private function onKeyUp(e:KeyboardEvent):Void
 	{
-		trace("onKeyUp", e);
+		//trace("onKeyUp", e);
 		hero.isWalking = false;
 	}
 	
@@ -102,7 +111,7 @@ class WalkingRoom extends Room
 		
 		if (hero.x > w)
 		{
-			bg.color(RndColor.rgb());
+			bgLayer.rect(w*2, h, RndColor.rgb());
 			hero.x = -hero.width;
 			sky.next();
 		}

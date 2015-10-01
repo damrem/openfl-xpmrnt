@@ -12,10 +12,14 @@ class Layer extends Sprite
 {
 
 	public var scrollRatio:ScrollRatio;
+	public var isMouseInteractive:Bool;
+	public var isVisible:Bool;
 	
-	public function new() 
+	public function new(mouseInteractive:Bool=false, isVisible:Bool=true) 
 	{
 		super();
+		this.isVisible = isVisible;
+		this.isMouseInteractive = mouseInteractive;
 		scrollRatio = {x:1, y:1};
 	}
 	

@@ -3,6 +3,7 @@ import halo.Halo;
 import hxlpers.colors.ColorComponent;
 import hxlpers.colors.RGBColor;
 import hxlpers.colors.RndColor;
+import hxlpers.game.Layer;
 import hxlpers.game.Room;
 import hxlpers.Rnd;
 import hxlpers.shapes.BoxShape;
@@ -35,11 +36,11 @@ class HaloRoom extends Room
 	var halo:Halo;
 	var halo2:Halo;
 	
-	var maskLayer:Sprite;
-	var maskRendering:BitmapData;
-	var maskBuffer:ByteArray;
+	var masker:Sprite;
+	var maskerRendering:BitmapData;
+	var maskerBuffer:ByteArray;
 	
-	var maskedLayer:Sprite;
+	var masked:Sprite;
 	var maskedRendering:BitmapData;
 	var maskedBuffer:ByteArray;
 	
@@ -56,33 +57,36 @@ class HaloRoom extends Room
 		
 		
 		//	the scene
-		maskedLayer = createMaskedLayer();
-		maskedRendering = new BitmapData(Math.ceil(w), Math.ceil(h), true, 0xFFFFFFFF);
+		masked = createMasked();
+		maskedRendering = new BitmapData(Math.ceil(w), Math.ceil(h), true, 0xFF000000);
 		
 		//	the halos
-		maskLayer = createMaskLayer();
-		maskRendering = new BitmapData(Math.ceil(w), Math.ceil(h), true, 0xFFFFFFFF);
-		//addChild(maskLayer);
+		masker = createMasker();
+		maskerRendering = new BitmapData(Math.ceil(w), Math.ceil(h), true, 0xFF000000);
+		//addChild(masker);
 
-		addChild(new Bitmap(maskRendering));
+		//addChild(new Bitmap(maskerRendering));
 		
 		finalBuffer = new ByteArray();
-		finalRendering = new BitmapData(Math.ceil(w), Math.ceil(h), true, 0x00FFFFFF);
+		finalRendering = new BitmapData(Math.ceil(w), Math.ceil(h), true, 0xFF000000);
 		
-		addChild(new Bitmap(finalRendering));
+		var finalLayer = new Layer();
+		finalLayer.addChild(new Bitmap(finalRendering));
+		addLayer(finalLayer);
 		
 		
-		var fg = new Sprite();
+		
+		var fg = new Layer(true, false);
 		fg.rect(w, h);
 		fg.alpha = 0;
 		fg.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
-		addChild(fg);
+		addLayer(fg);
 		
 	}
 	
-	function createMaskLayer():Sprite
+	function createMasker():Sprite
 	{
-		maskLayer = new Sprite();
+		masker = new Sprite();
 
 		halo = new Halo();
 		
@@ -90,19 +94,19 @@ class HaloRoom extends Room
 		halo2.x = w / 2;
 		halo2.y = h / 2;
 		
-		maskLayer.addChild(halo);
-		maskLayer.addChild(halo2);
+		masker.addChild(halo);
+		masker.addChild(halo2);
 		
-		return maskLayer;
+		return masker;
 	}
 	
-	function createMaskedLayer():Sprite
+	function createMasked():Sprite
 	{
-		var maskedLayer = new Sprite();
+		var masked = new Sprite();
 		
 		var bg = new Sprite();
 		bg.rect(w, h, RndColor.rgb());
-		maskedLayer.addChild(bg);
+		masked.addChild(bg);
 		
 		entities = new Array<Sprite>();
 		for (i in 0...nbShapes)
@@ -126,15 +130,15 @@ class HaloRoom extends Room
 			sprite.y = Rnd.float(h);
 			sprite.buttonMode = true;
 			sprite.addEventListener(MouseEvent.ROLL_OVER, onRollOver);
-			maskedLayer.addChild(sprite);
+			masked.addChild(sprite);
 			entities.push(sprite);
 		}
 		
-		return maskedLayer;
+		return masked;
 	}
 	
 	
-	private function onMouseMove(e:MouseEvent):Void 
+	function onMouseMove(e:MouseEvent):Void 
 	{
 		halo.x = Math.round(e.stageX / ratio);
 		halo.y = Math.round(e.stageY / ratio);
@@ -166,21 +170,21 @@ class HaloRoom extends Room
 	override public function render()
 	{
 		
-		maskedRendering.fillRect(maskedRendering.rect, 0xFFFFFFFF);
-		maskedRendering.draw(maskedLayer);
+		maskedRendering.fillRect(maskedRendering.rect, 0xFF000000);
+		maskedRendering.draw(masked);
 		maskedBuffer = maskedRendering.getPixels(maskedRendering.rect);
 		maskedBuffer.position = 0;
 		
-		maskRendering.fillRect(maskRendering.rect, 0x00FFFFFF);// .clear(0);
-		maskRendering.draw(maskLayer);
-		maskBuffer = maskRendering.getPixels(maskRendering.rect);
-		maskBuffer.position = 0;
+		maskerRendering.fillRect(maskerRendering.rect, 0x00000000);// .clear(0);
+		maskerRendering.draw(masker);
+		maskerBuffer = maskerRendering.getPixels(maskerRendering.rect);
+		maskerBuffer.position = 0;
 		
 		finalBuffer.clear();
 		
-		while (finalBuffer.position < maskBuffer.length)
+		while (finalBuffer.position < maskerBuffer.length)
 		{
-			var a = maskBuffer.readUnsignedInt() & ColorComponent.ALPHA_MASK;
+			var a = maskerBuffer.readUnsignedInt() & ColorComponent.ALPHA_MASK;
 			var rgb = maskedBuffer.readUnsignedInt() & ColorComponent.ALPHA_NEGATIVE;
 			finalBuffer.writeUnsignedInt(a | rgb);
 		}

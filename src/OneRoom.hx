@@ -28,7 +28,7 @@ class OneRoom extends Room
 
 		entities = new Array<Sprite>();
 		
-		var layer = new Layer();
+		var layer = new Layer(true, true);
 		
 		for (i in 0...nbShapes)
 		{
@@ -61,7 +61,7 @@ class OneRoom extends Room
 			entities.push(sprite);
 		}
 		
-		addLayer(layer, true);
+		addLayer(layer);
 	}
 	
 	function onRollOver(e:MouseEvent):Void 

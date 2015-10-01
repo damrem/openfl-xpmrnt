@@ -1,6 +1,7 @@
 package;
 
 import haxe.Json;
+import hxlpers.game.Layer;
 import hxlpers.game.Room;
 import hxlpers.tiled.TileMapBitmapData;
 import hxlpers.tiled.TileMapDef;
@@ -23,10 +24,12 @@ class TileSheetPlace extends Room
 		super(fullWidth, fullHeight, ratio);
 		
 		var tileSetBitmapData = Assets.getBitmapData("img/bugtilesbrown.png");
-		var dt:TileMapDef = new TileMapDef(Json.parse(Assets.getText("lvl/ring.json")));
+		var dt:TileMapDef = new TileMapDef(Json.parse(Assets.getText("lvl/ring.json")), "lvl/");
 		var tileMap = new TileMapBitmapData(dt, tileSetBitmapData);
 		
-		addChild(new Bitmap(tileMap));
+		var mainLayer = new Layer();
+		mainLayer.addChild(new Bitmap(tileMap));
+		addLayer(mainLayer);
 		
 		
 	}

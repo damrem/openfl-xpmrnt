@@ -3,6 +3,7 @@ import halo.Halo;
 import hxlpers.colors.ColorComponent;
 import hxlpers.colors.RGBColor;
 import hxlpers.colors.RndColor;
+import hxlpers.game.BitmapLayer;
 import hxlpers.game.Layer;
 import hxlpers.game.Room;
 import hxlpers.Rnd;
@@ -36,13 +37,9 @@ class HaloRoom extends Room
 	var halo:Halo;
 	var halo2:Halo;
 	
-	var masker:Sprite;
-	var maskerRendering:BitmapData;
-	var maskerBuffer:ByteArray;
 	
-	var masked:Sprite;
-	var maskedRendering:BitmapData;
-	var maskedBuffer:ByteArray;
+	var masker:BitmapLayer;
+	var masked:BitmapLayer;
 	
 	var finalBuffer:ByteArray;
 	var finalRendering:BitmapData;
@@ -54,18 +51,11 @@ class HaloRoom extends Room
 		super(fullWidth, fullHeight, ratio);
 		trace(w, h);
 		
-		
-		
 		//	the scene
-		masked = createMasked();
-		maskedRendering = new BitmapData(Math.ceil(w), Math.ceil(h), true, 0xFF000000);
+		masked = createMaskedLayer();
 		
 		//	the halos
-		masker = createMasker();
-		maskerRendering = new BitmapData(Math.ceil(w), Math.ceil(h), true, 0xFF000000);
-		//addChild(masker);
-
-		//addChild(new Bitmap(maskerRendering));
+		masker = createMaskerLayer();
 		
 		finalBuffer = new ByteArray();
 		finalRendering = new BitmapData(Math.ceil(w), Math.ceil(h), true, 0xFF000000);
@@ -84,9 +74,9 @@ class HaloRoom extends Room
 		
 	}
 	
-	function createMasker():Sprite
+	function createMaskerLayer():BitmapLayer
 	{
-		masker = new Sprite();
+		masker = new BitmapLayer(Math.ceil(w), Math.ceil(h), ratio, true, 0x00000000);
 
 		halo = new Halo();
 		
@@ -100,13 +90,13 @@ class HaloRoom extends Room
 		return masker;
 	}
 	
-	function createMasked():Sprite
+	function createMaskedLayer():BitmapLayer
 	{
-		var masked = new Sprite();
+		var layer = new BitmapLayer(Math.ceil(w), Math.ceil(h), ratio, true, 0xFF000000);
 		
 		var bg = new Sprite();
 		bg.rect(w, h, RndColor.rgb());
-		masked.addChild(bg);
+		layer.addChild(bg);
 		
 		entities = new Array<Sprite>();
 		for (i in 0...nbShapes)
@@ -130,11 +120,11 @@ class HaloRoom extends Room
 			sprite.y = Rnd.float(h);
 			sprite.buttonMode = true;
 			sprite.addEventListener(MouseEvent.ROLL_OVER, onRollOver);
-			masked.addChild(sprite);
+			layer.addChild(sprite);
 			entities.push(sprite);
 		}
 		
-		return masked;
+		return layer;
 	}
 	
 	
@@ -166,21 +156,10 @@ class HaloRoom extends Room
 		//halo2.y += Rnd.float( -1, 1);
 	}
 	
-	function subRender(sprite:Sprite, rendering:BitmapData, bgColor:UInt):ByteArray
-	{
-		rendering.fillRect(rendering.rect, bgColor);
-		rendering.draw(sprite);
-		var buffer = rendering.getPixels(rendering.rect);
-		buffer.position = 0;
-		return buffer;
-	}
-	
-	
 	override public function render()
 	{
-		maskedBuffer = subRender(masked, maskedRendering, 0xFF000000);
-		
-		maskerBuffer = subRender(masker, maskerRendering, 0x00000000);
+		var maskedBuffer = masked.getBuffer();
+		var maskerBuffer = masker.getBuffer();
 		
 		finalBuffer.clear();
 		
@@ -192,8 +171,8 @@ class HaloRoom extends Room
 		}
 		
 		finalBuffer.position = 0;
-		
 		finalRendering.setPixels(finalRendering.rect, finalBuffer);
+		
 		super.render();
 
 	}

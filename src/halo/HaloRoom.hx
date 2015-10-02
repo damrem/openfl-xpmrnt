@@ -166,19 +166,21 @@ class HaloRoom extends Room
 		//halo2.y += Rnd.float( -1, 1);
 	}
 	
+	function subRender(sprite:Sprite, rendering:BitmapData, bgColor:UInt):ByteArray
+	{
+		rendering.fillRect(rendering.rect, bgColor);
+		rendering.draw(sprite);
+		var buffer = rendering.getPixels(rendering.rect);
+		buffer.position = 0;
+		return buffer;
+	}
+	
 	
 	override public function render()
 	{
+		maskedBuffer = subRender(masked, maskedRendering, 0xFF000000);
 		
-		maskedRendering.fillRect(maskedRendering.rect, 0xFF000000);
-		maskedRendering.draw(masked);
-		maskedBuffer = maskedRendering.getPixels(maskedRendering.rect);
-		maskedBuffer.position = 0;
-		
-		maskerRendering.fillRect(maskerRendering.rect, 0x00000000);// .clear(0);
-		maskerRendering.draw(masker);
-		maskerBuffer = maskerRendering.getPixels(maskerRendering.rect);
-		maskerBuffer.position = 0;
+		maskerBuffer = subRender(masker, maskerRendering, 0x00000000);
 		
 		finalBuffer.clear();
 		

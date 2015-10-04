@@ -21,10 +21,23 @@ class BitmapLayer extends Sprite
 		bitmapData = new BitmapData(w, h, transparent, fillColor);
 	}
 	
-	public function getBuffer():ByteArray
+	public function render(?fillColor:UInt):BitmapData
 	{
+		if (fillColor == null)
+		{
+			fillColor = this.fillColor;
+		}
 		bitmapData.fillRect(bitmapData.rect, fillColor);
 		bitmapData.draw(this);
+		return bitmapData;
+	}
+	
+	public function getBuffer(rerender:Bool=true):ByteArray
+	{
+		if (rerender)
+		{
+			render();
+		}
 		var _buffer = bitmapData.getPixels(bitmapData.rect);
 		_buffer.position = 0;
 		return _buffer;

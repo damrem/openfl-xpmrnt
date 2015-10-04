@@ -1,7 +1,7 @@
 package hxlpers.game;
+import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.display.Sprite;
-import openfl.geom.Point;
 import openfl.utils.ByteArray;
 
 /**
@@ -10,26 +10,36 @@ import openfl.utils.ByteArray;
  */
 class Layer extends Sprite
 {
+	var bmp:Bitmap;
 
 	public var scrollRatio:ScrollRatio;
 	public var isMouseInteractive:Bool;
 	public var isVisible:Bool;
-	public var bitmapData:ColoredBitmapData;
+	public var data:ColoredBitmapData;
 	
 	public function new(bitmapData:ColoredBitmapData, mouseInteractive:Bool=false, isVisible:Bool=true) 
 	{
 		super();
-		this.bitmapData = bitmapData;
+		this.data = bitmapData;
 		this.isVisible = isVisible;
 		this.isMouseInteractive = mouseInteractive;
 		scrollRatio = {x:1, y:1};
 	}
 	
+	public function getBitmap():Bitmap
+	{
+		if (bmp == null)
+		{
+			bmp = new Bitmap(data);
+		}
+		return bmp;
+	}
+	
 	public function render():BitmapData
 	{
-		bitmapData.fill();
-		bitmapData.draw(this);
-		return bitmapData;
+		data.fill();
+		data.draw(this);
+		return data;
 	}
 	
 	public function getBytes(rerender:Bool=false):ByteArray
@@ -38,7 +48,7 @@ class Layer extends Sprite
 		{
 			render();
 		}
-		var _buffer = bitmapData.getPixels(bitmapData.rect);
+		var _buffer = data.getPixels(data.rect);
 		_buffer.position = 0;
 		return _buffer;
 	}

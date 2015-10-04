@@ -17,6 +17,8 @@ class Room extends Sprite
 	var ratio:UInt;
 	
 	var interactiveLayerHolder:Sprite;
+	var bitmapHolder:Sprite;
+
 	var layerList:LayerList;
 	
 	public var camera:Camera;
@@ -32,6 +34,10 @@ class Room extends Sprite
 		layerList = new LayerList();
 		camera = new Camera(this, { x:w / 2, y:w / 2 }, { w:w, h:h } );
 		
+		bitmapHolder = new Sprite();
+		bitmapHolder.scale(ratio);
+		addChild(bitmapHolder);
+		
 		interactiveLayerHolder = new Sprite();
 		interactiveLayerHolder.alpha = 0;
 		interactiveLayerHolder.scale(ratio);
@@ -39,7 +45,14 @@ class Room extends Sprite
 	
 	function addLayer(layer:Layer) 
 	{
+		trace("addLayer", layer);
 		layerList.addLayer(layer);
+		
+		if (layer.isVisible)
+		{
+			bitmapHolder.addChild(layer.getBitmap());
+		}
+		
 		if (layer.isMouseInteractive) {
 			interactiveLayerHolder.addChild(layer);
 			addChild(interactiveLayerHolder);

@@ -3,7 +3,7 @@ import halo.Halo;
 import hxlpers.colors.ColorComponent;
 import hxlpers.colors.RGBColor;
 import hxlpers.colors.RndColor;
-import hxlpers.game.BitmapLayer;
+import hxlpers.game.ColoredBitmapData;
 import hxlpers.game.Layer;
 import hxlpers.game.Room;
 import hxlpers.Rnd;
@@ -38,11 +38,11 @@ class HaloRoom extends Room
 	var halo2:Halo;
 	
 	
-	var masker:BitmapLayer;
-	var masked:BitmapLayer;
+	var masker:Layer;
+	var masked:Layer;
 	
-	var finalBuffer:ByteArray;
-	var finalRendering:BitmapData;
+	var finalBytes:ByteArray;
+	var finalRendering:ColoredBitmapData;
 	
 	
 	public function new(fullWidth:Float, fullHeight:Float, ratio:UInt) 
@@ -57,16 +57,16 @@ class HaloRoom extends Room
 		//	the halos
 		masker = createMaskerLayer();
 		
-		finalBuffer = new ByteArray();
-		finalRendering = new BitmapData(Math.ceil(w), Math.ceil(h), true, 0xFF000000);
+		finalBytes = new ByteArray();
+		finalRendering = new ColoredBitmapData(w, h, true, 0xFF000000);
 		
-		var finalLayer = new Layer();
+		var finalLayer = new Layer(finalRendering);
 		finalLayer.addChild(new Bitmap(finalRendering));
 		addLayer(finalLayer);
 		
 		
 		
-		var fg = new Layer(true, false);
+		var fg = new Layer(new ColoredBitmapData(w, h, true, 0), true, false);
 		fg.rect(w, h);
 		fg.alpha = 0;
 		fg.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
@@ -74,9 +74,9 @@ class HaloRoom extends Room
 		
 	}
 	
-	function createMaskerLayer():BitmapLayer
+	function createMaskerLayer():Layer
 	{
-		masker = new BitmapLayer(Math.ceil(w), Math.ceil(h), ratio, true, 0x00000000);
+		masker = new Layer(new ColoredBitmapData(w, h, true, 0x00000000));
 
 		halo = new Halo();
 		
@@ -90,9 +90,9 @@ class HaloRoom extends Room
 		return masker;
 	}
 	
-	function createMaskedLayer():BitmapLayer
+	function createMaskedLayer():Layer
 	{
-		var layer = new BitmapLayer(Math.ceil(w), Math.ceil(h), ratio, true, 0xFF000000);
+		var layer = new Layer(new ColoredBitmapData(w, h, true, 0xFF000000));
 		
 		var bg = new Sprite();
 		bg.rect(w, h, RndColor.rgb());
@@ -158,20 +158,20 @@ class HaloRoom extends Room
 	
 	override public function render()
 	{
-		var maskedBuffer = masked.getBuffer();
-		var maskerBuffer = masker.getBuffer();
+		var maskedBytes = masked.getBytes(true);
+		var maskerBytes = masker.getBytes(true);
 		
-		finalBuffer.clear();
+		finalBytes.clear();
 		
-		while (finalBuffer.position < maskerBuffer.length)
+		while (finalBytes.position < maskerBytes.length)
 		{
-			var a = maskerBuffer.readUnsignedInt() & ColorComponent.ALPHA_MASK;
-			var rgb = maskedBuffer.readUnsignedInt() & ColorComponent.ALPHA_NEGATIVE;
-			finalBuffer.writeUnsignedInt(a | rgb);
+			var a = maskerBytes.readUnsignedInt() & ColorComponent.ALPHA_MASK;
+			var rgb = maskedBytes.readUnsignedInt() & ColorComponent.ALPHA_NEGATIVE;
+			finalBytes.writeUnsignedInt(a | rgb);
 		}
 		
-		finalBuffer.position = 0;
-		finalRendering.setPixels(finalRendering.rect, finalBuffer);
+		finalBytes.position = 0;
+		finalRendering.setPixels(finalRendering.rect, finalBytes);
 		
 		super.render();
 

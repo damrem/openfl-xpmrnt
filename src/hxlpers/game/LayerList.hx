@@ -33,7 +33,7 @@ class LayerList
 	{
 		for (layer in layers)
 		{
-			layer.update();
+			//layer.update();
 		}
 	}
 	

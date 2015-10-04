@@ -2,24 +2,15 @@ package;
 
 
 
-import entities.EntityPlace;
 import halo.HaloRoom;
 import hxlpers.effects.ScreenPixelEffect;
 import hxlpers.effects.ScreenWhiteNoiseEffect;
 import hxlpers.game.Game;
 import hxlpers.game.Room;
-import hxlpers.shapes.ShortcutShape;
 import openfl.Assets;
 import openfl.display.FPS;
 import openfl.display.Sprite;
 import openfl.events.Event;
-import svganimation.SvgAnimationRoom;
-import tiledbox2d.TiledBox2dRoom;
-import tiledbox2d.TiledBox2dRoom;
-import tiledbox2d.TiledBox2dRoom;
-import tiledbox2d.TiledBox2dRoom;
-import tiledbox2d.TiledBox2dRoom;
-import walking.WalkingRoom;
 
 using hxlpers.display.DisplayObjectSF;
 using hxlpers.display.SpriteSF;

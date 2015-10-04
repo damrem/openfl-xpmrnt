@@ -43,7 +43,7 @@ class Room extends Sprite
 		interactiveLayerHolder.scale(ratio);
 	}
 	
-	function addLayer(layer:Layer) 
+	function addLayer(layer:Layer):Layer 
 	{
 		trace("addLayer", layer);
 		layerList.addLayer(layer);
@@ -57,6 +57,7 @@ class Room extends Sprite
 			interactiveLayerHolder.addChild(layer);
 			addChild(interactiveLayerHolder);
 		}
+		return layer;
 	}
 	
 	public function update()

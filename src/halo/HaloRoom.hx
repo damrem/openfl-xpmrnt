@@ -40,11 +40,7 @@ class HaloRoom extends Room
 	
 	var masker:Layer;
 	var masked:Layer;
-	var finalLayer:hxlpers.game.Layer;
-	
-	//var finalBytes:ByteArray;
-	//var finalRendering:ColoredBitmapData;
-	
+	var finalLayer:Layer;
 	
 	public function new(fullWidth:Float, fullHeight:Float, ratio:UInt) 
 	{
@@ -58,20 +54,14 @@ class HaloRoom extends Room
 		//	the halos
 		masker = createMaskerLayer();
 		
-		//finalBytes = new ByteArray();
-		//finalRendering = ;
-		
-		finalLayer = new Layer(new ColoredBitmapData(w, h, true, 0xFF000000));
-		//finalLayer.addChild(new Bitmap(finalRendering));
-		addLayer(finalLayer);
+		finalLayer = addLayer(new Layer(new ColoredBitmapData(w, h, true, 0xFF000000)));
 		trace(finalLayer.parent);
 		
 		
-		var fg = new Layer(new ColoredBitmapData(w, h, true, 0), true, false);
+		var fg = addLayer(new Layer(new ColoredBitmapData(w, h, true, 0), true, false));
 		fg.rect(w, h);
 		fg.alpha = 0;
 		fg.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
-		addLayer(fg);
 		
 	}
 	
@@ -162,8 +152,7 @@ class HaloRoom extends Room
 		var maskedBytes = masked.getBytes(true);
 		var maskerBytes = masker.getBytes(true);
 		
-		var finalBytes = finalLayer.getBytes(false);
-		finalBytes.clear();
+		var finalBytes = new ByteArray();
 		
 		while (finalBytes.position < maskerBytes.length)
 		{

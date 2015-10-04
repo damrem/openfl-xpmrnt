@@ -11,6 +11,7 @@ import openfl.Assets;
 import openfl.display.FPS;
 import openfl.display.Sprite;
 import openfl.events.Event;
+import walking.WalkingRoom;
 
 using hxlpers.display.DisplayObjectSF;
 using hxlpers.display.SpriteSF;
@@ -36,7 +37,7 @@ class Main extends Sprite
 		super();	
 		addEventListener(Event.ADDED_TO_STAGE, onStage);
 		
-		
+		Conf.RATIO = 3;
 		
 	}
 	
@@ -52,11 +53,11 @@ class Main extends Sprite
 		addChild(game);
 		
 		
-		//game.addRoom("one", new OneRoom(stage.stageWidth, stage.stageHeight, RATIO));
+		game.addRoom("one", new OneRoom(stage.stageWidth, stage.stageHeight, RATIO));
 		//game.addRoom("other", new OtherRoom(stage.stageWidth, stage.stageHeight, RATIO));
 		//game.addRoom("walking", new WalkingRoom(stage.stageWidth, stage.stageHeight, RATIO));
 		//game.addRoom("tilesheet", new TileSheetPlace(stage.stageWidth, stage.stageHeight, RATIO));
-		game.addRoom("masked", new HaloRoom(stage.stageWidth, stage.stageHeight, RATIO));
+		//game.addRoom("masked", new HaloRoom(stage.stageWidth, stage.stageHeight, RATIO));
 		
 		//var entityPlace = new EntityPlace(stage.stageWidth, stage.stageHeight, RATIO);
 		//game.addRoom("entities", entityPlace);

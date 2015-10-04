@@ -50,7 +50,7 @@ class Room extends Sprite
 		
 		if (layer.isVisible)
 		{
-			bitmapHolder.addChild(layer.getBitmap());
+			//bitmapHolder.addChild(layer.getBitmap());
 		}
 		
 		if (layer.isMouseInteractive) {
@@ -62,7 +62,7 @@ class Room extends Sprite
 	
 	public function update()
 	{
-		//trace("update");
+		trace("update");
 		layerList.update();
 		camera.update();
 	}

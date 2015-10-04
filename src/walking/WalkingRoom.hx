@@ -3,6 +3,7 @@ package walking;
 import hxlpers.colors.Colors;
 import hxlpers.colors.RndColor;
 import hxlpers.effects.ScreenWhiteNoiseEffect;
+import hxlpers.game.ColoredBitmapData;
 import hxlpers.game.Layer;
 import hxlpers.game.Room;
 import openfl.Assets;
@@ -32,12 +33,12 @@ class WalkingRoom extends Room
 	{
 		super(fullWidth, fullHeight, ratio);
 		
-		bgLayer = new Layer();
+		bgLayer = new Layer(new ColoredBitmapData(w,h,true,0));
 		trace(w, h);
 		bgLayer.rect(w*2, h, RndColor.rgb());
 		addLayer(bgLayer);
 		
-		var skyLayer = new Layer();
+		var skyLayer = new Layer(new ColoredBitmapData(w,h,true,0));
 		sky = new ScreenWhiteNoiseEffect(cast(w*2), cast(h), 3, 0.1);
 		sky.color(Colors.WHITE);
 		sky.alpha = 0.25;
@@ -45,14 +46,14 @@ class WalkingRoom extends Room
 		addLayer(skyLayer);
 		
 		
-		var groundLayer = new Layer();
+		var groundLayer = new Layer(new ColoredBitmapData(w,h,true,0));
 		var ground = new Shape();
 		ground.rect(w * 2, h / 3, Colors.WHITE);
 		ground.y = this.h - ground.height;
 		groundLayer.addChild(ground);
 		addLayer(groundLayer);
 		
-		var heroLayer = new Layer();
+		var heroLayer = new Layer(new ColoredBitmapData(w,h,true,0));
 		hero = new Hero();
 		
 		hero.x = 10;

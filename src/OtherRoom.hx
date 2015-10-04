@@ -1,6 +1,7 @@
 package;
 
 import hxlpers.colors.RndColor;
+import hxlpers.game.ColoredBitmapData;
 import hxlpers.game.Layer;
 import hxlpers.game.Room;
 import hxlpers.Rnd;
@@ -30,28 +31,16 @@ class OtherRoom extends Room
 	{
 		super(fullWidth, fullHeight, ratio);
 		
-		var bg = new Layer();
-		bg.rect(w, h, RndColor.rgb());
-		//bg.graphics.beginBitmapFill(Assets.getBitmapData("img/px3.png"));
-		//bg.graphics.beginFill(RndColor.rgb());
-		//bg.graphics.drawRect(0, 0, w, h);
-		//bg.graphics.endFill();
+		var bg = addLayer(new Layer(new ColoredBitmapData(w, h, true, RndColor.argb())));
 		
-		var heroLayer = new Layer();
-		
+		var heroLayer = addLayer(new Layer(new ColoredBitmapData(w, h, true, 0)));
 		hero = new Shape();
 		hero.rect(10, 10, RndColor.gray(), 0, 0, true);
-		//hero = new BoxShape(10, 10, 0xff0000, 0, 0, true);
 		addEventListener(MouseEvent.CLICK, onClick);
-		
-		addLayer(bg);
-		//trace(width, height);
 		heroLayer.addChild(hero);
-		addLayer(heroLayer);
 		
-		fg = new Layer(true);
+		fg = addLayer(new Layer(new ColoredBitmapData(w, h, true), true, false));
 		fg.rect(w, h);
-		addLayer(fg);
 		
 		addEventListener(Event.ADDED_TO_STAGE, onStage);
 	}

@@ -1,5 +1,6 @@
 package;
 import hxlpers.colors.RndColor;
+import hxlpers.game.ColoredBitmapData;
 import hxlpers.game.Layer;
 import hxlpers.game.Room;
 import hxlpers.Rnd;
@@ -28,7 +29,7 @@ class OneRoom extends Room
 
 		entities = new Array<Sprite>();
 		
-		var layer = new Layer(true, true);
+		var layer = addLayer(new Layer(new ColoredBitmapData(w, h, true, 0xFFFF0000), true, true));
 		
 		for (i in 0...nbShapes)
 		{
@@ -61,7 +62,7 @@ class OneRoom extends Room
 			entities.push(sprite);
 		}
 		
-		addLayer(layer);
+		//addLayer(layer);
 	}
 	
 	function onRollOver(e:MouseEvent):Void 
@@ -82,6 +83,7 @@ class OneRoom extends Room
 	
 	override public function update()
 	{
+		trace("update");
 		for (shape in entities)
 		{
 			if (Rnd.chance(0.01))
@@ -92,6 +94,7 @@ class OneRoom extends Room
 				shape.rotation += Rnd.float( -5, 5);
 			}
 		}
+		super.update();
 	}
 	
 }

@@ -2,6 +2,7 @@ package hxlpers.game;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.display.Sprite;
+import openfl.geom.Rectangle;
 import openfl.utils.ByteArray;
 
 /**
@@ -52,6 +53,8 @@ class Layer extends Sprite
 		_buffer.position = 0;
 		return _buffer;
 	}
+	
+	
 	
 }
 

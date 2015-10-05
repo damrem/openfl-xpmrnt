@@ -1,7 +1,7 @@
 package hxlpers.display;
 import hxlpers.colors.RGBColor;
 import openfl.display.Graphics;
-
+import openfl.geom.Rectangle;
 /**
  * ...
  * @author damrem
@@ -18,6 +18,12 @@ class GraphicsSF
 		user.beginFill(fillColor);
 		user.drawRect(centered? -w / 2:0, centered? -h / 2:0, w, h);
 		user.endFill();
+		return user;
+	}
+	
+	static public function rectangle(user:Graphics, zone:Rectangle, fillColor:UInt = 0xffffff, borderThickness:Float = 0, borderColor:UInt = 0x000000, centered:Bool = false):Graphics 
+	{
+		GraphicsSF.rect(user, zone.width, zone.height, fillColor, borderThickness, borderColor, centered);
 		return user;
 	}
 	

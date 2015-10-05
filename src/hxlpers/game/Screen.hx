@@ -25,6 +25,7 @@ class Screen extends Bitmap
 	
 	public function setCamera(camera:Camera)
 	{
+		trace("setCamera", camera);
 		this.bitmapData = camera.data;
 		width = zone.width;
 		height = zone.height;

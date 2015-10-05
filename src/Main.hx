@@ -25,7 +25,6 @@ using hxlpers.effects.BitmapDataPixelEffectSF;
 class Main extends Sprite 
 {
 	static inline var NOISE_ALPHA:Float = 0.05;
-	static inline var RATIO:UInt = 3;
 
 	
 	
@@ -56,8 +55,8 @@ class Main extends Sprite
 		addChild(game);
 		
 		
-		game.addRoom("one", new OneRoom());
-		//game.addRoom("other", new OtherRoom(stage.stageWidth, stage.stageHeight, RATIO));
+		//game.addRoom("one", new OneRoom());
+		game.addRoom("other", new OtherRoom());
 		//game.addRoom("walking", new WalkingRoom(stage.stageWidth, stage.stageHeight, RATIO));
 		//game.addRoom("tilesheet", new TileSheetPlace(stage.stageWidth, stage.stageHeight, RATIO));
 		//game.addRoom("masked", new HaloRoom(stage.stageWidth, stage.stageHeight, RATIO));
@@ -73,7 +72,7 @@ class Main extends Sprite
 		//game.addRoom("svgAnimation", new SvgAnimationRoom(stage.stageWidth, stage.stageHeight, RATIO));
 		
 		noiseEffect = new ScreenWhiteNoiseEffect(1);
-		noiseEffect.scale(RATIO);
+		noiseEffect.scale(Conf.PIXEL_SIZE);
 		noiseEffect.alpha = NOISE_ALPHA;
 		
 		

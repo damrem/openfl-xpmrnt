@@ -65,10 +65,12 @@ class Room extends Sprite
 		trace("addLayer", layer);
 		layerList.addLayer(layer);
 		
+		/*
 		if (layer.isVisible)
 		{
 			screenHolder.addChild(layer.getBitmap());
 		}
+		*/
 		
 		if (layer.isMouseInteractive) {
 			interactiveLayerHolder.addChild(layer);

@@ -1,5 +1,6 @@
 package hxlpers.display;
 import openfl.display.Shape;
+import openfl.geom.Rectangle;
 using hxlpers.display.GraphicsSF;
 /**
  * ...
@@ -11,6 +12,12 @@ class ShapeSF
 	static public function rect(user:Shape, w:Float, h:Float, fillColor:UInt=0xffffff, borderThickness:Float=0, borderColor:UInt=0x000000, centered:Bool=false):Shape
 	{
 		user.graphics.rect(w, h, fillColor, borderThickness, borderColor, centered);
+		return user;
+	}
+	
+	static public function rectangle(user:Shape, zone:Rectangle, fillColor:UInt=0xffffff, borderThickness:Float=0, borderColor:UInt=0x000000, centered:Bool=false):Shape 
+	{
+		user.graphics.rectangle(zone, fillColor, borderThickness, borderColor, centered);
 		return user;
 	}
 	

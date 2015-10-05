@@ -1,5 +1,6 @@
 package;
 
+import hxlpers.colors.ColorComponent;
 import hxlpers.colors.RndColor;
 import hxlpers.game.ColoredBitmapData;
 import hxlpers.game.Layer;
@@ -27,20 +28,20 @@ class OtherRoom extends Room
 	var ppc:Point;
 	var fg:Layer;
 	
-	public function new(fullWidth:Float, fullHeight:Float, ratio:UInt) 
+	public function new() 
 	{
-		super(fullWidth, fullHeight, ratio);
+		super();
 		
-		var bg = addLayer(new Layer(new ColoredBitmapData(w, h, true, RndColor.argb())));
+		var bg = addLayer(new Layer(new ColoredBitmapData(true, RndColor.argb())));
 		
-		var heroLayer = addLayer(new Layer(new ColoredBitmapData(w, h, true, 0)));
+		var heroLayer = addLayer(new Layer(new ColoredBitmapData(true, 0)));
 		hero = new Shape();
 		hero.rect(10, 10, RndColor.gray(), 0, 0, true);
 		addEventListener(MouseEvent.CLICK, onClick);
 		heroLayer.addChild(hero);
 		
-		fg = addLayer(new Layer(new ColoredBitmapData(w, h, true), true, false));
-		fg.rect(w, h);
+		fg = addLayer(new Layer(new ColoredBitmapData(true, ColorComponent.OPAQUE | RndColor.rgb()), true, false));
+		fg.rectangle(Conf.VIEW_PORT);
 		
 		addEventListener(Event.ADDED_TO_STAGE, onStage);
 	}
@@ -77,8 +78,8 @@ class OtherRoom extends Room
 	private function onMouseMove(e:MouseEvent):Void 
 	{
 		//trace(e.localX, e.localY, e.stageX, e.stageY);
-		hero.x = Math.round(e.stageX/ratio);
-		hero.y = Math.round(e.stageY/ratio);
+		hero.x = Math.round(e.stageX);
+		hero.y = Math.round(e.stageY);
 		
 		
 	}

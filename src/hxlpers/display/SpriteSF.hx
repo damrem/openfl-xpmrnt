@@ -1,5 +1,6 @@
 package hxlpers.display;
 import openfl.display.Sprite;
+import openfl.geom.Rectangle;
 using hxlpers.display.GraphicsSF;
 /**
  * ...
@@ -13,5 +14,12 @@ class SpriteSF
 		user.graphics.rect(w, h, fillColor, borderThickness, borderColor, centered);
 		return user;
 	}
+	
+	static public function rectangle(user:Sprite, zone:Rectangle, fillColor:UInt=0xffffff, borderThickness:Float=0, borderColor:UInt=0x000000, centered:Bool=false):Sprite 
+	{
+		user.graphics.rectangle(zone, fillColor, borderThickness, borderColor, centered);
+		return user;
+	}
+	
 	
 }

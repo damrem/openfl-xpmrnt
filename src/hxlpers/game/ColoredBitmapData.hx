@@ -1,5 +1,6 @@
 package hxlpers.game;
 import openfl.display.BitmapData;
+import openfl.geom.Rectangle;
 
 /**
  * ...
@@ -9,9 +10,14 @@ class ColoredBitmapData extends BitmapData
 {
 	public var fillColor:UInt;
 
-	public function new(w:Float, h:Float, transparent:Bool=true, fillColor:UInt=0xFFFFFFFF) 
+	public function new(transparent:Bool=true, fillColor:UInt=0xFFFFFFFF, ?zone:Rectangle) 
 	{
-		super(Math.ceil(w), Math.ceil(h), transparent, fillColor);
+		if (zone == null)
+		{
+			zone = Conf.VIEW_PORT;
+		}
+		
+		super(Math.ceil(zone.width), Math.ceil(zone.height), transparent, fillColor);
 		this.fillColor = fillColor;
 	}
 	

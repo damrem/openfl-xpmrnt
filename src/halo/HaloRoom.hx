@@ -42,11 +42,11 @@ class HaloRoom extends Room
 	var masked:Layer;
 	var finalLayer:Layer;
 	
-	public function new(fullWidth:Float, fullHeight:Float, ratio:UInt) 
+	public function new(?zone:Rectangle) 
 	{
-		trace("new", fullWidth, fullHeight, ratio);
-		super(fullWidth, fullHeight, ratio);
-		trace(w, h);
+		
+		super(zone);
+		
 		
 		//	the scene
 		masked = createMaskedLayer();
@@ -54,12 +54,12 @@ class HaloRoom extends Room
 		//	the halos
 		masker = createMaskerLayer();
 		
-		finalLayer = addLayer(new Layer(new ColoredBitmapData(w, h, true, 0xFF000000)));
+		finalLayer = addLayer(new Layer(new ColoredBitmapData(true, 0xFF000000)));
 		trace(finalLayer.parent);
 		
 		
-		var fg = addLayer(new Layer(new ColoredBitmapData(w, h, true, 0), true, false));
-		fg.rect(w, h);
+		var fg = addLayer(new Layer(new ColoredBitmapData(true, 0), true, false));
+		//fg.rect(w, h);
 		fg.alpha = 0;
 		fg.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
 		
@@ -67,13 +67,13 @@ class HaloRoom extends Room
 	
 	function createMaskerLayer():Layer
 	{
-		masker = new Layer(new ColoredBitmapData(w, h, true, 0x00000000));
+		masker = new Layer(new ColoredBitmapData(true, 0x00000000));
 
 		halo = new Halo();
 		
 		halo2 = new Halo();
-		halo2.x = w / 2;
-		halo2.y = h / 2;
+		halo2.x = zone.width / 2;
+		halo2.y = zone.height / 2;
 		
 		masker.addChild(halo);
 		masker.addChild(halo2);
@@ -83,10 +83,10 @@ class HaloRoom extends Room
 	
 	function createMaskedLayer():Layer
 	{
-		var layer = new Layer(new ColoredBitmapData(w, h, true, 0xFF000000));
+		var layer = new Layer(new ColoredBitmapData(true, 0xFF000000));
 		
 		var bg = new Sprite();
-		bg.rect(w, h, RndColor.rgb());
+		bg.rect(zone.width, zone.height, RndColor.rgb());
 		layer.addChild(bg);
 		
 		entities = new Array<Sprite>();
@@ -107,8 +107,8 @@ class HaloRoom extends Room
 				shape.rotation = Math.random() * 360;
 			}
 			sprite.addChild(shape);
-			sprite.x = Rnd.float(w);
-			sprite.y = Rnd.float(h);
+			sprite.x = zone.x + Rnd.float(zone.width);
+			sprite.y = zone.y + Rnd.float(zone.height);
 			sprite.buttonMode = true;
 			sprite.addEventListener(MouseEvent.ROLL_OVER, onRollOver);
 			layer.addChild(sprite);
@@ -121,8 +121,8 @@ class HaloRoom extends Room
 	
 	function onMouseMove(e:MouseEvent):Void 
 	{
-		halo.x = Math.round(e.stageX / ratio);
-		halo.y = Math.round(e.stageY / ratio);
+		halo.x = Math.round(e.stageX);
+		halo.y = Math.round(e.stageY);
 	}
 	
 	function onRollOver(e:MouseEvent):Void 

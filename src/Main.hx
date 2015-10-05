@@ -56,7 +56,7 @@ class Main extends Sprite
 		addChild(game);
 		
 		
-		game.addRoom("one", new OneRoom(stage.stageWidth, stage.stageHeight, RATIO));
+		game.addRoom("one", new OneRoom());
 		//game.addRoom("other", new OtherRoom(stage.stageWidth, stage.stageHeight, RATIO));
 		//game.addRoom("walking", new WalkingRoom(stage.stageWidth, stage.stageHeight, RATIO));
 		//game.addRoom("tilesheet", new TileSheetPlace(stage.stageWidth, stage.stageHeight, RATIO));
@@ -72,7 +72,7 @@ class Main extends Sprite
 		
 		//game.addRoom("svgAnimation", new SvgAnimationRoom(stage.stageWidth, stage.stageHeight, RATIO));
 		
-		noiseEffect = new ScreenWhiteNoiseEffect(stage.stageWidth, stage.stageHeight, 1);
+		noiseEffect = new ScreenWhiteNoiseEffect(1);
 		noiseEffect.scale(RATIO);
 		noiseEffect.alpha = NOISE_ALPHA;
 		

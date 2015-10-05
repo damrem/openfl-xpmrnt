@@ -21,8 +21,13 @@ class ScreenWhiteNoiseEffect extends Sprite
 	var prevId:UInt;
 	var period:UInt;
 	
-	public function new(w:UInt, h:UInt, population:UInt=10, density:Float=0.25, period:UInt=3) 
+	public function new(population:UInt=10, density:Float=0.25, period:UInt=3, ?zone:Rectangle) 
 	{
+		if (zone == null)
+		{
+			zone = Conf.VIEW_PORT;
+		}
+		
 		super();
 		this.period = period;
 		pool = new Array<Bitmap>();
@@ -30,7 +35,7 @@ class ScreenWhiteNoiseEffect extends Sprite
 	
 		for (i in 0...population)
 		{
-			pool.push(new Bitmap(new BitmapData(w, h, true, 0xffffffff).simpleNoise(density)));
+			pool.push(new Bitmap(new BitmapData(Math.ceil(zone.width), Math.ceil(zone.height), true, 0xffffffff).simpleNoise(density)));
 		}
 		
 		if (population > 0)

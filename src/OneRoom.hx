@@ -21,15 +21,15 @@ class OneRoom extends Room
 	var entities:Array<Sprite>;
 	var nbShapes:UInt = 100;
 	
-	public function new(fullWidth:Float, fullHeight:Float, ratio:UInt) 
+	public function new(?zone:Rectangle) 
 	{
-		trace("new", fullWidth, fullHeight, ratio);
-		super(fullWidth, fullHeight, ratio);
-		trace(w, h);
+		trace("new");
+		super(zone);
+		
 
 		entities = new Array<Sprite>();
 		
-		var layer = addLayer(new Layer(new ColoredBitmapData(w, h, true, 0xFFFF0000), true, true));
+		var layer = addLayer(new Layer(new ColoredBitmapData(true, 0xFFFF0000), true, true));
 		
 		for (i in 0...nbShapes)
 		{
@@ -51,8 +51,8 @@ class OneRoom extends Room
 			}
 			sprite.addChild(shape);
 			//sprite.alpha = Math.random();
-			sprite.x = Rnd.float(w);
-			sprite.y = Rnd.float(h);
+			sprite.x = this.zone.x + Rnd.float(this.zone.width);
+			sprite.y = this.zone.y + Rnd.float(this.zone.height);
 			sprite.buttonMode = true;
 			sprite.addEventListener(MouseEvent.ROLL_OVER, onRollOver);
 			sprite.addEventListener(MouseEvent.ROLL_OUT, onRollOut);
@@ -70,7 +70,7 @@ class OneRoom extends Room
 		var sprite = cast(e.currentTarget, Sprite);
 		sprite.alpha = 0.5;
 		Actuate.tween(defaultCamera, 1, { zoomLevel:2 } );
-		Actuate.tween(defaultCamera.pos, 1, { x:sprite.x, y:sprite.y });
+		Actuate.tween(defaultCamera.zone, 1, { x:sprite.x, y:sprite.y });
 	}
 	
 	function onRollOut(e:MouseEvent):Void 
@@ -78,7 +78,7 @@ class OneRoom extends Room
 		
 		cast(e.currentTarget, Sprite).alpha = 1;
 		Actuate.tween(defaultCamera, 1, { zoomLevel:1 } );
-		Actuate.tween(defaultCamera.pos, 1, { x:defaultCamera.initialPos.x, y:defaultCamera.initialPos.y });
+		Actuate.tween(defaultCamera.zone, 1, { x:defaultCamera.initialZone.x, y:defaultCamera.initialZone.y });
 	}
 	
 	override public function update()

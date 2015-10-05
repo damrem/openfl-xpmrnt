@@ -12,10 +12,7 @@ using hxlpers.display.DisplayObjectSF;
  */
 class Room extends Sprite
 {
-	var w:Float;
-	var h:Float;
-	var ratio:UInt;
-	
+	var zone:Rectangle;
 	var interactiveLayerHolder:Sprite;
 	var screenHolder:Sprite;
 
@@ -27,27 +24,32 @@ class Room extends Sprite
 	var screens:Array<Screen>;
 	
 	
-	public function new(fullWidth:Float, fullHeight:Float, ratio:UInt)
+	public function new(?zone:Rectangle)
 	{
 		super();
-		w = fullWidth / ratio;
-		h = fullHeight / ratio;
-		this.ratio = ratio;
+		
+		if (zone == null)
+		{
+			zone = Conf.VIEW_PORT;
+			zone;
+		}
+		
+		this.zone = zone;
 		
 		screens = [];
 		
 		layerList = new LayerList();
-		defaultCamera = new Camera(this, { x:w / 2, y:w / 2 }, { w:w, h:h } );
+		defaultCamera = new Camera(this, zone );
 		
 		screenHolder = new Sprite();
-		screenHolder.scale(ratio);
+		//screenHolder.scale(ratio);
 		addChild(screenHolder);
 		
 		defaultScreen = addScreen(defaultCamera, Conf.VIEW_PORT);
 		
 		interactiveLayerHolder = new Sprite();
 		interactiveLayerHolder.alpha = 0;
-		interactiveLayerHolder.scale(ratio);
+		//interactiveLayerHolder.scale(ratio);
 	}
 	
 	function addScreen(camera:Camera, rect:Rectangle):Screen

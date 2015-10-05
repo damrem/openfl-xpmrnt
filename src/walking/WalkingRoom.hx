@@ -29,31 +29,31 @@ class WalkingRoom extends Room
 	var hero:Hero;
 	var sky:ScreenWhiteNoiseEffect;
 
-	public function new(fullWidth:Float, fullHeight:Float, ratio:UInt) 
+	public function new(zone:Rectangle) 
 	{
-		super(fullWidth, fullHeight, ratio);
+		super(zone);
 		
-		bgLayer = new Layer(new ColoredBitmapData(w,h,true,0));
-		trace(w, h);
-		bgLayer.rect(w*2, h, RndColor.rgb());
+		bgLayer = new Layer(new ColoredBitmapData(true,0));
+		
+		//bgLayer.rect(w*2, h, RndColor.rgb());
 		addLayer(bgLayer);
 		
-		var skyLayer = new Layer(new ColoredBitmapData(w,h,true,0));
-		sky = new ScreenWhiteNoiseEffect(cast(w*2), cast(h), 3, 0.1);
+		var skyLayer = new Layer(new ColoredBitmapData(true,0));
+		sky = new ScreenWhiteNoiseEffect(3, 0.1, 3, zone);
 		sky.color(Colors.WHITE);
 		sky.alpha = 0.25;
 		skyLayer.addChild(sky);
 		addLayer(skyLayer);
 		
 		
-		var groundLayer = new Layer(new ColoredBitmapData(w,h,true,0));
+		var groundLayer = new Layer(new ColoredBitmapData(true,0));
 		var ground = new Shape();
-		ground.rect(w * 2, h / 3, Colors.WHITE);
-		ground.y = this.h - ground.height;
+		ground.rect(zone.width, zone.height / 3, Colors.WHITE);
+		ground.y = zone.height - ground.height;
 		groundLayer.addChild(ground);
 		addLayer(groundLayer);
 		
-		var heroLayer = new Layer(new ColoredBitmapData(w,h,true,0));
+		var heroLayer = new Layer(new ColoredBitmapData(true,0));
 		hero = new Hero();
 		
 		hero.x = 10;
@@ -104,15 +104,15 @@ class WalkingRoom extends Room
 		}
 		hero.update();
 		
-		if (hero.x > w / 2)
+		if (hero.x > zone.width / 2)
 		{
 			
 		}
 		
 		
-		if (hero.x > w)
+		if (hero.x > zone.width)
 		{
-			bgLayer.rect(w*2, h, RndColor.rgb());
+			bgLayer.rect(zone.width*2, zone.height, RndColor.rgb());
 			hero.x = -hero.width;
 			sky.next();
 		}

@@ -1,7 +1,5 @@
 package hxlpers.game;
 import hxlpers.game.Room;
-import hxlpers.geom.Dim;
-import hxlpers.geom.Pos;
 import openfl.display.BitmapData;
 import openfl.geom.Rectangle;
 
@@ -16,25 +14,25 @@ class Camera
 {
 
 	public var data:BitmapData;
-	public var rect(get, null):Rectangle;
-	public var pos:Pos;
-	var dim:Dim;
+	public var zone:Rectangle;
+	public var initialZone:Rectangle;
 	
 	var room:Room;
 	public var zoomLevel:Float=1;	
-	public var initialPos(get, null):Pos;
-	private var _initialPos:Pos;
-	function get_initialPos():Pos { return _initialPos; }
 	var followed:Dynamic;
 	
-	public function new(room:Room, pos:Pos, dim:Dim) 
+	public function new(room:Room, ?zone:Rectangle) 
 	{
 		this.room = room;
-		trace(dim);
-		this.dim = dim;
-		this.pos = _initialPos = pos;
+
+		if (zone == null)
+		{
+			zone = Conf.VIEW_PORT;
+		}
 		
-		data = new BitmapData(Math.ceil(dim.w), Math.ceil(dim.h));
+		this.zone = initialZone = zone;
+		
+		data = new BitmapData(Math.ceil(zone.width), Math.ceil(zone.height));
 	}
 	
 	function setRoom(room:Room)
@@ -51,8 +49,9 @@ class Camera
 	{
 		if (followed != null)
 		{
-			pos.x = followed.x;
-			pos.y = followed.y;
+			//FIXME half dimension offset
+			zone.x = followed.x;
+			zone.y = followed.y;
 		}
 		
 		
@@ -69,13 +68,6 @@ class Camera
 			}
 		}
 	}
-	
-	function get_rect():Rectangle 
-	{
-		var focusedDim:Dim = { w:dim.w / zoomLevel, h:dim.h / zoomLevel };
-		return new Rectangle(pos.x - focusedDim.w / 2, pos.y - focusedDim.h / 2, focusedDim.w, focusedDim.h);
-	}
-	
 	
 }
 

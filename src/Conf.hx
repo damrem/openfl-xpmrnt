@@ -1,4 +1,5 @@
 package;
+import openfl.geom.Rectangle;
 
 /**
  * ...
@@ -6,8 +7,9 @@ package;
  */
 class Conf
 {
-	public static var RATIO:UInt;
+	public static var PIXEL_SIZE:UInt;
 	public static var W:UInt;
 	public static var H:UInt;
+	static public var VIEW_PORT:Rectangle;
 	
 }

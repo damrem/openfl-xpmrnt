@@ -37,7 +37,6 @@ class Layer extends Sprite
 	
 	public function render():BitmapData
 	{
-		trace("render");
 		data.fill();
 		data.draw(this);
 		return data;

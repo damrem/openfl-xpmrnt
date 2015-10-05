@@ -69,21 +69,20 @@ class OneRoom extends Room
 	{
 		var sprite = cast(e.currentTarget, Sprite);
 		sprite.alpha = 0.5;
-		Actuate.tween(camera, 1, { zoomLevel:2 } );
-		Actuate.tween(camera.pos, 1, { x:sprite.x, y:sprite.y });
+		Actuate.tween(defaultCamera, 1, { zoomLevel:2 } );
+		Actuate.tween(defaultCamera.pos, 1, { x:sprite.x, y:sprite.y });
 	}
 	
 	function onRollOut(e:MouseEvent):Void 
 	{
 		
 		cast(e.currentTarget, Sprite).alpha = 1;
-		Actuate.tween(camera, 1, { zoomLevel:1 } );
-		Actuate.tween(camera.pos, 1, { x:camera.initialPos.x, y:camera.initialPos.y });
+		Actuate.tween(defaultCamera, 1, { zoomLevel:1 } );
+		Actuate.tween(defaultCamera.pos, 1, { x:defaultCamera.initialPos.x, y:defaultCamera.initialPos.y });
 	}
 	
 	override public function update()
 	{
-		trace("update");
 		for (shape in entities)
 		{
 			if (Rnd.chance(0.01))

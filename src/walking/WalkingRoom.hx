@@ -61,7 +61,7 @@ class WalkingRoom extends Room
 		heroLayer.addChild(hero);
 		addLayer(heroLayer);
 		
-		camera.follow(hero);
+		defaultCamera.follow(hero);
 		
 		
 		var i:UInt = 123456;

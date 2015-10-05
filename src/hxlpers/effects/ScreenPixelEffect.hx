@@ -1,9 +1,11 @@
 package hxlpers.effects;
+
 import openfl.Assets;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.display.Shape;
 import openfl.display.Sprite;
+import openfl.geom.Rectangle;
 
 /**
  * ...
@@ -12,15 +14,21 @@ import openfl.display.Sprite;
 class ScreenPixelEffect extends Bitmap
 {
 
-	public function new(w:UInt, h:UInt, pixel:BitmapData) 
+	public function new(pixel:BitmapData, ?zone:Rectangle) 
 	{
+		if (zone == null)
+		{
+			zone = Conf.VIEW_PORT;
+		}
+		
 		var canvas = new Shape();
 		canvas.graphics.beginBitmapFill(pixel);
-		canvas.graphics.drawRect(0, 0, w, h);
+		canvas.graphics.drawRect(zone.x, zone.y, zone.width, zone.height);
 		canvas.graphics.endFill();
-		var effectBuffer = new BitmapData(w, h, true, 0x00000000);
-		effectBuffer.draw(canvas);
-		super(effectBuffer);
+		
+		var data = new BitmapData(Math.ceil(zone.width), Math.ceil(zone.height), true, 0x00000000);
+		data.draw(canvas);
+		super(data);
 	}
 	
 }

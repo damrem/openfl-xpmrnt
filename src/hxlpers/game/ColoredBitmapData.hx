@@ -17,7 +17,6 @@ class ColoredBitmapData extends BitmapData
 	
 	public function fill()
 	{
-		trace("fill");
 		fillRect(rect, fillColor);
 	}
 	

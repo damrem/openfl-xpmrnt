@@ -11,6 +11,7 @@ import openfl.Assets;
 import openfl.display.FPS;
 import openfl.display.Sprite;
 import openfl.events.Event;
+import openfl.geom.Rectangle;
 import walking.WalkingRoom;
 
 using hxlpers.display.DisplayObjectSF;
@@ -37,7 +38,7 @@ class Main extends Sprite
 		super();	
 		addEventListener(Event.ADDED_TO_STAGE, onStage);
 		
-		Conf.RATIO = 3;
+		Conf.PIXEL_SIZE = 3;
 		
 	}
 	
@@ -46,10 +47,12 @@ class Main extends Sprite
 	{
 		removeEventListener(Event.ADDED_TO_STAGE, onStage);
 		
+		Conf.VIEW_PORT = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
+		
 		//var w = stage.stageWidth / RATIO;
 		//var h = stage.stageHeight / RATIO;
 		
-		var game = new Game(stage.stageWidth, stage.stageHeight, RATIO);
+		var game = new Game();
 		addChild(game);
 		
 		
@@ -78,7 +81,7 @@ class Main extends Sprite
 		addChild(noiseEffect);
 		
 		
-		var pxFx = new ScreenPixelEffect(stage.stageWidth, stage.stageHeight, Assets.getBitmapData("img/px3-3.png"));
+		var pxFx = new ScreenPixelEffect(Assets.getBitmapData("img/px3-3.png"));
 		pxFx.alpha = 0.125;
 		addChild(pxFx);
 		

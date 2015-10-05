@@ -17,11 +17,14 @@ class Room extends Sprite
 	var ratio:UInt;
 	
 	var interactiveLayerHolder:Sprite;
-	var bitmapHolder:Sprite;
+	var screenHolder:Sprite;
 
 	var layerList:LayerList;
 	
-	public var camera:Camera;
+	public var defaultCamera:Camera;
+	public var defaultScreen:Screen;
+	
+	var screens:Array<Screen>;
 	
 	
 	public function new(fullWidth:Float, fullHeight:Float, ratio:UInt)
@@ -31,16 +34,28 @@ class Room extends Sprite
 		h = fullHeight / ratio;
 		this.ratio = ratio;
 		
-		layerList = new LayerList();
-		camera = new Camera(this, { x:w / 2, y:w / 2 }, { w:w, h:h } );
+		screens = [];
 		
-		bitmapHolder = new Sprite();
-		bitmapHolder.scale(ratio);
-		addChild(bitmapHolder);
+		layerList = new LayerList();
+		defaultCamera = new Camera(this, { x:w / 2, y:w / 2 }, { w:w, h:h } );
+		
+		screenHolder = new Sprite();
+		screenHolder.scale(ratio);
+		addChild(screenHolder);
+		
+		defaultScreen = addScreen(defaultCamera, Conf.VIEW_PORT);
 		
 		interactiveLayerHolder = new Sprite();
 		interactiveLayerHolder.alpha = 0;
 		interactiveLayerHolder.scale(ratio);
+	}
+	
+	function addScreen(camera:Camera, rect:Rectangle):Screen
+	{
+		var screen = new Screen(camera, rect);
+		screenHolder.addChild(screen);
+		screens.push(screen);
+		return screen;
 	}
 	
 	function addLayer(layer:Layer):Layer 
@@ -50,7 +65,7 @@ class Room extends Sprite
 		
 		if (layer.isVisible)
 		{
-			//bitmapHolder.addChild(layer.getBitmap());
+			screenHolder.addChild(layer.getBitmap());
 		}
 		
 		if (layer.isMouseInteractive) {
@@ -62,9 +77,8 @@ class Room extends Sprite
 	
 	public function update()
 	{
-		trace("update");
 		layerList.update();
-		camera.update();
+		defaultCamera.update();
 	}
 	
 	public function play()
@@ -82,7 +96,7 @@ class Room extends Sprite
 	
 	public function render()
 	{
-		camera.render(layerList);
+		defaultCamera.render(layerList);
 	}
 	
 }

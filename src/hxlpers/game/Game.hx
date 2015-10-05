@@ -20,11 +20,8 @@ class Game extends Sprite
 	var currentRoom:Room;
 	
 	var isPlaying:Bool;
-	var ratio:Float;
 	var postRendering:BitmapData;
 	var renderingContainer:Sprite;
-	var fullWidth:UInt;
-	var fullHeight:UInt;
 	var pixelEffect:ScreenPixelEffect;
 	var renderingLayer:Bitmap;
 	
@@ -33,12 +30,9 @@ class Game extends Sprite
 	
 	
 	
-	public function new(fullWidth:UInt, fullHeight:UInt, ratio:UInt) 
+	public function new() 
 	{
 		super();
-		this.fullHeight = fullHeight;
-		this.fullWidth = fullWidth;
-		this.ratio = ratio;
 		
 		cameraList = new CameraList();
 		
@@ -48,19 +42,19 @@ class Game extends Sprite
 		
 		renderingLayer = new Bitmap();
 		//trace(renderLayer.width);
-		renderingLayer.scale(ratio);
+		renderingLayer.scale(Conf.PIXEL_SIZE);
 		//trace(renderLayer.width);
 		
 		renderingContainer = new Sprite();
 		renderingContainer.addChild(renderingLayer);
 		
-		postRendering = new BitmapData(fullWidth, fullHeight, false, 0xff000000);
+		postRendering = new BitmapData(Math.ceil(Conf.VIEW_PORT.width), Math.ceil(Conf.VIEW_PORT.height), false, 0xff000000);
 		var postRenderingLayer=new Bitmap(postRendering);
 		addChild(postRenderingLayer);
 		
 		
 		
-		pixelEffect = new ScreenPixelEffect(fullWidth, fullHeight, Assets.getBitmapData("img/px3.png"));
+		pixelEffect = new ScreenPixelEffect(Assets.getBitmapData("img/px3.png"));
 		
 		addEventListener(Event.ADDED_TO_STAGE, onStage);
 		
@@ -96,7 +90,6 @@ class Game extends Sprite
 	
 	public function update(evt:Event=null)
 	{
-		trace("update");
 		currentRoom.update();
 		render();
 	}
@@ -141,7 +134,7 @@ class Game extends Sprite
 		
 		
 		//renderingLayer.bitmapData = currentRoom.rendering;
-		renderingLayer.bitmapData = currentRoom.camera.screen;
+		renderingLayer.bitmapData = currentRoom.defaultCamera.data;
 		roomHolder.addChild(currentRoom);
 	}
 	

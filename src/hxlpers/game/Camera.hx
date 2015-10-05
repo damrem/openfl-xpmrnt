@@ -2,10 +2,7 @@ package hxlpers.game;
 import hxlpers.game.Room;
 import hxlpers.geom.Dim;
 import hxlpers.geom.Pos;
-import openfl.display.Bitmap;
 import openfl.display.BitmapData;
-import openfl.geom.Matrix;
-import openfl.geom.Point;
 import openfl.geom.Rectangle;
 
 using hxlpers.display.BitmapDataSF;
@@ -18,7 +15,7 @@ using hxlpers.display.DisplayObjectSF;
 class Camera
 {
 
-	public var screen:BitmapData;
+	public var data:BitmapData;
 	public var rect(get, null):Rectangle;
 	public var pos:Pos;
 	var dim:Dim;
@@ -37,7 +34,7 @@ class Camera
 		this.dim = dim;
 		this.pos = _initialPos = pos;
 		
-		screen = new BitmapData(Math.ceil(dim.w), Math.ceil(dim.h));
+		data = new BitmapData(Math.ceil(dim.w), Math.ceil(dim.h));
 	}
 	
 	function setRoom(room:Room)
@@ -63,7 +60,7 @@ class Camera
 	
 	public function render(layerList:LayerList) 
 	{
-		screen.clear(0xff000000);
+		data.clear(0xff000000);
 		for (layer in layerList.getLayers())
 		{
 			if (layer.isVisible)

@@ -98,7 +98,7 @@ class Room extends Sprite
 	
 	public function render()
 	{
-		defaultCamera.render(layerList);
+		defaultCamera.shoot(layerList);
 	}
 	
 }

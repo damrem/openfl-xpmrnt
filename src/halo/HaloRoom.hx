@@ -38,7 +38,7 @@ class HaloRoom extends Room
 	{
 		
 		super(zone);
-		
+		trace(this.zone);
 		
 		//	the scene
 		masked = createMaskedLayer();
@@ -51,8 +51,8 @@ class HaloRoom extends Room
 		finalLayer = addLayer(new BlendingLayer(miniViewPort));
 		finalLayer.rectangle(miniViewPort, 0xFF000000);
 		
-		finalLayer.addChild(finalLayer.getBitmap());
-		trace(finalLayer.getBitmap().parent);
+		//finalLayer.addChild(finalLayer.getBitmap());
+		//trace(finalLayer.getBitmap().parent);
 		
 		
 		var fg = addLayer(new Layer(true, false));

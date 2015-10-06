@@ -1,9 +1,11 @@
 package hxlpers.game;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
+import openfl.display.IBitmapDrawable;
 import openfl.display.Sprite;
 import openfl.geom.Rectangle;
 import openfl.utils.ByteArray;
+using hxlpers.display.BitmapDataSF;
 
 /**
  * ...
@@ -12,16 +14,23 @@ import openfl.utils.ByteArray;
 class Layer extends Sprite
 {
 	var bmp:Bitmap;
+	
 
 	public var scrollRatio:ScrollRatio;
 	public var isMouseInteractive:Bool;
 	public var isVisible:Bool;
-	public var data:ColoredBitmapData;
+	public var data:BitmapData;
 	
-	public function new(bitmapData:ColoredBitmapData, mouseInteractive:Bool=false, isVisible:Bool=true) 
+	public function new(mouseInteractive:Bool=false, isVisible:Bool=true, ?zone:Rectangle) 
 	{
 		super();
-		this.data = bitmapData;
+		
+		
+		if (zone == null)
+		{
+			zone = new Rectangle(Conf.VIEW_PORT.x, Conf.VIEW_PORT.y, Conf.VIEW_PORT.width / Conf.PIXEL_SIZE, Conf.VIEW_PORT.height / Conf.PIXEL_SIZE);
+		}
+		this.data = new BitmapData(Math.ceil(zone.width), Math.ceil(zone.height), true, 0);
 		this.isVisible = isVisible;
 		this.isMouseInteractive = mouseInteractive;
 		scrollRatio = {x:1, y:1};
@@ -38,9 +47,13 @@ class Layer extends Sprite
 	
 	public function render():BitmapData
 	{
-		data.fill();
 		data.draw(this);
 		return data;
+	}
+	
+	public function getDrawable():IBitmapDrawable
+	{
+		return this;
 	}
 	
 	public function getBytes(rerender:Bool=false):ByteArray

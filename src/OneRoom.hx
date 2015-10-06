@@ -1,6 +1,6 @@
 package;
 import hxlpers.colors.RndColor;
-import hxlpers.game.ColoredBitmapData;
+
 import hxlpers.game.Layer;
 import hxlpers.game.Room;
 import hxlpers.Rnd;
@@ -11,6 +11,7 @@ import motion.Actuate;
 import openfl.display.Sprite;
 import openfl.events.MouseEvent;
 import openfl.geom.Rectangle;
+using hxlpers.display.SpriteSF;
 
 /**
  * ...
@@ -29,7 +30,8 @@ class OneRoom extends Room
 
 		entities = new Array<Sprite>();
 		
-		var layer = addLayer(new Layer(new ColoredBitmapData(true, 0xFFFF0000), true, true));
+		var layer = addLayer(new Layer(true, true));
+		layer.rectangle(this.zone, 0xFFFF0000);
 		
 		for (i in 0...nbShapes)
 		{

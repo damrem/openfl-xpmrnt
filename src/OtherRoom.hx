@@ -1,18 +1,13 @@
 package;
 
 import hxlpers.colors.ColorComponent;
+import hxlpers.colors.Colors;
 import hxlpers.colors.RndColor;
-import hxlpers.game.ColoredBitmapData;
 import hxlpers.game.Layer;
 import hxlpers.game.Room;
-import hxlpers.Rnd;
-import hxlpers.shapes.BoxShape;
-import openfl.Assets;
 import openfl.display.Shape;
-import openfl.display.Sprite;
 import openfl.events.Event;
 import openfl.events.MouseEvent;
-import openfl.geom.PerspectiveProjection;
 import openfl.geom.Point;
 using hxlpers.display.SpriteSF;
 using hxlpers.display.ShapeSF;
@@ -32,16 +27,18 @@ class OtherRoom extends Room
 	{
 		super();
 		
-		var bg = addLayer(new Layer(new ColoredBitmapData(true, RndColor.argb())));
+		var bg = addLayer(new Layer());
+		bg.rectangle(zone, Colors.WHITE);
 		
-		var heroLayer = addLayer(new Layer(new ColoredBitmapData(true, 0)));
+		var heroLayer = addLayer(new Layer());
 		hero = new Shape();
-		hero.rect(10, 10, RndColor.gray(), 0, 0, true);
+		hero.rect(10, 10, Colors.RED, 0, 0, true);
 		addEventListener(MouseEvent.CLICK, onClick);
 		heroLayer.addChild(hero);
 		
-		fg = addLayer(new Layer(new ColoredBitmapData(true, ColorComponent.OPAQUE | RndColor.rgb()), true, false));
-		fg.rectangle(Conf.VIEW_PORT);
+		
+		fg = addLayer(new Layer(true, false));
+		fg.rectangle(Conf.VIEW_PORT, 0x00000000);
 		
 		addEventListener(Event.ADDED_TO_STAGE, onStage);
 	}

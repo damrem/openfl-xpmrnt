@@ -11,6 +11,7 @@ import openfl.display.BitmapData;
 import openfl.geom.Matrix;
 import openfl.geom.Point;
 import openfl.geom.Rectangle;
+using hxlpers.display.DisplayObjectSF;
 
 /**
  * ...
@@ -19,16 +20,19 @@ import openfl.geom.Rectangle;
 class TileSheetPlace extends Room
 {
 
-	public function new(fullWidth:Float, fullHeight:Float, ratio:UInt) 
+	public function new() 
 	{
-		super(fullWidth, fullHeight, ratio);
+		super();
 		
 		var tileSetBitmapData = Assets.getBitmapData("img/bugtilesbrown.png");
 		var dt:TileMapDef = new TileMapDef(Json.parse(Assets.getText("lvl/ring.json")), "lvl/");
 		var tileMap = new TileMapBitmapData(dt, tileSetBitmapData);
 		
 		var mainLayer = new Layer();
-		mainLayer.addChild(new Bitmap(tileMap));
+		var bmp = new Bitmap(tileMap);
+		bmp.scale(Conf.PIXEL_SIZE);
+		mainLayer.addChild(bmp);
+		
 		addLayer(mainLayer);
 		
 		

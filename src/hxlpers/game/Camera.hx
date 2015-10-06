@@ -65,7 +65,8 @@ class Camera
 		{
 			if (layer.isVisible)
 			{
-				data.draw(layer, new Matrix(1 / Conf.PIXEL_SIZE, 0, 0, 1 / Conf.PIXEL_SIZE, 0, 0));
+				data.draw(layer.getDrawable(), new Matrix(1 / Conf.PIXEL_SIZE, 0, 0, 1 / Conf.PIXEL_SIZE, 0, 0));
+				//data.draw(layer, new Matrix(1 / Conf.PIXEL_SIZE, 0, 0, 1 / Conf.PIXEL_SIZE, 0, 0));
 				//screen.draw(layer/*, new Matrix(zoomLevel, 0, 0, zoomLevel, screen.width/2-pos.x, 0)*/);//FIXME the last 0 should be -rect.y, but it shifts incoherently
 			}
 		}

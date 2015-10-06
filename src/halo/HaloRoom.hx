@@ -1,24 +1,16 @@
 package halo;
 import halo.Halo;
 import hxlpers.colors.ColorComponent;
-import hxlpers.colors.RGBColor;
 import hxlpers.colors.RndColor;
-import hxlpers.game.ColoredBitmapData;
+import hxlpers.game.BlendingLayer;
 import hxlpers.game.Layer;
 import hxlpers.game.Room;
 import hxlpers.Rnd;
 import hxlpers.shapes.BoxShape;
 import hxlpers.shapes.DiskShape;
 import hxlpers.shapes.ShortcutShape;
-import openfl.display.Bitmap;
-import openfl.display.BitmapData;
-import openfl.display.BlendMode;
-import openfl.display.Shape;
 import openfl.display.Sprite;
-import openfl.events.Event;
 import openfl.events.MouseEvent;
-import openfl.geom.Matrix;
-import openfl.geom.Point;
 import openfl.geom.Rectangle;
 import openfl.utils.ByteArray;
 using hxlpers.display.ShapeSF;
@@ -54,20 +46,29 @@ class HaloRoom extends Room
 		//	the halos
 		masker = createMaskerLayer();
 		
-		finalLayer = addLayer(new Layer(new ColoredBitmapData(true, 0xFF000000)));
-		trace(finalLayer.parent);
+		var miniViewPort = new Rectangle(0, 0, Conf.VIEW_PORT.width / Conf.PIXEL_SIZE, Conf.VIEW_PORT.height / Conf.PIXEL_SIZE);
+		
+		finalLayer = addLayer(new BlendingLayer(miniViewPort));
+		finalLayer.rectangle(miniViewPort, 0xFF000000);
+		
+		finalLayer.addChild(finalLayer.getBitmap());
+		trace(finalLayer.getBitmap().parent);
 		
 		
-		var fg = addLayer(new Layer(new ColoredBitmapData(true, 0), true, false));
-		//fg.rect(w, h);
+		var fg = addLayer(new Layer(true, false));
+		
+		fg.rectangle(Conf.VIEW_PORT, 0x00000000);
 		fg.alpha = 0;
 		fg.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
+		
+		
 		
 	}
 	
 	function createMaskerLayer():Layer
 	{
-		masker = new Layer(new ColoredBitmapData(true, 0x00000000));
+		masker = new Layer();
+		
 
 		halo = new Halo();
 		
@@ -83,7 +84,8 @@ class HaloRoom extends Room
 	
 	function createMaskedLayer():Layer
 	{
-		var layer = new Layer(new ColoredBitmapData(true, 0xFF000000));
+		var layer = new Layer();
+		layer.rectangle(Conf.VIEW_PORT, 0xFF000000);
 		
 		var bg = new Sprite();
 		bg.rect(zone.width, zone.height, RndColor.rgb());
@@ -161,8 +163,13 @@ class HaloRoom extends Room
 			finalBytes.writeUnsignedInt(a | rgb);
 		}
 		
+		
+		var rect = finalLayer.data.rect;
 		finalBytes.position = 0;
-		finalLayer.data.setPixels(finalLayer.data.rect, finalBytes);
+		trace(finalBytes.position + '/' + finalBytes.length);
+		trace(rect.width + " * " + rect.height + "=" + rect.width * rect.height);
+		trace(rect.width * rect.height * 4);
+		finalLayer.data.setPixels(rect, finalBytes);
 		
 		super.render();
 

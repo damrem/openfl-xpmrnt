@@ -3,13 +3,9 @@ package walking;
 import hxlpers.colors.Colors;
 import hxlpers.colors.RndColor;
 import hxlpers.effects.ScreenWhiteNoiseEffect;
-import hxlpers.game.ColoredBitmapData;
 import hxlpers.game.Layer;
 import hxlpers.game.Room;
-import openfl.Assets;
 import openfl.display.Shape;
-import openfl.display.Sprite;
-import openfl.display.Tilesheet;
 import openfl.events.KeyboardEvent;
 import openfl.geom.Rectangle;
 import openfl.Lib;
@@ -29,37 +25,37 @@ class WalkingRoom extends Room
 	var hero:Hero;
 	var sky:ScreenWhiteNoiseEffect;
 
-	public function new(zone:Rectangle) 
+	public function new() 
 	{
-		super(zone);
+		super();
 		
-		bgLayer = new Layer(new ColoredBitmapData(true,0));
+		bgLayer = new Layer();
 		
 		//bgLayer.rect(w*2, h, RndColor.rgb());
 		addLayer(bgLayer);
 		
-		var skyLayer = new Layer(new ColoredBitmapData(true,0));
+		var skyLayer = addLayer(new Layer());
 		sky = new ScreenWhiteNoiseEffect(3, 0.1, 3, zone);
 		sky.color(Colors.WHITE);
 		sky.alpha = 0.25;
 		skyLayer.addChild(sky);
-		addLayer(skyLayer);
 		
 		
-		var groundLayer = new Layer(new ColoredBitmapData(true,0));
+		
+		var groundLayer = addLayer(new Layer());
 		var ground = new Shape();
 		ground.rect(zone.width, zone.height / 3, Colors.WHITE);
 		ground.y = zone.height - ground.height;
 		groundLayer.addChild(ground);
-		addLayer(groundLayer);
 		
-		var heroLayer = new Layer(new ColoredBitmapData(true,0));
+		
+		var heroLayer = addLayer(new Layer());
 		hero = new Hero();
 		
 		hero.x = 10;
+		hero.scale(Conf.PIXEL_SIZE);
 		hero.y = ground.y - hero.height;
 		heroLayer.addChild(hero);
-		addLayer(heroLayer);
 		
 		defaultCamera.follow(hero);
 		
